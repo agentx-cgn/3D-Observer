@@ -1,4 +1,4 @@
-import {app, BrowserWindow, screen} from 'electron';
+import { app, BrowserWindow, screen } from 'electron';
 import * as path from 'path';
 import * as fs from 'fs';
 
@@ -12,10 +12,10 @@ function createWindow(): BrowserWindow {
 
   // Create the browser window.
   win = new BrowserWindow({
-    x: 0,
-    y: 0,
-    width: size.width,
-    height: size.height,
+    x: 50,
+    y: 50,
+    width: 800,
+    height: 1024,
     webPreferences: {
       nodeIntegration: true,
       allowRunningInsecureContent: (serve),
@@ -26,20 +26,21 @@ function createWindow(): BrowserWindow {
   if (serve) {
     const debug = require('electron-debug');
     debug();
-
     require('electron-reloader')(module);
     win.loadURL('http://localhost:4200');
+
   } else {
     // Path when running electron executable
     let pathIndex = './index.html';
 
+    // Path when running electron in local folder
     if (fs.existsSync(path.join(__dirname, '../dist/index.html'))) {
-       // Path when running electron in local folder
       pathIndex = '../dist/index.html';
     }
 
     const url = new URL(path.join('file:', __dirname, pathIndex));
     win.loadURL(url.href);
+
   }
 
   // Emitted when the window is closed.

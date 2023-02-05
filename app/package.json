@@ -1,11 +1,12 @@
 {
-  "name": "angular-electron",
-  "description": "Angular Electron sample",
+  "name": "3D-Observer",
+  "version": "0.0.1",
+  "description": "3D Observer of the Mastodon Univers",
+  "homepage": "",
   "author": {
-    "name": "Maxime GRIS",
-    "email": "maxime.gris@gmail.com"
+    "name": "Vion",
+    "email": "vion11@gmail.com"
   },
-  "version": "11.2.0",
   "main": "main.js",
   "private": true,
   "dependencies": {
