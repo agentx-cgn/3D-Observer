@@ -2,18 +2,65 @@ import { app, BrowserWindow, screen } from 'electron';
 import * as path from 'path';
 import * as fs from 'fs';
 
+const http = require('http');
+
+const { fork } = require("child_process");
+
 let win: BrowserWindow = null;
 
 const
   args = process.argv.slice(1),
-  serve = args.some(val => val === '--serve')
+  serve = args.some(val => val === '--serve'),
+  childController = new AbortController(),
+  port = 3000
 ;
 
 function createWindow(): BrowserWindow {
 
   const size = screen.getPrimaryDisplay().workAreaSize;
+  // const express = require('./resources/express/server');
 
-  console.log("HUHU");
+  const { signal } = childController;
+  const expressfile = `${__dirname}/resources/express/server`;
+
+  const child = fork(expressfile, ['child'], { signal });
+
+  child.on('error', (err) => {
+    // This will be called with err being an AbortError if the controller aborts
+    console.log('Express.error', err);
+  });
+
+  // child.stdout.on('data', (data) => {
+  //   console.log(`stdout: ${data}`);
+  // });
+
+  // child.stderr.on('data', (data) => {
+  //   console.error(`stderr: ${data}`);
+  // });
+
+  child.on('close', (code) => {
+    console.log(`child process exited with code ${code}`);
+  });
+
+  http.get(`http://localhost:${port}/`, res => {
+
+    let data = [];
+    console.log(res);
+
+    res.on('data', chunk => {
+      data.push(chunk);
+    });
+
+    res.on('end', () => {
+      console.log('Response ended: ');
+      const text = JSON.parse(Buffer.concat(data).toString());
+      console.log(text);
+    });
+
+  }).on('error', err => {
+    console.log('Error: ', err.message);
+  });
+
 
   // Create the browser window.
   win = new BrowserWindow({
@@ -69,11 +116,16 @@ try {
 
   // Quit when all windows are closed.
   app.on('window-all-closed', () => {
+
+    // Stops the child/express process
+    childController.abort();
+
     // On OS X it is common for applications and their menu bar
     // to stay active until the user quits explicitly with Cmd + Q
     if (process.platform !== 'darwin') {
       app.quit();
     }
+
   });
 
   app.on('activate', () => {

@@ -15,7 +15,7 @@ module.exports = () => {
     params
   } = databaseConfig;
 
-  console.log('DB', databaseConfig)
+  console.log('\nDB', databaseConfig)
 
   if(!db) {
     const sequelize = new Sequelize(

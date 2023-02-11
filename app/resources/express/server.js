@@ -1,19 +1,36 @@
 
 const express     = require('express');
 const bodyParser  = require('body-parser');
+const cors        = require('cors')
 require('dotenv').config();
 
 // console.log('Express starting ...', __dirname, __filename, process.env)
 
+// https://gist.github.com/maximilian-lindsey/a446a7ee87838a62099d
+// app.set('views', __dirname + '/client/views');
+// app.use(express.static(__dirname + '/client/dist/static'));
+
+const port = 3000;
+
+console.log('\n######################')
+
 class App {
+
   constructor() {
+
+
     this.express = express();
     this.middleware();
     this.routes();
     this.errorHandlerMdw();
+
+    this.express.listen(port, () =>
+      console.log('EX.listening on port 3000!')
+    )
   }
 
-  middleware() {
+  middleware () {
+    this.express.use(cors());
     this.express.use(bodyParser.json());
     this.express.use(bodyParser.urlencoded({ extended: false }));
     const dbCon = require('./setup/db');
@@ -22,7 +39,7 @@ class App {
     require('./initRoutes')(this.express);
   }
 
-  errorHandlerMdw() {
+  errorHandlerMdw () {
     this.express.use((err, req, res, next) => {
       const { start, httpStatus, message, previousError, stack } = err;
 
@@ -35,15 +52,16 @@ class App {
     });
   }
 
-  async routes() {
+  async routes () {
     let router = express.Router();
     router.get('/', (req, res, next) => {
-      res.send({
-        message: 'Helo Dunia'
-      });
+      res.send('Server: OK');
     });
     this.express.use('/', router);
   }
 }
 
-exports.default = new App().express;
+// exports.default = new App().express;
+exports.default = new App();
+
+console.log('\n######################')
