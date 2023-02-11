@@ -3,20 +3,26 @@ import * as path from 'path';
 import * as fs from 'fs';
 
 let win: BrowserWindow = null;
-const args = process.argv.slice(1),
-  serve = args.some(val => val === '--serve');
+
+const
+  args = process.argv.slice(1),
+  serve = args.some(val => val === '--serve')
+;
 
 function createWindow(): BrowserWindow {
 
   const size = screen.getPrimaryDisplay().workAreaSize;
 
+  console.log("HUHU");
+
   // Create the browser window.
   win = new BrowserWindow({
-    x: 50,
-    y: 50,
-    width: 800,
+    x: 32,
+    y: 32,
+    width: 2048,
     height: 1024,
     webPreferences: {
+      devTools: true,
       nodeIntegration: true,
       allowRunningInsecureContent: (serve),
       contextIsolation: false,  // false if you want to run e2e test with Spectron

@@ -10,12 +10,14 @@ import * as fs from 'fs';
   providedIn: 'root'
 })
 export class ElectronService {
+
   ipcRenderer: typeof ipcRenderer;
   webFrame: typeof webFrame;
   childProcess: typeof childProcess;
   fs: typeof fs;
 
   constructor() {
+
     // Conditional imports
     if (this.isElectron) {
       this.ipcRenderer = window.require('electron').ipcRenderer;
@@ -53,4 +55,5 @@ export class ElectronService {
   get isElectron(): boolean {
     return !!(window && window.process && window.process.type);
   }
+
 }
