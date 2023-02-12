@@ -1,4 +1,4 @@
-import { app, BrowserWindow, screen } from 'electron';
+import { app, BrowserWindow, screen, Menu, MenuItem } from 'electron';
 import * as path from 'path';
 import * as fs from 'fs';
 
@@ -14,20 +14,21 @@ const
   childController = new AbortController(),
   port = 3000,
   urlexpress = `http://localhost:${port}/`,
-  isDevelopment = process.env.NODE_ENV !== 'production'
+  isDevelopment = process.env.NODE_ENV !== 'production',
+  thisYear = new Date().getFullYear(),
+  isAsar = require.main.filename.indexOf('app.asar') === -1,
+  expressfile = isAsar
+    ? `${__dirname}/resources/express/server`
+    : `${process.resourcesPath}/resources/express/server`
 
 ;
 
 function createServer() {
 
-  // determine resources folder
-  // https://stackoverflow.com/questions/45392642/how-to-add-folders-and-files-to-electron-build-using-electron-builder/48339186#48339186
-  // process.resourcesPath /Users/tbecker/Projects/3D-Observer/node_modules/electron/dist/Electron.app/Contents/Resources
+  console.log()
 
   const { signal } = childController;
-  const expressfile = `${__dirname}/resources/express/server`;
 
-  // https://www.freecodecamp.org/news/node-js-child-processes-everything-you-need-to-know-e69498fe970a/#the-fork-function
   const child = fork(expressfile, ['child'], { signal });
 
   // probably Abort Error
@@ -118,7 +119,50 @@ function createWindow(size): BrowserWindow {
   return win;
 }
 
+function setApplicationMenu() {
+
+  if (process.platform !== 'darwin') {
+    return;
+  }
+
+  // hide Help menu
+  const menu = Menu.getApplicationMenu();
+  let viewMenu: MenuItem | undefined;
+  menu?.items.forEach(item => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    if (item.role === 'help') {
+      item.visible = false;
+    }
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    if (item.role === 'viewmenu') {
+      viewMenu = item;
+    }
+  });
+  // hide Reload and Force Reload menu items
+  viewMenu?.submenu?.items.forEach(item => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    if (item.role === 'reload' || item.role === 'forcereload') {
+      item.visible = false;
+      item.enabled = false;
+    }
+  });
+  console.log('EC.Menu', menu);
+  // Menu.setApplicationMenu(menu);
+}
 try {
+
+  app.setAboutPanelOptions({
+    applicationName: 'Fediverse Explorer',
+    applicationVersion: app.getVersion(),
+    version: app.getVersion(),
+    website: 'https://github.com',
+    copyright: `© 2022-${thisYear} vion11@gmail.com`
+  });
+
   // This method will be called when Electron has finished
   // initialization and is ready to create browser windows.
   // Some APIs can only be used after this event occurs.
@@ -126,6 +170,7 @@ try {
   // app.on('ready', () => setTimeout(createWindow, 400));
   app.on('ready', () => {
     const size = screen.getPrimaryDisplay().workAreaSize;
+    setApplicationMenu();
     createServer();
     createWindow(size);
   });

@@ -30,7 +30,8 @@
     "e2e": "npm run build:prod && playwright test -c e2e/playwright.config.ts e2e/",
     "e2e:show-trace": "playwright show-trace e2e/tracing/trace.zip",
     "version": "conventional-changelog -i CHANGELOG.md -s -r 0 && git add CHANGELOG.md",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "list:asar": "npx asar list ./release/mac-arm64/3D-Observer.app/Contents/Resources/app.asar"
   },
   "dependencies": {
     "@angular/common": "14.2.6",
@@ -52,6 +53,8 @@
     "rxjs": "7.5.7",
     "sequelize": "6.28.0",
     "sqlite3": "5.1.4",
+    "three": "0.149.0",
+    "three-spritetext": "1.7.1",
     "tslib": "^2.4.0",
     "zone.js": "~0.11.8"
   },
