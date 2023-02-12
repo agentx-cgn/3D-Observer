@@ -18,10 +18,11 @@ const
 
 ;
 
-// determine resources folder
-// https://stackoverflow.com/questions/45392642/how-to-add-folders-and-files-to-electron-build-using-electron-builder/48339186#48339186
-
 function createServer() {
+
+  // determine resources folder
+  // https://stackoverflow.com/questions/45392642/how-to-add-folders-and-files-to-electron-build-using-electron-builder/48339186#48339186
+  // process.resourcesPath /Users/tbecker/Projects/3D-Observer/node_modules/electron/dist/Electron.app/Contents/Resources
 
   const { signal } = childController;
   const expressfile = `${__dirname}/resources/express/server`;
@@ -30,24 +31,25 @@ function createServer() {
   const child = fork(expressfile, ['child'], { signal });
 
   // probably Abort Error
-  child.on('error',   (err)  => console.log('EC.onError', err));
-  child.on('message', (data) => console.log('EC.onMessage', data));
+  child.on('error',   (err)  => console.log('EC.onError', Object.keys(err)));
+  child.on('message', (data) => console.log('EC.onMessage', Object.keys(data)));
   child.on('close',   (code) => console.log('EX.onClose', code));
 
-  console.log('\nEC.trying:', urlexpress);
+  console.log('\nEC.trying', urlexpress);
   http.get(urlexpress, res => {
 
+    console.log('\nEC.trying.status', res.statusCode, res.statusMessage);
+    // console.log('\nEC.response',res.statusCode, res.statusMessage, Object.keys(res), res.rawHeaders);
+
     let data = [];
-    console.log(res);
 
     res.on('data', chunk => {
       data.push(chunk);
     });
 
     res.on('end', () => {
-      console.log('Response ended: ');
       const text = JSON.parse(Buffer.concat(data).toString());
-      console.log(text);
+      console.log('\nEC.trying.end', text);
     });
 
   }).on('error', err => {
@@ -59,6 +61,8 @@ function createServer() {
 function createWindow(size): BrowserWindow {
 
   // console.log('EC.screen.size', size) { width: 2560, height: 1415 }
+  console.log('process.resourcesPath', process.resourcesPath);
+
 
   // Create the browser window.
   win = new BrowserWindow({

@@ -12,10 +12,6 @@
     {
       "from": "../dist",
       "filter": ["**/*"]
-    },
-    {
-      "from": "../app/resources",
-      "filter": ["**/*"]
     }
   ],
   "extraResources": [
