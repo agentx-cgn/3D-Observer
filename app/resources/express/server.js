@@ -26,6 +26,11 @@ class App {
     this.express.listen(port, () =>
       console.log('EX.listening on port 3000!')
     )
+
+    process.on('message', (msg) => {
+      console.log('Message from parent:', msg);
+    });
+
   }
 
   middleware () {

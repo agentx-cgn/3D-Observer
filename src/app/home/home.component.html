@@ -1,9 +1,13 @@
 
-<h1 class="title">
-  {{ 'PAGES.HOME.TITLE' | translate }}
-</h1>
+<div
+  #container
+  class="container"
+  (window:resize)="onResize($event)"
+></div>
 
-<a routerLink="/detail">{{ 'PAGES.HOME.GO_TO_DETAIL' | translate }}</a>
-
-
-<div class="container" #container></div>
+<div
+  #interface
+  class="interface"
+  [style.z-index]="zInterface"
+  (click)="onClickInterface()"
+></div>

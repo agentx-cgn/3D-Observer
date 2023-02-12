@@ -11,19 +11,20 @@ import * as fs from 'fs';
 })
 export class ElectronService {
 
-  ipcRenderer: typeof ipcRenderer;
-  webFrame: typeof webFrame;
-  childProcess: typeof childProcess;
-  fs: typeof fs;
+  public childProcess: typeof childProcess;
+  public ipcRenderer:  typeof ipcRenderer;
+
+  private fs:           typeof fs;
+  private webFrame:     typeof webFrame;
 
   constructor() {
 
     // Conditional imports
     if (this.isElectron) {
-      this.ipcRenderer = window.require('electron').ipcRenderer;
-      this.webFrame = window.require('electron').webFrame;
 
-      this.fs = window.require('fs');
+      this.fs          = window.require('fs');
+      this.webFrame    = window.require('electron').webFrame;
+      this.ipcRenderer = window.require('electron').ipcRenderer;
 
       this.childProcess = window.require('child_process');
       this.childProcess.exec('node -v', (error, stdout, stderr) => {
@@ -35,7 +36,7 @@ export class ElectronService {
           console.error(`stderr: ${stderr}`);
           return;
         }
-        console.log(`stdout:\n${stdout}`);
+        console.log(`stdout:\n${stdout.trim()}`);
       });
 
       // Notes :

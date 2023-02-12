@@ -26,6 +26,7 @@ function createServer() {
   const { signal } = childController;
   const expressfile = `${__dirname}/resources/express/server`;
 
+  // https://www.freecodecamp.org/news/node-js-child-processes-everything-you-need-to-know-e69498fe970a/#the-fork-function
   const child = fork(expressfile, ['child'], { signal });
 
   // probably Abort Error
@@ -63,8 +64,8 @@ function createWindow(size): BrowserWindow {
   win = new BrowserWindow({
     x: 32,
     y: 32,
-    width: 2048,
-    height: 1024,
+    width:  ~~(size.width  * 0.9),
+    height: ~~(size.height * 0.7),
     webPreferences: {
       devTools: true,
       nodeIntegration: true,
@@ -76,9 +77,9 @@ function createWindow(size): BrowserWindow {
   // Show DevTools
   isDevelopment && win.webContents.openDevTools();
   win.webContents.on('devtools-opened', () => {
-    window.focus()
+    win.focus()
     setImmediate(() => {
-      window.focus()
+      win.focus()
     })
   })
 

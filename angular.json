@@ -37,7 +37,6 @@
               "src/styles.scss"
             ],
             "scripts": [
-              "src/assets/3d-force-graph.min.js"
             ],
             "customWebpackConfig": {
               "path": "./angular.webpack.js",
@@ -45,7 +44,10 @@
             },
             "allowedCommonJsDependencies": [
               "rxjs",
-              "rxjs-operators"
+              "rxjs-operators",
+              "debounce",
+              "ngraph.forcelayout",
+              "ngraph.graph"
            ]
           },
           "configurations": {
