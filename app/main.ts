@@ -12,37 +12,29 @@ const
   args = process.argv.slice(1),
   serve = args.some(val => val === '--serve'),
   childController = new AbortController(),
-  port = 3000
+  port = 3000,
+  urlexpress = `http://localhost:${port}/`,
+  isDevelopment = process.env.NODE_ENV !== 'production'
+
 ;
 
-function createWindow(): BrowserWindow {
+// determine resources folder
+// https://stackoverflow.com/questions/45392642/how-to-add-folders-and-files-to-electron-build-using-electron-builder/48339186#48339186
 
-  const size = screen.getPrimaryDisplay().workAreaSize;
-  // const express = require('./resources/express/server');
+function createServer() {
 
   const { signal } = childController;
   const expressfile = `${__dirname}/resources/express/server`;
 
   const child = fork(expressfile, ['child'], { signal });
 
-  child.on('error', (err) => {
-    // This will be called with err being an AbortError if the controller aborts
-    console.log('Express.error', err);
-  });
+  // probably Abort Error
+  child.on('error',   (err)  => console.log('EC.onError', err));
+  child.on('message', (data) => console.log('EC.onMessage', data));
+  child.on('close',   (code) => console.log('EX.onClose', code));
 
-  // child.stdout.on('data', (data) => {
-  //   console.log(`stdout: ${data}`);
-  // });
-
-  // child.stderr.on('data', (data) => {
-  //   console.error(`stderr: ${data}`);
-  // });
-
-  child.on('close', (code) => {
-    console.log(`child process exited with code ${code}`);
-  });
-
-  http.get(`http://localhost:${port}/`, res => {
+  console.log('\nEC.trying:', urlexpress);
+  http.get(urlexpress, res => {
 
     let data = [];
     console.log(res);
@@ -58,9 +50,14 @@ function createWindow(): BrowserWindow {
     });
 
   }).on('error', err => {
-    console.log('Error: ', err.message);
+    console.log('\nEC.error.trying', err.message);
   });
 
+}
+
+function createWindow(size): BrowserWindow {
+
+  // console.log('EC.screen.size', size) { width: 2560, height: 1415 }
 
   // Create the browser window.
   win = new BrowserWindow({
@@ -75,6 +72,15 @@ function createWindow(): BrowserWindow {
       contextIsolation: false,  // false if you want to run e2e test with Spectron
     },
   });
+
+  // Show DevTools
+  isDevelopment && win.webContents.openDevTools();
+  win.webContents.on('devtools-opened', () => {
+    window.focus()
+    setImmediate(() => {
+      window.focus()
+    })
+  })
 
   if (serve) {
     const debug = require('electron-debug');
@@ -112,7 +118,12 @@ try {
   // initialization and is ready to create browser windows.
   // Some APIs can only be used after this event occurs.
   // Added 400 ms to fix the black background issue while using transparent window. More detais at https://github.com/electron/electron/issues/15947
-  app.on('ready', () => setTimeout(createWindow, 400));
+  // app.on('ready', () => setTimeout(createWindow, 400));
+  app.on('ready', () => {
+    const size = screen.getPrimaryDisplay().workAreaSize;
+    createServer();
+    createWindow(size);
+  });
 
   // Quit when all windows are closed.
   app.on('window-all-closed', () => {
@@ -132,7 +143,8 @@ try {
     // On OS X it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
     if (win === null) {
-      createWindow();
+      const size = screen.getPrimaryDisplay().workAreaSize;
+      createWindow(size);
     }
   });
 

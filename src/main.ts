@@ -8,6 +8,8 @@ if (APP_CONFIG.production) {
   enableProdMode();
 }
 
+fetch('http://localhost:3000').then(r => r.json()).then(console.log);
+
 platformBrowserDynamic()
   .bootstrapModule(AppModule, {
     preserveWhitespaces: false

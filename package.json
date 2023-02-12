@@ -41,6 +41,7 @@
     "@angular/platform-browser": "14.2.6",
     "@angular/platform-browser-dynamic": "14.2.6",
     "@angular/router": "14.2.6",
+    "3d-force-graph": "1.71.1",
     "bcrypt": "5.1.0",
     "body-parser": "1.20.1",
     "cors": "2.8.5",

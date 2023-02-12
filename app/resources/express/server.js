@@ -18,7 +18,6 @@ class App {
 
   constructor() {
 
-
     this.express = express();
     this.middleware();
     this.routes();
@@ -41,6 +40,7 @@ class App {
 
   errorHandlerMdw () {
     this.express.use((err, req, res, next) => {
+
       const { start, httpStatus, message, previousError, stack } = err;
 
       res.status(httpStatus || 406).json({
@@ -49,16 +49,22 @@ class App {
         message,
         data: previousError
       });
+
     });
   }
 
   async routes () {
+
     let router = express.Router();
+
     router.get('/', (req, res, next) => {
-      res.send('Server: OK');
+      res.send({ express: 'Server: OK' });
     });
+
     this.express.use('/', router);
+
   }
+
 }
 
 // exports.default = new App().express;
