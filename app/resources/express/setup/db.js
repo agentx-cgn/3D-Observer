@@ -3,7 +3,6 @@ const path = require('path');
 const Sequelize = require('sequelize');
 const databaseConfig = require('./config');
 
-
 let db;
 
 module.exports = () => {
