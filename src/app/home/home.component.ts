@@ -51,7 +51,7 @@ export class HomeComponent implements AfterViewInit {
 
   constructor(private router: Router) {
 
-    console.log((window as any).__THREE__);
+    console.log('Home.three', (window as any).__THREE__);
 
   }
 
@@ -133,7 +133,7 @@ export class HomeComponent implements AfterViewInit {
       // });
     ;
 
-    this.graph.d3Force('charge').strength(-0.1);
+    this.graph.d3Force('charge').strength(-0.1); // the smaller, the more stick balls together
     this.graph.d3AlphaDecay(0.0000001);  // def: 0.0228
 
     interval(500)

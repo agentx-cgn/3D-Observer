@@ -1,4 +1,4 @@
-import { app, BrowserWindow, screen, Menu, MenuItem } from 'electron';
+import { app, BrowserWindow, screen, Menu, MenuItem, MessageChannelMain } from 'electron';
 import * as path from 'path';
 import * as fs from 'fs';
 
@@ -13,7 +13,7 @@ const
   serve = args.some(val => val === '--serve'),
   childController = new AbortController(),
   port = 3000,
-  urlexpress = `http://localhost:${port}/`,
+  urlexpress = `http://127.0.0.1:${port}/`,
   isDevelopment = process.env.NODE_ENV !== 'production',
   thisYear = new Date().getFullYear(),
   isAsar = require.main.filename.indexOf('app.asar') === -1,
@@ -21,7 +21,8 @@ const
     ? `${__dirname}/resources/express/server`
     : `${process.resourcesPath}/resources/express/server`
 
-;
+  ;
+
 
 function createServer() {
 
@@ -32,9 +33,9 @@ function createServer() {
   const child = fork(expressfile, ['child'], { signal });
 
   // probably Abort Error
-  child.on('error',   (err)  => console.log('EC.onError', Object.keys(err)));
+  child.on('error', (err) => console.log('EC.onError', Object.keys(err)));
   child.on('message', (data) => console.log('EC.onMessage', Object.keys(data)));
-  child.on('close',   (code) => console.log('EX.onClose', code));
+  child.on('close', (code) => console.log('EX.onClose', code));
 
   console.log('\nEC.trying', urlexpress);
   http.get(urlexpress, res => {
@@ -61,21 +62,19 @@ function createServer() {
 
 function createWindow(size): BrowserWindow {
 
-  // console.log('EC.screen.size', size) { width: 2560, height: 1415 }
-  console.log('process.resourcesPath', process.resourcesPath);
-
-
   // Create the browser window.
   win = new BrowserWindow({
     x: 32,
     y: 32,
-    width:  ~~(size.width  * 0.9),
+    width: ~~(size.width * 0.9),
     height: ~~(size.height * 0.7),
     webPreferences: {
       devTools: true,
       nodeIntegration: true,
-      allowRunningInsecureContent: (serve),
+      // allowRunningInsecureContent: (serve),
+      allowRunningInsecureContent: true,
       contextIsolation: false,  // false if you want to run e2e test with Spectron
+      preload: path.join(__dirname, 'preload.js'),
     },
   });
 
@@ -92,7 +91,7 @@ function createWindow(size): BrowserWindow {
     const debug = require('electron-debug');
     debug();
     require('electron-reloader')(module);
-    win.loadURL('http://localhost:4200');
+    win.loadURL('https://localhost:4200');
 
   } else {
     // Path when running electron executable
@@ -108,15 +107,20 @@ function createWindow(size): BrowserWindow {
 
   }
 
+
+
   // Emitted when the window is closed.
   win.on('closed', () => {
+
     // Dereference the window object, usually you would store window
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
     win = null;
+
   });
 
   return win;
+
 }
 
 function setApplicationMenu() {
@@ -150,10 +154,39 @@ function setApplicationMenu() {
       item.enabled = false;
     }
   });
-  console.log('EC.Menu', menu);
+  // console.log('EC.Menu', menu);
   // Menu.setApplicationMenu(menu);
 }
+
+function createChannel() {
+
+  // We'll be sending one end of this channel to the main world of the
+  // context-isolated page.
+  const { port1, port2 } = new MessageChannelMain()
+
+  // It's OK to send a message on the channel before the other end has
+  // registered a listener. Messages will be queued until a listener is
+  // registered.
+  port2.postMessage({ ping: 21 })
+  port2.postMessage({ port })
+
+  // We can also receive messages from the main world of the renderer.
+  port2.on('message', (event) => {
+    console.log('EC.Browser.message', event.data)
+  })
+  port2.start()
+
+  // The preload script will receive this IPC message and transfer the port
+  // over to the main world.
+  win.webContents.postMessage('main-world-port', null, [port1])
+
+
+}
+
 try {
+
+  // TODO: disable in PROD
+  app.commandLine.appendSwitch('ignore-certificate-errors', 'true');
 
   app.setAboutPanelOptions({
     applicationName: 'Fediverse Explorer',
@@ -169,10 +202,21 @@ try {
   // Added 400 ms to fix the black background issue while using transparent window. More detais at https://github.com/electron/electron/issues/15947
   // app.on('ready', () => setTimeout(createWindow, 400));
   app.on('ready', () => {
-    const size = screen.getPrimaryDisplay().workAreaSize;
+
+    // { width: 2560, height: 1415 }
+    const { workAreaSize, rotation, scaleFactor } = screen.getPrimaryDisplay();
+
+    console.log('\n')
+    console.log('EC.args', args)
+    console.log('EC.NODE_ENV', process.env.NODE_ENV)
+    console.log('EC.resourcesPath', process.resourcesPath);
+    console.log('EC.screen', { size: workAreaSize, rotation, scaleFactor })
+
     setApplicationMenu();
     createServer();
-    createWindow(size);
+    createWindow(workAreaSize);
+    createChannel();
+
   });
 
   // Quit when all windows are closed.

@@ -1,3 +1,4 @@
+/* eslint-disable space-before-function-paren */
 import { Injectable } from '@angular/core';
 
 // If you import a module but never use any of the imported values other than as TypeScript types,
@@ -17,7 +18,54 @@ export class ElectronService {
   private fs:           typeof fs;
   private webFrame:     typeof webFrame;
 
-  constructor() {
+  constructor () {
+
+    console.log('ElectronService', this.isElectron ? 'Electron found' : 'Electron not found');
+
+    fetch('http://127.0.0.1:3000')
+      .then(r => r.json())
+      .then( json => {
+        console.log('ElectronService', json)
+      })
+    ;
+
+    this.init();
+
+    window.onmessage = (event) => {
+
+      // event.source === window means the message is coming from the preload
+      // script, as opposed to from an <iframe> or other source.
+      if (event.source === window && event.data === 'main-world-port') {
+
+        const [ port ] = event.ports;
+
+        // Once we have the port, we can communicate directly with the main
+        // process.
+        port.onmessage = (e: any) => {
+
+          if ( e.data.ping) {
+            console.log('ElectronService', 'ping message', e.data);
+            port.postMessage({ ping: e.data.ping * 2 });
+
+          } else if (e.data.port) {
+            console.log('ElectronService', 'port message', e.data.port);
+
+          } else {
+            console.log('ElectronService', 'unknown message', e.data);
+
+          }
+        };
+
+      }
+    };
+
+  }
+
+  get isElectron(): boolean {
+    return !!(window && window.process && window.process.type);
+  }
+
+  init () {
 
     // Conditional imports
     if (this.isElectron) {
@@ -26,6 +74,9 @@ export class ElectronService {
       this.webFrame    = window.require('electron').webFrame;
       this.ipcRenderer = window.require('electron').ipcRenderer;
 
+      // testing command line
+      // this is ugly, improve:
+      // https://stackoverflow.com/questions/30763496/how-to-promisify-nodes-child-process-exec-and-child-process-execfile-functions
       this.childProcess = window.require('child_process');
       this.childProcess.exec('node -v', (error, stdout, stderr) => {
         if (error) {
@@ -36,7 +87,20 @@ export class ElectronService {
           console.error(`stderr: ${stderr}`);
           return;
         }
-        console.log(`stdout:\n${stdout.trim()}`);
+        console.log(`stdout:${stdout}`);
+      });
+
+      this.childProcess = window.require('child_process');
+      this.childProcess.exec('uname -a', (error, stdout, stderr) => {
+        if (error) {
+          console.error(`error: ${error.message}`);
+          return;
+        }
+        if (stderr) {
+          console.error(`stderr: ${stderr}`);
+          return;
+        }
+        console.log(`stdout:${stdout}`);
       });
 
       // Notes :
@@ -51,10 +115,7 @@ export class ElectronService {
       // ipcRenderer.invoke can serve many common use cases.
       // https://www.electronjs.org/docs/latest/api/ipc-renderer#ipcrendererinvokechannel-args
     }
-  }
 
-  get isElectron(): boolean {
-    return !!(window && window.process && window.process.type);
   }
 
 }

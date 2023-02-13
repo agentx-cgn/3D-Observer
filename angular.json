@@ -120,7 +120,10 @@
         "serve": {
           "builder": "@angular-builders/custom-webpack:dev-server",
           "options": {
-            "browserTarget": "angular-electron:build"
+            "browserTarget": "angular-electron:build",
+            "sslKey": "certs/localhost.key",
+            "sslCert": "certs/localhost.crt",
+            "ssl": true
           },
           "configurations": {
             "dev": {

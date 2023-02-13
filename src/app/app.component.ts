@@ -19,16 +19,6 @@ export class AppComponent {
 
     console.log('environment', environment);
 
-    if (electronService.isElectron) {
-
-      console.log('Runs in Electron');
-      console.log('process.env)', process.env);
-      console.log('ipcRenderer', this.electronService.ipcRenderer);
-      console.log('childProcess', this.electronService.childProcess);
-
-    } else {
-      console.log('Runs in Browser');
-
-    }
   }
+
 }

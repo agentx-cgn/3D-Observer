@@ -15,7 +15,7 @@ module.exports = () => {
     params
   } = databaseConfig;
 
-  console.log('\nDB', databaseConfig)
+  // console.log('\nDB', databaseConfig)
 
   if(!db) {
     const sequelize = new Sequelize(
@@ -34,7 +34,7 @@ module.exports = () => {
     const dir = path.join(__dirname, '../models');
 
     fs.readdirSync(dir).forEach(mod => {
-      console.log('DB.models', mod)
+      // console.log('DB.models', mod)
       // const modelDir = path.join(dir, mod);
       // const model = sequelize.import(modelDir);
       // db.models[model.name] = model;

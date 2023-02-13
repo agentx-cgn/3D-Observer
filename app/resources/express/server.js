@@ -11,6 +11,8 @@ require('dotenv').config();
 // app.use(express.static(__dirname + '/client/dist/static'));
 
 const port = 3000;
+const ip   = '127.0.0.1';
+
 
 console.log('\n######################')
 
@@ -23,12 +25,12 @@ class App {
     this.routes();
     this.errorHandlerMdw();
 
-    this.express.listen(port, () =>
-      console.log('EX.listening on port 3000!')
+    this.express.listen(port, ip, () =>
+      console.log(`EX.listening on ${ip}:${port}`)
     )
 
     process.on('message', (msg) => {
-      console.log('Message from parent:', msg);
+      console.log('EX.message', msg);
     });
 
   }
@@ -63,7 +65,7 @@ class App {
     let router = express.Router();
 
     router.get('/', (req, res, next) => {
-      res.send({ express: 'Server: OK' });
+      res.send({ express: `listening on ${ip}:${port}` });
     });
 
     this.express.use('/', router);
