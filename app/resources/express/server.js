@@ -2,9 +2,15 @@
 const express     = require('express');
 const bodyParser  = require('body-parser');
 const cors        = require('cors')
-require('dotenv').config();
+const log         = require('electron-log')
 
-// console.log('Express starting ...', __dirname, __filename, process.env)
+require('dotenv').config();
+Object.assign(console, log.functions);
+log.transports.file.level = 'silly';
+log.transports.file.resolvePathFn = () => __dirname + "/3D-Observer.server.log";
+
+console.log('');
+console.log('EX.starting', __dirname);
 
 // https://gist.github.com/maximilian-lindsey/a446a7ee87838a62099d
 // app.set('views', __dirname + '/client/views');
@@ -14,7 +20,7 @@ const port = 3000;
 const ip   = '127.0.0.1';
 
 
-console.log('\n######################')
+console.log('')
 
 class App {
 
@@ -77,4 +83,4 @@ class App {
 // exports.default = new App().express;
 exports.default = new App();
 
-console.log('\n######################')
+console.log('');

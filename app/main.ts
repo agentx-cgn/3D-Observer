@@ -1,7 +1,9 @@
 import { app, BrowserWindow, screen, Menu, MenuItem, MessageChannelMain } from 'electron';
 import * as path from 'path';
 import * as fs from 'fs';
+// import log from 'electron-log';
 
+const log  = require('electron-log');
 const http = require('http');
 
 const { fork } = require("child_process");
@@ -38,11 +40,11 @@ function createServer() {
   child.on('message', (data) => console.log('EC.onMessage', Object.keys(data)));
   child.on('close', (code) => console.log('EX.onClose', code));
 
-  console.log('\nEC.trying', urlexpress);
+  console.log('EC.trying', urlexpress);
   http.get(urlexpress, res => {
 
-    console.log('\nEC.trying.status', res.statusCode, res.statusMessage);
-    // console.log('\nEC.response',res.statusCode, res.statusMessage, Object.keys(res), res.rawHeaders);
+    console.log('EC.trying.status', res.statusCode, res.statusMessage);
+    // console.log('EC.response',res.statusCode, res.statusMessage, Object.keys(res), res.rawHeaders);
 
     let data = [];
 
@@ -52,11 +54,11 @@ function createServer() {
 
     res.on('end', () => {
       const text = JSON.parse(Buffer.concat(data).toString());
-      console.log('\nEC.trying.end', text);
+      console.log('EC.trying.end', text, data);
     });
 
   }).on('error', err => {
-    console.log('\nEC.error.trying', err.message);
+    console.warn('EC.error.trying', err.message);
   });
 
 }
@@ -186,6 +188,11 @@ function createChannel() {
 
 try {
 
+  Object.assign(console, log.functions);
+  // log.transports.file.resolvePathFn = () => path.join(APP_DATA, 'logs/main.log');
+  log.transports.file.level = 'silly';
+  log.transports.file.resolvePathFn = () => __dirname + "/3D-Observer.main.log";
+
   // TODO: disable in PROD
   app.commandLine.appendSwitch('ignore-certificate-errors', 'true');
 
@@ -207,16 +214,18 @@ try {
     // { width: 2560, height: 1415 }
     const { workAreaSize, rotation, scaleFactor } = screen.getPrimaryDisplay();
 
-    console.log('\n')
+    console.log('')
     console.log('EC.args', args)
     console.log('EC.NODE_ENV', process.env.NODE_ENV)
     console.log('EC.resourcesPath', process.resourcesPath);
     console.log('EC.screen', { size: workAreaSize, rotation, scaleFactor })
 
-    setApplicationMenu();
     createServer();
-    createWindow(workAreaSize);
-    createChannel();
+    setTimeout( () => {
+      setApplicationMenu();
+      createWindow(workAreaSize);
+      createChannel();
+    }, 300);
 
   });
 
