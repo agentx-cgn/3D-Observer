@@ -25,7 +25,7 @@ export class ElectronService {
     fetch('http://127.0.0.1:3000')
       .then(r => r.json())
       .then( json => {
-        console.log('ElectronService', json)
+        console.log('ElectronService', json);
       })
     ;
 
