@@ -22,12 +22,7 @@ export class ElectronService {
 
     console.log('ElectronService', this.isElectron ? 'Electron found' : 'Electron not found');
 
-    fetch('http://127.0.0.1:3000')
-      .then(r => r.json())
-      .then( json => {
-        console.log('ElectronService', json);
-      })
-    ;
+
 
     this.init();
 
@@ -44,11 +39,21 @@ export class ElectronService {
         port.onmessage = (e: any) => {
 
           if ( e.data.ping) {
+
             console.log('ElectronService', 'ping message', e.data);
             port.postMessage({ ping: e.data.ping * 2 });
 
-          } else if (e.data.port) {
-            console.log('ElectronService', 'port message', e.data.port);
+          } else if (e.data.config) {
+
+            const config = e.data.config;
+            console.log('ElectronService', 'config message', e.data);
+
+            fetch(`http://127.0.0.1:${config.port}`)
+              .then(r => r.json())
+              .then( json => {
+                console.log('ElectronService', json);
+              })
+            ;
 
           } else {
             console.log('ElectronService', 'unknown message', e.data);

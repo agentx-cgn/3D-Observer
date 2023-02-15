@@ -7,7 +7,7 @@ const log         = require('electron-log')
 require('dotenv').config();
 Object.assign(console, log.functions);
 log.transports.file.level = 'silly';
-log.transports.file.resolvePathFn = () => __dirname + "/3D-Observer.server.log";
+// log.transports.file.resolvePathFn = () => __dirname + "/3D-Observer.server.log";
 
 console.log('');
 console.log('EX.starting', __dirname);
@@ -16,8 +16,8 @@ console.log('EX.starting', __dirname);
 // app.set('views', __dirname + '/client/views');
 // app.use(express.static(__dirname + '/client/dist/static'));
 
-const port = 3000;
-const ip   = '127.0.0.1';
+let port;
+const ip  = '127.0.0.1';
 
 
 console.log('')
@@ -31,9 +31,11 @@ class App {
     this.routes();
     this.errorHandlerMdw();
 
-    this.express.listen(port, ip, () =>
-      console.log(`EX.listening on ${ip}:${port}`)
-    )
+    const server = this.express.listen(0, ip, () => {
+      port = server.address().port;
+      console.log(`EX.listening on ${ip}:${port}`);
+      process.send({ port });
+    });
 
     process.on('message', (msg) => {
       console.log('EX.message', msg);
@@ -71,7 +73,7 @@ class App {
     let router = express.Router();
 
     router.get('/', (req, res, next) => {
-      res.send({ express: `listening on ${ip}:${port}` });
+      res.send({ express: `API works on ${ip}:${port}` });
     });
 
     this.express.use('/', router);
