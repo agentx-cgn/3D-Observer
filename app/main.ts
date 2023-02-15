@@ -18,22 +18,25 @@ const
   args = process.argv.slice(1),
   serve = args.some(val => val === '--serve'),
   childController = new AbortController(),
-  urlexpress = `http://127.0.0.1:${port}/`,
+  // urlexpress = `http://127.0.0.1:${port}/`,
   isDevelopment = process.env.NODE_ENV !== 'production',
   thisYear = new Date().getFullYear(),
   isAsar = require.main.filename.indexOf('app.asar') === -1,
-  expressfile = isAsar
-    ? `${__dirname}/resources/express/server`
-    : `${process.resourcesPath}/resources/express/server`
+  expressfile = `${__dirname}/resources/express/server`
+
+  // : `${process.resourcesPath}/resources/express/server`
+  // ? `${__dirname}/resources/express/server`
 
   ;
 
   console.log({
+    __dirname,
+    __filename,
     args,
     serve,
     isAsar,
     expressfile,
-    urlexpress,
+    // urlexpress,
     isDevelopment,
     NODE_ENV: process.env.NODE_ENV,
     resourcesPath: process.resourcesPath,
@@ -74,7 +77,7 @@ async function createServer(): Promise<any> {
       reject(err);
     });
 
-    child.on('close', (code) => console.log('EX.onClose', code));
+    child.on('close', (code) => console.log('EC.onClose', code));
 
   });
 
@@ -120,9 +123,12 @@ function createWindow(size): BrowserWindow {
     },
   });
 
-  // Show DevTools
+  // Show DevTools, still always
   isDevelopment && win.webContents.openDevTools();
-  win.webContents.on('devtools-opened', () => setImmediate(() => win.focus()))
+  win.webContents.on('devtools-opened', () => {
+    win.focus();
+    setImmediate(() => win.focus());
+  })
 
   if (serve) {
     const debug = require('electron-debug');

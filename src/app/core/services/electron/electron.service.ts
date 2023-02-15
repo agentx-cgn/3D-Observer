@@ -22,11 +22,11 @@ export class ElectronService {
 
     console.log('ElectronService', this.isElectron ? 'Electron found' : 'Electron not found');
 
-
-
     this.init();
 
     window.onmessage = (event) => {
+
+      console.log('ElectronService.onmessage', event);
 
       // event.source === window means the message is coming from the preload
       // script, as opposed to from an <iframe> or other source.
@@ -34,8 +34,7 @@ export class ElectronService {
 
         const [ port ] = event.ports;
 
-        // Once we have the port, we can communicate directly with the main
-        // process.
+        // Once we have the port, we can communicate directly with the main process.
         port.onmessage = (e: any) => {
 
           if ( e.data.ping) {
@@ -82,18 +81,18 @@ export class ElectronService {
       // testing command line
       // this is ugly, improve:
       // https://stackoverflow.com/questions/30763496/how-to-promisify-nodes-child-process-exec-and-child-process-execfile-functions
-      this.childProcess = window.require('child_process');
-      this.childProcess.exec('node -v', (error, stdout, stderr) => {
-        if (error) {
-          console.error(`error: ${error.message}`);
-          return;
-        }
-        if (stderr) {
-          console.error(`stderr: ${stderr}`);
-          return;
-        }
-        console.log(`stdout:${stdout}`);
-      });
+      // this.childProcess = window.require('child_process');
+      // this.childProcess.exec('node -v', (error, stdout, stderr) => {
+      //   if (error) {
+      //     console.error(`error: ${error.message}`);
+      //     return;
+      //   }
+      //   if (stderr) {
+      //     console.error(`stderr: ${stderr}`);
+      //     return;
+      //   }
+      //   console.log(`stdout:${stdout}`);
+      // });
 
       this.childProcess = window.require('child_process');
       this.childProcess.exec('uname -a', (error, stdout, stderr) => {

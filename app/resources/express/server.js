@@ -7,7 +7,6 @@ const log         = require('electron-log')
 require('dotenv').config();
 Object.assign(console, log.functions);
 log.transports.file.level = 'silly';
-// log.transports.file.resolvePathFn = () => __dirname + "/3D-Observer.server.log";
 
 console.log('');
 console.log('EX.starting', __dirname);
@@ -18,9 +17,6 @@ console.log('EX.starting', __dirname);
 
 let port;
 const ip  = '127.0.0.1';
-
-
-console.log('')
 
 class App {
 
@@ -47,9 +43,9 @@ class App {
     this.express.use(cors());
     this.express.use(bodyParser.json());
     this.express.use(bodyParser.urlencoded({ extended: false }));
-    const dbCon = require('./setup/db');
-    this.express.locals = { ...this.express.locals, db: dbCon() };
-    this.express.locals.db.sequelize.sync();
+    // const dbCon = require('./setup/db');
+    // this.express.locals = { ...this.express.locals, db: dbCon() };
+    // this.express.locals.db.sequelize.sync();
     require('./initRoutes')(this.express);
   }
 
@@ -84,5 +80,3 @@ class App {
 
 // exports.default = new App().express;
 exports.default = new App();
-
-console.log('');
