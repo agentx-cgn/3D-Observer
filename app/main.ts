@@ -18,16 +18,11 @@ const
   args = process.argv.slice(1),
   serve = args.some(val => val === '--serve'),
   childController = new AbortController(),
-  // urlexpress = `http://127.0.0.1:${port}/`,
   isDevelopment = process.env.NODE_ENV !== 'production',
   thisYear = new Date().getFullYear(),
   isAsar = require.main.filename.indexOf('app.asar') === -1,
   expressfile = `${__dirname}/resources/express/server`
-
-  // : `${process.resourcesPath}/resources/express/server`
-  // ? `${__dirname}/resources/express/server`
-
-  ;
+;
 
   console.log({
     __dirname,
@@ -36,7 +31,6 @@ const
     serve,
     isAsar,
     expressfile,
-    // urlexpress,
     isDevelopment,
     NODE_ENV: process.env.NODE_ENV,
     resourcesPath: process.resourcesPath,
@@ -105,6 +99,39 @@ async function createServer(): Promise<any> {
 
 }
 
+function activateWindow() {
+
+  // https://www.electronjs.org/docs/latest/api/web-contents
+
+  // Show DevTools, still always
+  isDevelopment && win.webContents.openDevTools();
+  win.webContents.on('devtools-opened', () => {
+    win.focus();
+    setImmediate(() => win.focus());
+  });
+
+  win.webContents.on('console-message', (...args) => {
+
+    let msg = args[2];
+
+    msg = (
+      msg.includes('allowRunningInsecureContent')      ? '' :
+      msg.includes('Insecure Content-Security-Policy') ? '' :
+      msg.trim().slice(0, 40)
+    );
+
+    // msg && console.log('WIN', args[2].split('›').slice(-1)[0])
+    // console.log('WIN', args[2].slice(0, 40));
+
+  });
+
+  win.webContents.on('did-finish-load', () => {
+    console.log('EC.webContents', 'did-finish-load');
+    // win.webContents.send('ping', 'whoooooooh!')
+  })
+
+}
+
 function createWindow(size): BrowserWindow {
 
   // Create the browser window.
@@ -123,12 +150,8 @@ function createWindow(size): BrowserWindow {
     },
   });
 
-  // Show DevTools, still always
-  isDevelopment && win.webContents.openDevTools();
-  win.webContents.on('devtools-opened', () => {
-    win.focus();
-    setImmediate(() => win.focus());
-  })
+  // start listening
+  activateWindow();
 
   if (serve) {
     const debug = require('electron-debug');
@@ -294,3 +317,22 @@ function launch () {
   }
 
 }
+
+
+// const { exec } = require('child_process')
+
+// function run(cmd, options) {
+//   return new Promise((resolve, reject) => {
+//     exec(cmd, options, (error, stdout, stderr) => {
+//       if (error) return reject(error)
+//       if (stderr) return reject(stderr)
+//       resolve(stdout)
+//     })
+//   })
+// }
+
+// // usage example
+// ;(async () => {
+//   const result = await run('echo "hello"', { maxBuffer: 1024 * 1024 * 2 })
+//   console.log(result) // hello
+// })()

@@ -26,7 +26,7 @@ export class ElectronService {
 
     window.onmessage = (event) => {
 
-      console.log('ElectronService.onmessage', event);
+      console.log('ElectronService.onmessage', event.data);
 
       // event.source === window means the message is coming from the preload
       // script, as opposed to from an <iframe> or other source.
@@ -45,12 +45,16 @@ export class ElectronService {
           } else if (e.data.config) {
 
             const config = e.data.config;
+            const apiurl = `http://127.0.0.1:${config.port}/`;
             console.log('ElectronService', 'config message', e.data);
 
-            fetch(`http://127.0.0.1:${config.port}`)
+            fetch(apiurl)
               .then(r => r.json())
               .then( json => {
                 console.log('ElectronService', json);
+              })
+              .catch(err => {
+                console.warn('ElectronService.faild', apiurl, err);
               })
             ;
 
@@ -78,6 +82,11 @@ export class ElectronService {
       this.webFrame    = window.require('electron').webFrame;
       this.ipcRenderer = window.require('electron').ipcRenderer;
 
+      ipcRenderer.on('ping', (event, message) => {
+        // console.log('ElectronService.ping', event, message);
+        console.log('ElectronService.ping', message);
+      });
+
       // testing command line
       // this is ugly, improve:
       // https://stackoverflow.com/questions/30763496/how-to-promisify-nodes-child-process-exec-and-child-process-execfile-functions
@@ -94,8 +103,8 @@ export class ElectronService {
       //   console.log(`stdout:${stdout}`);
       // });
 
-      this.childProcess = window.require('child_process');
-      this.childProcess.exec('uname -a', (error, stdout, stderr) => {
+      // this.childProcess = window.require('child_process');
+      require('child_process').exec('uname -a', (error, stdout, stderr) => {
         if (error) {
           console.error(`error: ${error.message}`);
           return;

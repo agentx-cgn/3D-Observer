@@ -10,7 +10,7 @@ const { ipcRenderer } = require('electron')
 // to register the onload listener before the load event is fired.
 const windowLoaded = new Promise(resolve => {
   window.onload = () => {
-    console.log('PL.window loaded');
+    // console.log('PL.window loaded');
     resolve();
   }
 })

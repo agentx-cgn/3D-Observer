@@ -1,0 +1,1 @@
+INSERT INTO domains  SELECT NULL, c0 from "_init-servers_20230216";
