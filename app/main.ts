@@ -24,9 +24,15 @@ const
   expressfile = `${__dirname}/resources/express/server`
 ;
 
-  console.log({
+// https://www.appsloveworld.com/bestanswer/sqlite/53/cannot-find-sqlite-file-in-production-mode-electron-angular
+
+  console.log()
+  console.log('## # # # # # # # # # # ')
+  console.log('EC.starting...', {
     __dirname,
     __filename,
+    apppath: app.getAppPath(),
+    ispacked: app.isPackaged,
     args,
     serve,
     isAsar,
@@ -59,6 +65,8 @@ async function createServer(): Promise<any> {
   return new Promise<any>(function(resolve, reject) {
 
     const child = fork(expressfile, ['child'], { signal });
+
+    child.send({ apppath: app.getAppPath(), isdev: serve });
 
     // probably Abort Error
     child.on('message', (data) => {

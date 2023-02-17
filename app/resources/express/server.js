@@ -13,16 +13,27 @@ require('dotenv').config();
 Object.assign(console, log.functions);
 log.transports.file.level = 'silly';
 
-console.log('');
-console.log('EX.starting', __dirname);
 
 // https://gist.github.com/maximilian-lindsey/a446a7ee87838a62099d
 // app.set('views', __dirname + '/client/views');
 // app.use(express.static(__dirname + '/client/dist/static'));
 
-let port = 0;
+let port = 0, apppath, isdev, dbfile;
 const ip  = '127.0.0.1';
 const datapath = path.join(__dirname, 'data');
+// const dbfile   = path.join(datapath, 'observations.sqlite');
+const serverfile  = path.join(datapath, 'init-servers.json');
+
+// console.log('EX.starting', {
+//   __dirname,
+//   ip,
+//   datapath,
+//   dbfile,
+//   serverfile,
+//   resourcePath: process.resourcesPath,
+//   testPath: path.resolve(process.resourcesPath,  'app/resources/express/data/database.db3')
+// });
+
 
 class App {
 
@@ -33,32 +44,70 @@ class App {
     this.middleware();
     this.errorHandlerMdw();
 
-    this.loadData();
-    this.activate()
+    process.on('message', (msg) => {
+
+      console.log('EX.message', msg);
+
+      if (msg.apppath) {
+
+        apppath = msg.apppath;
+        isdev = msg.isdev
+
+        dbfile = isdev
+          ? path.join(apppath, 'app', 'resources', 'express', 'data', 'observations.sqlite')
+          : path.join(apppath, '', 'resources', 'app.asar.unpacked', 'express', 'data', 'observations.sqlite')
+        ;
+
+        this.loadData();
+        this.activate();
+        console.log('EX.starting', {
+          __dirname,
+          apppath,
+          isdev,
+          ip,
+          datapath,
+          dbfile,
+          serverfile,
+          resourcePath: process.resourcesPath,
+          testPath: path.resolve(String(process.resourcesPath),  'app/resources/express/data/database.db3')
+        });
+
+      }
+    });
+
 
   }
 
   loadData () {
-    const initServers = JSON.parse(fs.readFileSync(path.join(datapath, 'init-servers.json'), 'utf8'));
-    console.log('EX.loaded', initServers.length, 'servers');
 
-    let db = new sqlite3.Database(path.join(datapath, 'observations.sqlite'), sqlite3.OPEN_READWRITE, (err) => {
-      if (err) {
-        console.error('EX.DB.error', err.message);
-      } else {
-        console.log('EX.DB.connected');
-      }
-    });
 
-    const sql = `
-      SELECT domain FROM domains LIMIT 3;
-    `;
-    db.each(sql, (err, row) => {
-      if (err) {
-        console.error(err.message);
-      }
-      console.log(row.domain);
-    });
+    try {
+
+      console.log('EX.JSON.trying...', serverfile);
+      const initServers = JSON.parse(fs.readFileSync(serverfile, 'utf8'));
+      console.log('EX.JSON.success', initServers.length, 'servers');
+
+      console.log('TEST', path.resolve(String(process.resourcesPath),  'app/resources/express/data/database.db3'));
+      console.log('EX.DB.trying...', dbfile);
+      let db = new sqlite3.Database(dbfile, sqlite3.OPEN_READWRITE, (err) => {
+        if (err) {
+          console.error('EX.DB.error', err.message);
+        } else {
+          console.log('EX.DB.success');
+        }
+      });
+
+      db.each('SELECT domain FROM domains LIMIT 3;', (err, row) => {
+        err && console.error(err.message);
+        console.log(row.domain);
+      });
+
+
+    } catch (err) {
+      console.error('EX.DB.loadData.error', err);
+
+    }
+
 
   }
 

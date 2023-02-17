@@ -1,5 +1,6 @@
 {
   "asar": true,
+  "asarUnpack": "app/resources/express/data/observations.sqlite",
   "directories": {
     "output": "release/"
   },
@@ -15,10 +16,7 @@
     }
   ],
   "extraResources": [
-    {
-      "from": "./app/resources",
-      "filter": ["**/*"]
-    }
+    "app/resources/express/data"
   ],
   "win": {
     "icon": "dist/assets/icons",

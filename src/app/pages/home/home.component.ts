@@ -9,7 +9,7 @@ import { Observable, interval } from 'rxjs';
 import { switchMap, map, take } from 'rxjs/operators';
 import SpriteText from 'three-spritetext';
 
-import servers from './../../assets/json/servers.json';
+import servers from '../../../assets/json/servers.json';
 
 
 // https://github.com/vasturiano/3d-force-graph#api-reference
