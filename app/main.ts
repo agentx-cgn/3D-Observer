@@ -1,7 +1,10 @@
 import { app, BrowserWindow, screen, Menu, MenuItem, MessageChannelMain } from 'electron';
 import * as path from 'path';
 import * as fs from 'fs';
-
+import Bus from './bus';
+import { IConfig, IMessage, TPayload } from './interfaces';
+import { ChildProcess } from 'node:child_process';
+import config from './config';
 const { fork } = require("child_process");
 
 // https://github.com/mslipper/electron-child-process-playground/tree/master/src
@@ -11,38 +14,31 @@ const log  = require('electron-log');
 Object.assign(console, log.functions);
 log.transports.file.level = 'silly';
 
-let win: BrowserWindow = null;
-let port: number;
-
-const
-  args = process.argv.slice(1),
-  serve = args.some(val => val === '--serve'),
-  childController = new AbortController(),
-  isDevelopment = process.env.NODE_ENV !== 'production',
-  thisYear = new Date().getFullYear(),
-  isAsar = require.main.filename.indexOf('app.asar') === -1,
-  expressfile = `${__dirname}/resources/express/server`
+let
+  win: BrowserWindow = null,
+  busExp: Bus = null,
+  busWin: Bus = null,
+  childController = new AbortController()
 ;
+// let port: number;
+
+// const
+//   args = process.argv.slice(1),
+//   serve = args.some(val => val === '--serve'),
+//   childController = new AbortController(),
+//   isDevelopment = process.env.NODE_ENV !== 'production',
+//   thisYear = new Date().getFullYear(),
+//   isAsar = require.main.filename.indexOf('app.asar') === -1,
+//   expressfile = `${__dirname}/resources/express/server`
+// ;
 
 // https://www.appsloveworld.com/bestanswer/sqlite/53/cannot-find-sqlite-file-in-production-mode-electron-angular
 
   console.log()
   console.log('## # # # # # # # # # # ')
-  console.log('EC.starting...', {
-    __dirname,
-    __filename,
-    apppath: app.getAppPath(),
-    ispacked: app.isPackaged,
-    args,
-    serve,
-    isAsar,
-    expressfile,
-    isDevelopment,
-    NODE_ENV: process.env.NODE_ENV,
-    resourcesPath: process.resourcesPath,
-  });
+  console.log('EC.starting...', config);
 
-  launch();
+  launchApp();
 
 
 
@@ -56,7 +52,7 @@ const
 
 
 
-async function createServer(): Promise<any> {
+async function launchServer(): Promise<any> {
 
   console.log()
 
@@ -64,18 +60,39 @@ async function createServer(): Promise<any> {
 
   return new Promise<any>(function(resolve, reject) {
 
-    const child = fork(expressfile, ['child'], { signal });
+    const child: ChildProcess = fork(config.fileExpress, ['child'], { signal });
 
-    child.send({ apppath: app.getAppPath(), isdev: serve });
+    busExp = new Bus('electron', 'process', child);
+
+    busExp.on('port', (msg: IMessage<TPayload>) => {
+      if (msg.sender === 'express') {
+        resolve(msg.payload);
+      }
+    });
+
+    busExp.emit({
+      topic:    'config',
+      receiver: 'express',
+      payload: config
+    });
+
+    // bus.on('port', (msg: IMessage<TPayload>) => {
+    //   if (msg.sender === 'express') {
+    //     resolve(msg.payload)
+    //   }
+    // })
+
+
+    // // child.send({ apppath: app.getAppPath(), isdev: serve });
 
     // probably Abort Error
     child.on('message', (data) => {
-      console.log('EC.onMessage', data)
+      console.log('EC.child.onMessage', data)
       resolve(data);
     });
 
     child.on('error', (err) => {
-      console.log('EC.onError', Object.keys(err));
+      console.log('EC.child.onError', Object.keys(err));
       reject(err);
     });
 
@@ -112,7 +129,7 @@ function activateWindow() {
   // https://www.electronjs.org/docs/latest/api/web-contents
 
   // Show DevTools, still always
-  isDevelopment && win.webContents.openDevTools();
+  config.isDev && win.webContents.openDevTools();
   win.webContents.on('devtools-opened', () => {
     win.focus();
     setImmediate(() => win.focus());
@@ -161,7 +178,7 @@ function createWindow(size): BrowserWindow {
   // start listening
   activateWindow();
 
-  if (serve) {
+  if (config.serve) {
     const debug = require('electron-debug');
     debug();
     require('electron-reloader')(module);
@@ -255,7 +272,7 @@ function createChannel(config) {
 
 }
 
-function launch () {
+function launchApp () {
 
   try {
 
@@ -267,7 +284,7 @@ function launch () {
       applicationVersion: app.getVersion(),
       version: app.getVersion(),
       website: 'https://github.com',
-      copyright: `© 2022-${thisYear} vion11@gmail.com`
+      copyright: `© 2022-${config.thisYear} vion11@gmail.com`
     });
 
     // This method will be called when Electron has finished
@@ -281,11 +298,10 @@ function launch () {
       const { workAreaSize, rotation, scaleFactor } = screen.getPrimaryDisplay();
 
       console.log('')
-
       console.log('EC.screen', { size: workAreaSize, rotation, scaleFactor })
 
       setApplicationMenu();
-      const response  = await createServer();
+      const response  = await launchServer();
       const port1 = createChannel(response);
 
       createWindow(workAreaSize);

@@ -1,16 +1,28 @@
+/* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable space-before-function-paren */
 import { Injectable } from '@angular/core';
 
-// If you import a module but never use any of the imported values other than as TypeScript types,
-// the resulting javascript file will look as if you never imported the module at all.
 import { ipcRenderer, webFrame } from 'electron';
 import * as childProcess from 'child_process';
 import * as fs from 'fs';
+import { BusService } from './bus.service';
+import { TemplateMiddle } from 'typescript/lib/tsserverlibrary';
+import { IConfig, IMessage } from '../../../app/interfaces';
+import Bus from '../../../app/bus';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ElectronService {
+
+  public config: IConfig = {
+    api: {
+      root: '',
+      port: NaN,
+      ip: '',
+      protocol: '',
+    }
+  };
 
   public childProcess: typeof childProcess;
   public ipcRenderer:  typeof ipcRenderer;
@@ -18,7 +30,11 @@ export class ElectronService {
   private fs:           typeof fs;
   private webFrame:     typeof webFrame;
 
-  constructor () {
+  private bus: Bus;
+
+  constructor (
+    private readonly busService: BusService,
+  ) {
 
     console.log('ElectronService', this.isElectron ? 'Electron found' : 'Electron not found');
 
@@ -34,35 +50,74 @@ export class ElectronService {
 
         const [ port ] = event.ports;
 
+        // init bus on first message
+        this.bus = this.busService.create('browser', 'mainport', port);
+
         // Once we have the port, we can communicate directly with the main process.
-        port.onmessage = (e: any) => {
+        port.onmessage = (msg: IMessage<any>) => {
 
-          if ( e.data.ping) {
+          this.bus.emit(msg);
 
-            console.log('ElectronService', 'ping message', e.data);
-            port.postMessage({ ping: e.data.ping * 2 });
+          this.bus.on('ping', (msg: IMessage<number>) => {
+            this.bus.emit({ ...msg,
+              receiver: msg.sender,
+              payload:  msg.payload * 2
+            });
+          });
 
-          } else if (e.data.config) {
+          this.bus.on('config', (msg: IMessage<IConfig>) => {
 
-            const config = e.data.config;
-            const apiurl = `http://127.0.0.1:${config.port}/`;
-            console.log('ElectronService', 'config message', e.data);
+            const cfg = Object.assign(this.config, msg.payload);
+            cfg.api.root = `${cfg.api.protocol}://${cfg.api.ip}:${cfg.api.port}/`;
 
-            fetch(apiurl)
-              .then(r => r.json())
-              .then( json => {
-                console.log('ElectronService', json);
-              })
-              .catch(err => {
-                console.warn('ElectronService.faild', apiurl, err);
-              })
-            ;
+            if (msg.payload.api.port) {
 
-          } else {
-            console.log('ElectronService', 'unknown message', e.data);
+              fetch(cfg.api.root)
+                .then(r => r.json())
+                .then( json => {
+                  console.log('ElectronService', json);
+                })
+                .catch(err => {
+                  console.warn('ElectronService.failed', cfg.api.root, err);
+                })
+              ;
 
-          }
+            }
+
+          });
+
+          // if ( e.data.ping) {
+
+          //   console.log('ElectronService', 'ping message', e.data);
+          //   port.postMessage({ ping: e.data.ping * 2 });
+
+          // } else if (e.data.config) {
+
+          //   const config = e.data.config;
+          //   const apiurl = `http://127.0.0.1:${config.port}/`;
+          //   console.log('ElectronService', 'config message', e.data);
+
+          //   fetch(apiurl)
+          //     .then(r => r.json())
+          //     .then( json => {
+          //       console.log('ElectronService', json);
+          //     })
+          //     .catch(err => {
+          //       console.warn('ElectronService.failed', apiurl, err);
+          //     })
+          //   ;
+
+          // } else {
+          //   console.log('ElectronService', 'unknown message', e.data);
+
+          // }
+
         };
+
+
+
+
+
 
       }
     };
