@@ -17,7 +17,7 @@ export class AppComponent {
 
     this.translate.setDefaultLang('en');
 
-    console.log('environment', environment);
+    console.log('environment', JSON.stringify(environment));
 
   }
 

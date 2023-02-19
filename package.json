@@ -16,7 +16,7 @@
     "start": "npm-run-all -p electron:serve ng:serve",
     "start:electron": "npm run electron:serve-tsc && electron . --serve",
     "ng:serve-old": "ng serve -c web -o",
-    "ng:serve": "ng serve",
+    "ng:serve": "ng serve -c web",
     "build": "npm run electron:serve-tsc && ng build --base-href ./",
     "build:dev": "npm run build -- -c dev",
     "build:prod": "npm run build -- -c production",
@@ -47,7 +47,6 @@
     "3d-force-graph": "1.71.1",
     "rxjs": "7.8.0",
     "three": "0.149.0",
-    "three-spritetext": "1.7.1",
     "tslib": "^2.4.0",
     "zone.js": "~0.11.8"
   },

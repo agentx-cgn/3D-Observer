@@ -20,25 +20,14 @@ let
   busWin: Bus = null,
   childController = new AbortController()
 ;
-// let port: number;
-
-// const
-//   args = process.argv.slice(1),
-//   serve = args.some(val => val === '--serve'),
-//   childController = new AbortController(),
-//   isDevelopment = process.env.NODE_ENV !== 'production',
-//   thisYear = new Date().getFullYear(),
-//   isAsar = require.main.filename.indexOf('app.asar') === -1,
-//   expressfile = `${__dirname}/resources/express/server`
-// ;
 
 // https://www.appsloveworld.com/bestanswer/sqlite/53/cannot-find-sqlite-file-in-production-mode-electron-angular
 
-console.log()
-console.log()
-console.log()
-console.log()
-console.log()
+console.log('#')
+console.log('#')
+console.log('#')
+console.log('#')
+console.log('#')
 console.log('## # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # ')
 console.log('EC.starting...', config);
 
@@ -55,15 +44,14 @@ const promise = launchApp()
   // now waiting for window
   .then( payload => {
 
-    console.log('EC.config', payload);
-    console.log('EC.trying', 'launchBrowser');
+    console.log('EC.api', payload.api);
 
     // update config w/ api
     Object.assign(config, payload);
 
-    if (process.platform === 'darwin') {
-      setApplicationMenu();
-    }
+    // if (process.platform === 'darwin') {
+    //   setApplicationMenu();
+    // }
 
     return launchBrowser();
 
@@ -74,17 +62,23 @@ const promise = launchApp()
     return createBrowserChannel(win);
   })
 
-  // waiting for comm established
-  .then( response => {
-    console.log('EX.Browser.reponse', response);
-    return activateWindow();
-  })
+  // setup some minor events
+  // .then( response => {
+  //   return activateWindow();
+  // })
 
   // wait for finish // did-finish-load
-  .then( success => {
+  .then( response => {
 
-    console.log('EC.loading.done', success);
+    // console.log('EX.Browser.reponse', response);
+
+    console.log('EC.loading.done', response);
     console.log('####################################');
+    console.log('#')
+    console.log('#')
+    console.log('#')
+    console.log('#')
+    console.log('#')
 
   })
 
@@ -93,21 +87,20 @@ const promise = launchApp()
 ;
 
 
-function launchExpress(): Promise<any> {
+function launchExpress(): Promise<IConfig> {
 
   console.log()
 
   const { signal } = childController;
 
-  return new Promise<any>(function(resolve, reject) {
+  return new Promise<IConfig>(function(resolve, reject) {
 
     const child: ChildProcess = fork(config.fileExpress, ['child'], { signal });
 
     busExp = new Bus('electron', 'process', child);
 
     // expect initial config w/ port back from express
-    busExp.on('config', (msg: IMessage<TPayload>) => {
-      // console.log('EC.msg.onConfig')
+    busExp.on('config', (msg: IMessage<IConfig>) => {
       resolve(msg.payload);
     });
 
@@ -117,8 +110,6 @@ function launchExpress(): Promise<any> {
       receiver: 'express',
       payload:   config
     });
-
-
 
     child.on('error', (err) => {
       console.log('EC.child.onError', Object.keys(err));
@@ -174,20 +165,19 @@ function activateWindow() {
       setImmediate(() => win.focus());
     });
 
-    win.webContents.on('console-message', (...args) => {
+    // win.webContents.on('console-message', (...args) => {
 
-      let msg = args[2];
+    //   let msg = args[2];
 
-      msg = (
-        msg.includes('allowRunningInsecureContent')      ? '' :
-        msg.includes('Insecure Content-Security-Policy') ? '' :
-        msg.trim().slice(0, 40)
-      );
+    //   msg = (
+    //     msg.includes('allowRunningInsecureContent')      ? '' :
+    //     msg.includes('Insecure Content-Security-Policy') ? '' :
+    //     msg.trim().slice(0, 40)
+    //   );
 
-      // msg && console.log('WIN', args[2].split('›').slice(-1)[0])
-      // console.log('WIN', args[2].slice(0, 40));
+    //   // console.log('WIN', args[2].slice(0, 40));
 
-    });
+    // });
 
     // Emitted when the window is closed.
     win.on('closed', () => {
@@ -201,8 +191,7 @@ function activateWindow() {
 
     resolve(true);
 
-
-  })
+  });
 
 }
 
@@ -214,7 +203,6 @@ function loadIndexHtml (win:BrowserWindow) {
     const debug = require('electron-debug');
     debug();
     require('electron-reloader')(module);
-    // win.loadURL('https://localhost:4200');
     href = 'https://localhost:4200';
 
   } else {
@@ -262,42 +250,16 @@ function launchBrowser(): Promise<BrowserWindow> {
       },
     });
 
-
     win.webContents.on('did-finish-load', () => {
       console.log('EC.webContents', 'did-finish-load');
       resolve(win);
     });
 
+    activateWindow();
+
     loadIndexHtml(win);
 
   });
-
-
-
-
-
-  // start listening
-  // activateWindow();
-
-  // if (config.serve) {
-  //   const debug = require('electron-debug');
-  //   debug();
-  //   require('electron-reloader')(module);
-  //   win.loadURL('https://localhost:4200');
-
-  // } else {
-  //   // Path when running electron executable
-  //   let pathIndex = './index.html';
-
-  //   // Path when running electron in local folder
-  //   if (fs.existsSync(path.join(__dirname, '../dist/index.html'))) {
-  //     pathIndex = '../dist/index.html';
-  //   }
-
-  //   const url = new URL(path.join('file:', __dirname, pathIndex));
-  //   win.loadURL(url.href);
-
-  // }
 
 }
 
@@ -349,35 +311,23 @@ function createBrowserChannel(win: BrowserWindow) {
 
     busWin = new Bus('electron', 'mainport', port2);
 
+    // We can also receive messages from the main world of the renderer.
     // wait for browser bus ready
     busWin.on('ack', (msg) => {
-      console.log('EC.createBrowserChannel.ack', msg);
+      // console.log('EC.createBrowserChannel.ack', msg);
       resolve(msg);
     });
 
+    // It's OK to send a message on the channel before the other end has
+    // registered a listener. Messages will be queued until a listener is registered.
     busWin.emit({
       topic: 'config',
       receiver: 'browser',
       payload: config,
     });
 
+    // init handshake
     win.webContents.postMessage('main-world-port', null, [port1]);
-
-    // It's OK to send a message on the channel before the other end has
-    // registered a listener. Messages will be queued until a listener is
-    // registered.
-    // port2.postMessage({ ping: 21 })
-    // port2.postMessage({ config })
-
-    // // We can also receive messages from the main world of the renderer.
-    // port2.on('message', (event) => {
-    //   console.log('EC.Browser.message', event.data)
-    // })
-    // port2.start()
-
-
-    // // TODO: solve after comm established
-    // resolve(port1);
 
   });
 
@@ -403,28 +353,8 @@ function launchApp () {
       // This method will be called when Electron has finished
       // initialization and is ready to create browser windows.
       // Some APIs can only be used after this event occurs.
-      // Added 400 ms to fix the black background issue while using transparent window. More detais at https://github.com/electron/electron/issues/15947
-      // app.on('ready', () => setTimeout(launchBrowser, 400));
       app.on('ready', async (event: Electron.Event, launchInfo: Record<string, any> | Electron.NotificationResponse) => {
-
         resolve([event, launchInfo]);
-
-        // { width: 2560, height: 1415 }
-        // const { workAreaSize, rotation, scaleFactor } = screen.getPrimaryDisplay();
-
-        // console.log('')
-        // console.log('EC.screen', { size: workAreaSize, rotation, scaleFactor })
-
-        // setApplicationMenu();
-        // const response  = await launchExpress();
-        // const port1 = createBrowserChannel(response);
-
-        // launchBrowser();
-
-        // The preload script will receive this IPC message and transfer the port
-        // over to the main world.
-        // win.webContents.postMessage('main-world-port', null, [port1])
-
       });
 
       // Quit when all windows are closed.
