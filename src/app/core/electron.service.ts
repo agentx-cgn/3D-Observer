@@ -1,14 +1,8 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable space-before-function-paren */
 import { Injectable } from '@angular/core';
-
-// import { ipcRenderer, webFrame } from 'electron';
-// import * as childProcess from 'child_process';
-// import * as fs from 'fs';
-
 import { IConfig, IMessage } from '../../../app/interfaces';
 import Bus from '../../../app/bus';
-
 import { BusService } from './bus.service';
 
 @Injectable({
@@ -17,20 +11,13 @@ import { BusService } from './bus.service';
 export class ElectronService {
 
   public config: null | IConfig = null;
-
-  // public childProcess: typeof childProcess;
-  // public ipcRenderer:  typeof ipcRenderer;
-
-  // private fs:           typeof fs;
-  // private webFrame:     typeof webFrame;
-
   private bus: Bus;
 
   constructor (
     private readonly busService: BusService,
   ) {
 
-    console.log('ElectronService', this.isElectron ? 'Electron found' : 'Electron not found');
+    console.log('ElectronService', 'Electron', this.isElectron ? 'found' : 'not found');
 
     this.init();
 
@@ -47,10 +34,12 @@ export class ElectronService {
         // init bus on first message
         this.bus = this.busService.create('browser', 'clientport', port);
 
+        // config with api info, should be already in pipeline
         this.bus.on('config', (msg: IMessage<IConfig>) => {
 
           this.config = Object.assign({}, msg.payload);
 
+          // try out api...
           fetch(this.config.api.root)
             .then(r => r.json())
             .then( json => {

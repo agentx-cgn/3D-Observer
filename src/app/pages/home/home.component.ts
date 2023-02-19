@@ -7,7 +7,7 @@ import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angula
 import { Router } from '@angular/router';
 import { Observable, interval } from 'rxjs';
 import { switchMap, map, take } from 'rxjs/operators';
-import SpriteText from 'three-spritetext';
+// import SpriteText from 'three-spritetext';
 
 import servers from '../../../assets/json/servers.json';
 

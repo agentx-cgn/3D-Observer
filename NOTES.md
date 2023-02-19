@@ -21,3 +21,24 @@
 
 
 
+  "asarUnpack": "app/resources/express/data/observations.sqlite",
+
+  "extraResources": [
+    "app/resources/express/data"
+  ],
+
+      "sequelize": "6.28.0",
+      "node-fetch": "3.3.0",
+
+
+## Build Console:
+
+19:19:48.590 › ElectronService Electron found
+19:19:48.591 › environment {"production":true,"environment":"PROD"}
+19:19:48.599 › Home.three 149
+19:19:48.722 › ElectronService main-world-port MessagePort
+19:19:48.722 › BUS.constructor browser clientport
+19:19:48.723 › BUS.connector.on browser config
+19:19:48.723 › BUS.onTap browser config electron => browser
+19:19:48.733 › ElectronService.fetched {"express":"API works on 127.0.0.1:54634"}
+19:19:48.733 › BUS.emit.connector browser => electron ack
