@@ -34,25 +34,66 @@ let
 
 // https://www.appsloveworld.com/bestanswer/sqlite/53/cannot-find-sqlite-file-in-production-mode-electron-angular
 
-  console.log()
-  console.log('## # # # # # # # # # # ')
-  console.log('EC.starting...', config);
+console.log()
+console.log()
+console.log()
+console.log()
+console.log()
+console.log('## # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # ')
+console.log('EC.starting...', config);
 
-  launchApp();
+// (event: Electron.Event, launchInfo: Record<string, any> | Electron.NotificationResponse)
+
+// waiting for app.ready
+const promise = launchApp()
+
+// now waiting for config w/ port from express
+  .then( ([event, launchInfo]) => {
+    return launchExpress();
+  })
+
+  // now waiting for window
+  .then( payload => {
+
+    console.log('EC.config', payload);
+    console.log('EC.trying', 'launchBrowser');
+
+    // update config w/ api
+    Object.assign(config, payload);
+
+    if (process.platform === 'darwin') {
+      setApplicationMenu();
+    }
+
+    return launchBrowser();
+
+  })
+
+  // waiting for comm established
+  .then(win => {
+    return createBrowserChannel(win);
+  })
+
+  // waiting for comm established
+  .then( response => {
+    console.log('EX.Browser.reponse', response);
+    return activateWindow();
+  })
+
+  // wait for finish // did-finish-load
+  .then( success => {
+
+    console.log('EC.loading.done', success);
+    console.log('####################################');
+
+  })
+
+  // TODO proper catch
+
+;
 
 
-
-  // log.transports.file.resolvePathFn = () => path.join(APP_DATA, 'logs/main.log');
-  // log.transports.file.resolvePathFn = () => __dirname + "/3D-Observer.main.log";
-
-  // (async () => {
-  //   port = await getPort({port: 3000});
-
-  // })();
-
-
-
-async function launchServer(): Promise<any> {
+function launchExpress(): Promise<any> {
 
   console.log()
 
@@ -64,42 +105,37 @@ async function launchServer(): Promise<any> {
 
     busExp = new Bus('electron', 'process', child);
 
-    busExp.on('port', (msg: IMessage<TPayload>) => {
-      if (msg.sender === 'express') {
-        resolve(msg.payload);
-      }
+    // expect initial config w/ port back from express
+    busExp.on('config', (msg: IMessage<TPayload>) => {
+      // console.log('EC.msg.onConfig')
+      resolve(msg.payload);
     });
 
+    // send initial config
     busExp.emit({
       topic:    'config',
       receiver: 'express',
-      payload: config
+      payload:   config
     });
 
-    // bus.on('port', (msg: IMessage<TPayload>) => {
-    //   if (msg.sender === 'express') {
-    //     resolve(msg.payload)
-    //   }
-    // })
 
-
-    // // child.send({ apppath: app.getAppPath(), isdev: serve });
-
-    // probably Abort Error
-    child.on('message', (data) => {
-      console.log('EC.child.onMessage', data)
-      resolve(data);
-    });
 
     child.on('error', (err) => {
       console.log('EC.child.onError', Object.keys(err));
       reject(err);
     });
 
-    child.on('close', (code) => console.log('EC.onClose', code));
+    child.on('close', (code) => console.log('EC.child.onClose', code));
 
   });
 
+  // // child.send({ apppath: app.getAppPath(), isdev: serve });
+
+  // probably Abort Error
+  // child.on('message', (data) => {
+  //   console.log('EC.child.onMessage', data)
+  //   resolve(data);
+  // });
 
   // console.log('EC.trying', urlexpress);
   // http.get(urlexpress, res => {
@@ -126,65 +162,63 @@ async function launchServer(): Promise<any> {
 
 function activateWindow() {
 
-  // https://www.electronjs.org/docs/latest/api/web-contents
+  return new Promise( (resolve, reject) => {
 
-  // Show DevTools, still always
-  config.isDev && win.webContents.openDevTools();
-  win.webContents.on('devtools-opened', () => {
-    win.focus();
-    setImmediate(() => win.focus());
-  });
+    // https://www.electronjs.org/docs/latest/api/web-contents
 
-  win.webContents.on('console-message', (...args) => {
+    // Show DevTools, still always
+    config.isDev && win.webContents.openDevTools();
 
-    let msg = args[2];
+    win.webContents.on('devtools-opened', () => {
+      win.focus();
+      setImmediate(() => win.focus());
+    });
 
-    msg = (
-      msg.includes('allowRunningInsecureContent')      ? '' :
-      msg.includes('Insecure Content-Security-Policy') ? '' :
-      msg.trim().slice(0, 40)
-    );
+    win.webContents.on('console-message', (...args) => {
 
-    // msg && console.log('WIN', args[2].split('›').slice(-1)[0])
-    // console.log('WIN', args[2].slice(0, 40));
+      let msg = args[2];
 
-  });
+      msg = (
+        msg.includes('allowRunningInsecureContent')      ? '' :
+        msg.includes('Insecure Content-Security-Policy') ? '' :
+        msg.trim().slice(0, 40)
+      );
 
-  win.webContents.on('did-finish-load', () => {
-    console.log('EC.webContents', 'did-finish-load');
-    // win.webContents.send('ping', 'whoooooooh!')
+      // msg && console.log('WIN', args[2].split('›').slice(-1)[0])
+      // console.log('WIN', args[2].slice(0, 40));
+
+    });
+
+    // Emitted when the window is closed.
+    win.on('closed', () => {
+
+      // Dereference the window object, usually you would store window
+      // in an array if your app supports multi windows, this is the time
+      // when you should delete the corresponding element.
+      win = null;
+
+    });
+
+    resolve(true);
+
+
   })
 
 }
 
-function createWindow(size): BrowserWindow {
+function loadIndexHtml (win:BrowserWindow) {
 
-  // Create the browser window.
-  win = new BrowserWindow({
-    x: 32,
-    y: 32,
-    width: ~~(size.width * 0.9),
-    height: ~~(size.height * 0.7),
-    webPreferences: {
-      devTools: true,
-      nodeIntegration: true,
-      // allowRunningInsecureContent: (serve),
-      allowRunningInsecureContent: true,
-      contextIsolation: false,  // false if you want to run e2e test with Spectron
-      preload: path.join(__dirname, 'preload.js'),
-    },
-  });
-
-  // start listening
-  activateWindow();
+  let href = '';
 
   if (config.serve) {
     const debug = require('electron-debug');
     debug();
     require('electron-reloader')(module);
-    win.loadURL('https://localhost:4200');
+    // win.loadURL('https://localhost:4200');
+    href = 'https://localhost:4200';
 
   } else {
+
     // Path when running electron executable
     let pathIndex = './index.html';
 
@@ -194,35 +228,89 @@ function createWindow(size): BrowserWindow {
     }
 
     const url = new URL(path.join('file:', __dirname, pathIndex));
-    win.loadURL(url.href);
+    href = url.href
 
   }
 
+  console.log('EC.loadIndexHtml', href);
+  win.loadURL(href);
 
 
-  // Emitted when the window is closed.
-  win.on('closed', () => {
+}
 
-    // Dereference the window object, usually you would store window
-    // in an array if your app supports multi windows, this is the time
-    // when you should delete the corresponding element.
-    win = null;
+function launchBrowser(): Promise<BrowserWindow> {
+
+  return new Promise( (resolve, reject) => {
+
+    const { workAreaSize, rotation, scaleFactor } = screen.getPrimaryDisplay();
+
+    config.screen = { workAreaSize, rotation, scaleFactor };
+
+    // Create the browser window.
+    win = new BrowserWindow({
+      x: 32,
+      y: 32,
+      width:  ~~(workAreaSize.width * 0.9),
+      height: ~~(workAreaSize.height * 0.7),
+      webPreferences: {
+        devTools: true,
+        nodeIntegration: true,
+        // allowRunningInsecureContent: (serve),
+        allowRunningInsecureContent: true,
+        contextIsolation: false,  // false if you want to run e2e test with Spectron
+        preload: path.join(__dirname, config.filePreload),
+      },
+    });
+
+
+    win.webContents.on('did-finish-load', () => {
+      console.log('EC.webContents', 'did-finish-load');
+      resolve(win);
+    });
+
+    loadIndexHtml(win);
 
   });
 
-  return win;
+
+
+
+
+  // start listening
+  // activateWindow();
+
+  // if (config.serve) {
+  //   const debug = require('electron-debug');
+  //   debug();
+  //   require('electron-reloader')(module);
+  //   win.loadURL('https://localhost:4200');
+
+  // } else {
+  //   // Path when running electron executable
+  //   let pathIndex = './index.html';
+
+  //   // Path when running electron in local folder
+  //   if (fs.existsSync(path.join(__dirname, '../dist/index.html'))) {
+  //     pathIndex = '../dist/index.html';
+  //   }
+
+  //   const url = new URL(path.join('file:', __dirname, pathIndex));
+  //   win.loadURL(url.href);
+
+  // }
 
 }
 
 function setApplicationMenu() {
 
-  if (process.platform !== 'darwin') {
-    return;
-  }
+  // if (process.platform !== 'darwin') {
+  //   return;
+  // }
 
   // hide Help menu
   const menu = Menu.getApplicationMenu();
   let viewMenu: MenuItem | undefined;
+
   menu?.items.forEach(item => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
@@ -236,6 +324,7 @@ function setApplicationMenu() {
       viewMenu = item;
     }
   });
+
   // hide Reload and Force Reload menu items
   viewMenu?.submenu?.items.forEach(item => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -245,100 +334,126 @@ function setApplicationMenu() {
       item.enabled = false;
     }
   });
+
   // console.log('EC.Menu', menu);
   // Menu.setApplicationMenu(menu);
+
 }
 
-function createChannel(config) {
+function createBrowserChannel(win: BrowserWindow) {
 
-  // We'll be sending one end of this channel to the main world of the
-  // context-isolated page.
-  const { port1, port2 } = new MessageChannelMain()
+  return new Promise( (resolve) => {
 
-  // It's OK to send a message on the channel before the other end has
-  // registered a listener. Messages will be queued until a listener is
-  // registered.
-  port2.postMessage({ ping: 21 })
-  port2.postMessage({ config })
+    // We'll be sending one end of this channel to the main world of the context-isolated page.
+    const { port1, port2 } = new MessageChannelMain()
 
-  // We can also receive messages from the main world of the renderer.
-  port2.on('message', (event) => {
-    console.log('EC.Browser.message', event.data)
-  })
-  port2.start()
+    busWin = new Bus('electron', 'mainport', port2);
 
-  return port1;
+    // wait for browser bus ready
+    busWin.on('ack', (msg) => {
+      console.log('EC.createBrowserChannel.ack', msg);
+      resolve(msg);
+    });
 
+    busWin.emit({
+      topic: 'config',
+      receiver: 'browser',
+      payload: config,
+    });
+
+    win.webContents.postMessage('main-world-port', null, [port1]);
+
+    // It's OK to send a message on the channel before the other end has
+    // registered a listener. Messages will be queued until a listener is
+    // registered.
+    // port2.postMessage({ ping: 21 })
+    // port2.postMessage({ config })
+
+    // // We can also receive messages from the main world of the renderer.
+    // port2.on('message', (event) => {
+    //   console.log('EC.Browser.message', event.data)
+    // })
+    // port2.start()
+
+
+    // // TODO: solve after comm established
+    // resolve(port1);
+
+  });
 
 }
 
 function launchApp () {
 
-  try {
+  return new Promise( (resolve, reject) => {
 
-    // TODO: disable in PROD
-    app.commandLine.appendSwitch('ignore-certificate-errors', 'true');
+    try {
 
-    app.setAboutPanelOptions({
-      applicationName: 'Fediverse Explorer',
-      applicationVersion: app.getVersion(),
-      version: app.getVersion(),
-      website: 'https://github.com',
-      copyright: `© 2022-${config.thisYear} vion11@gmail.com`
-    });
+      // TODO: disable in PROD
+      app.commandLine.appendSwitch('ignore-certificate-errors', 'true');
 
-    // This method will be called when Electron has finished
-    // initialization and is ready to create browser windows.
-    // Some APIs can only be used after this event occurs.
-    // Added 400 ms to fix the black background issue while using transparent window. More detais at https://github.com/electron/electron/issues/15947
-    // app.on('ready', () => setTimeout(createWindow, 400));
-    app.on('ready', async () => {
+      app.setAboutPanelOptions({
+        applicationName: 'Fediverse Explorer',
+        applicationVersion: app.getVersion(),
+        version: app.getVersion(),
+        website: 'https://github.com',
+        copyright: `© 2022-${config.thisYear} vion11@gmail.com`
+      });
 
-      // { width: 2560, height: 1415 }
-      const { workAreaSize, rotation, scaleFactor } = screen.getPrimaryDisplay();
+      // This method will be called when Electron has finished
+      // initialization and is ready to create browser windows.
+      // Some APIs can only be used after this event occurs.
+      // Added 400 ms to fix the black background issue while using transparent window. More detais at https://github.com/electron/electron/issues/15947
+      // app.on('ready', () => setTimeout(launchBrowser, 400));
+      app.on('ready', async (event: Electron.Event, launchInfo: Record<string, any> | Electron.NotificationResponse) => {
 
-      console.log('')
-      console.log('EC.screen', { size: workAreaSize, rotation, scaleFactor })
+        resolve([event, launchInfo]);
 
-      setApplicationMenu();
-      const response  = await launchServer();
-      const port1 = createChannel(response);
+        // { width: 2560, height: 1415 }
+        // const { workAreaSize, rotation, scaleFactor } = screen.getPrimaryDisplay();
 
-      createWindow(workAreaSize);
+        // console.log('')
+        // console.log('EC.screen', { size: workAreaSize, rotation, scaleFactor })
 
-      // The preload script will receive this IPC message and transfer the port
-      // over to the main world.
-      win.webContents.postMessage('main-world-port', null, [port1])
+        // setApplicationMenu();
+        // const response  = await launchExpress();
+        // const port1 = createBrowserChannel(response);
 
-    });
+        // launchBrowser();
 
-    // Quit when all windows are closed.
-    app.on('window-all-closed', () => {
+        // The preload script will receive this IPC message and transfer the port
+        // over to the main world.
+        // win.webContents.postMessage('main-world-port', null, [port1])
 
-      // Stops the child/express process
-      childController.abort();
+      });
 
-      // On OS X it is common for applications and their menu bar
-      // to stay active until the user quits explicitly with Cmd + Q
-      if (process.platform !== 'darwin') {
-        app.quit();
-      }
+      // Quit when all windows are closed.
+      app.on('window-all-closed', () => {
 
-    });
+        // Stops the child/express process
+        childController.abort();
 
-    app.on('activate', () => {
-      // On OS X it's common to re-create a window in the app when the
-      // dock icon is clicked and there are no other windows open.
-      if (win === null) {
-        const size = screen.getPrimaryDisplay().workAreaSize;
-        createWindow(size);
-      }
-    });
+        // On OS X it is common for applications and their menu bar
+        // to stay active until the user quits explicitly with Cmd + Q
+        if (process.platform !== 'darwin') {
+          app.quit();
+        }
 
-  } catch (e) {
-    // Catch Error
-    // throw e;
-  }
+      });
+
+      app.on('activate', () => {
+        // On OS X it's common to re-create a window in the app when the
+        // dock icon is clicked and there are no other windows open.
+        if (win === null) {
+          launchBrowser();
+        }
+      });
+
+    } catch (err) {
+      reject(err)
+    }
+
+  });
 
 }
 

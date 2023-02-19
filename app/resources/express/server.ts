@@ -31,25 +31,9 @@ const preConfig = {
 }
 
 let
-  config
+  config: null | IConfig = null
 ;
 
-
-// let port = 0, apppath, isdev, dbfile;
-// const ip  = '127.0.0.1';
-// const datapath = path.join(__dirname, 'data');
-// const dbfile   = path.join(datapath, 'observations.sqlite');
-// const serverfile  = path.join(datapath, 'init-servers.json');
-
-
-
-
-// const express     = require('express');
-// const bodyParser  = require('body-parser');
-// const cors        = require('cors')
-// const log         = require('electron-log')
-// const fs          = require('fs');
-// const path        = require('path');
 // const sqlite3     = require('sqlite3').verbose();
 
 class App {
@@ -72,6 +56,8 @@ class App {
 
       const { start, httpStatus, message, previousError, stack } = err;
 
+      console.warn('EX.error', httpStatus, message);
+
       res.status(httpStatus || 406).json({
         status: false,
         code: httpStatus || 406,
@@ -81,54 +67,98 @@ class App {
 
     });
 
+    this.bus = new Bus('express', 'process', process);
+
+    this.bus.on('config', (msg) => {
+
+      config = Object.assign({}, msg.payload, preConfig);
+
+      config.fileDB = config.isDev
+        ? path.join(config.pathApp, 'app', 'resources', 'express', 'data', 'observations.sqlite')
+        : path.join(config.pathApp, '', 'resources', 'app.asar.unpacked', 'express', 'data', 'observations.sqlite')
+      ;
+
+      this.activate().then( (adr: AddressInfo) => {
+
+        config.api.port   = adr.port;
+        config.api.ip     = adr.address;
+        config.api.family = adr.family;
+
+        const api = config.api;
+        config.api.root = `${api.protocol}://${api.ip}:${api.port}/`;
+
+        this.bus.emit({
+          topic:    'config',
+          receiver: 'electron',
+          payload:   config
+        });
+
+      })
+
+    });
+
+
+
 
     // this.middleware();
     // this.errorHandlerMdw();
 
     // wait for first message
-    process.on('message', (msg: any) => {
+    // process.on('message', (msg: any) => {
 
-      console.log('EX.process.message', msg);
+    //   console.log('EX.process.message', msg);
 
-      if (msg.topic === 'config') {
+    //   if (msg.topic === 'config') {
 
-        config = msg.payload;
+    //     config = msg.payload;
 
-        preConfig.fileDB = config.isDev
-          ? path.join(config.pathApp, 'app', 'resources', 'express', 'data', 'observations.sqlite')
-          : path.join(config.pathApp, '', 'resources', 'app.asar.unpacked', 'express', 'data', 'observations.sqlite')
-        ;
+    //     preConfig.fileDB = config.isDev
+    //       ? path.join(config.pathApp, 'app', 'resources', 'express', 'data', 'observations.sqlite')
+    //       : path.join(config.pathApp, '', 'resources', 'app.asar.unpacked', 'express', 'data', 'observations.sqlite')
+    //     ;
 
-        this.activate().then( (adr: AddressInfo) => {
+    //     this.activate().then( (adr: AddressInfo) => {
 
-          preConfig.api.port   = adr.port;
-          preConfig.api.ip     = adr.address;
-          preConfig.api.family = adr.family;
+    //       preConfig.api.port   = adr.port;
+    //       preConfig.api.ip     = adr.address;
+    //       preConfig.api.family = adr.family;
 
-          config = Object.assign(config, preConfig);
+    //       config = Object.assign(config, preConfig);
 
-          // this.bus = new Bus('express', 'process', process);
+    //       // this.bus = new Bus('express', 'process', process);
 
-          console.log('config', config);
-          console.log('-------------------------');
+    //       console.log('EX.config', config);
+    //       console.log('EX.-------------------------');
 
-          // this.bus.emit({
-          //   topic: 'config',
-          //   receiver: 'electron',
-          //   payload: config,
-          // });
+    //       // this.bus.emit({
+    //       //   topic: 'config',
+    //       //   receiver: 'electron',
+    //       //   payload: config,
+    //       // });
 
-          // this.bus.on('config', (msg) => {
-          //   const cfg = msg.config;
-          // });
+    //       // this.bus.on('config', (msg) => {
+    //       //   const cfg = msg.config;
+    //       // });
 
-        });
+    //     });
 
-      }
+    //   }
 
-    });
+    // });
 
   }
+
+  // startListening () {
+
+  //   return new Promise( (resolve, reject) => {
+
+
+  //   })
+
+
+
+  // }
+
 
   loadData () {
 

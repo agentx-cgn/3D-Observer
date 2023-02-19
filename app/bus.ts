@@ -1,102 +1,62 @@
 import { Subject, Subscription, merge } from 'rxjs';
 import { filter, map, tap } from 'rxjs/operators';
-import { IMessage, TPayload, TSender } from './interfaces';
-import { ChildProcess } from 'node:child_process';
+import { IMessage, TBusType, TPayload, TSender } from './interfaces';
+// import { ChildProcess } from 'node:child_process';
+import EventEmitter from 'node:events';
 
 class Bus {
 
-  private messagesExpress$ = new Subject<IMessage<TPayload>>();
-  private messagesBrowser$ = new Subject<IMessage<TPayload>>();
-  private messagesElectron$ = new Subject<IMessage<TPayload>>();
+  // // private messagesExpress$ = new Subject<IMessage<TPayload>>();
+  // // private messagesBrowser$ = new Subject<IMessage<TPayload>>();
+  // private messagesElectron$ = new Subject<IMessage<TPayload>>();
 
-  private childexpress: ChildProcess;
+  // private childexpress: ChildProcess;
 
-  // static fromProcess (process: NodeJS.Process) {
+  // // static fromProcess (process: NodeJS.Process) {
 
-  //   const bus = new Bus();
-  // }
+  // //   const bus = new Bus();
+  // // }
 
   private name: TSender;
-  private messages$ = new Subject<IMessage<any>>();
+  private messages$ = new Subject<IMessage<TPayload>>();
 
-  private connector: NodeJS.Process | Window | MessagePort;
-  private type: 'mainport' | 'process' | 'child';
-  private send: (msg: any) => any;
-  private listen: (msg: any) => any;
+  private connector: NodeJS.Process | EventEmitter | MessagePort | any;
+  private type: TBusType;
 
-  constructor (name: TSender, type, connector) {
+  constructor (name: TSender, type: TBusType, connector) {
 
-    console.log('Bus.constructor', name, type);
-
-    // this.messagesExpress$.subscribe( (msg: IMessage<TPayload>) => {
-    //   this.childexpress.send(msg);
-    // })
+    console.log('BUS.constructor', name, type);
 
     this.name = name;
     this.type = type;
     this.connector = connector;
 
-    this.send = (
-      type === 'mainport' ? connector.postMessage :
-      type === 'child'    ? connector.send :
-      type === 'process'  ? connector.send :
-        null
-
-    );
-
     if (type === 'mainport') {
-      connector.onmessage = (msg:IMessage<any>) => {
-        this.messages$.next(msg);
-      }
+      connector.on('message', (event) => {
+        console.log('BUS.connector.on', this.name, event.data);
+        this.messages$.next(event.data);
+      });
+      connector.start();
+
     } else if (type === 'child' || type === 'process') {
       connector.on('message', (msg) => {
+        console.log('BUS.connector.on', this.name, 'trying next');
         this.messages$.next(msg);
       });
+
+    } else if (type === 'clientport') {
+      connector.onmessage = (event: MessageEvent) => {
+        console.log('BUS.connector.on1', this.name, event.data);
+        this.messages$.next(event.data);
+      };
+
     }
 
   }
 
-  // electron <=> express
-  initExpressChannnel (child: ChildProcess) {
-
-    this.childexpress = child;
-
-    // incoming from express
-    child.on('message', (msg: IMessage<TPayload>) => {
-
-      if (msg.receiver === 'browser') {
-        this.messages$.next(msg);
-      }
-
-      if (msg.receiver === 'express') {
-        this.messagesExpress$.next(msg);
-      }
-
-    });
-
-    // child.on('error', (err) => {
-    //   console.log('EC.Bus.Express.onError', Object.keys(err));
-    // });
-
-    // child.on('close', (code) => {
-    //   console.log('EC.Bus.Express.onClose', Object.keys(code));
-    // });
-
-  }
-
-
-  // electron <=> browser
-  initBrowserChannnel () {}
-
-
-
-  // express <=> electron
-  initElectronChannnel () {}
-
-
   emit (msg: IMessage<TPayload>) {
 
-    console.log('Bus.emit', msg.topic, this.name, '=>', msg.receiver);
+    console.log('BUS.emit', msg.topic, this.name, '=>', msg.receiver);
 
     msg.sender = this.name;
 
@@ -104,56 +64,48 @@ class Bus {
       if (msg.receiver === 'browser') {
         this.messages$.next(msg);
       } else {
-        console.log(this.connector);
-        (this.connector as NodeJS.Process).send(msg);
-        // this.send(msg);
+        console.log('BUS.send.connector', this.name, msg.payload);
+        this.connector.postMessage(msg);
       }
 
     } else if (this.name === 'electron') {
       if (msg.receiver === 'browser') {
+        console.log('BUS.send.connector', this.name, msg.payload);
+        this.connector.postMessage(msg);
+
+      } else {
+        console.log('BUS.send.connector', this.name, msg.payload);
+        (this.connector as NodeJS.Process).send(msg);
+      }
+
+    } else if (this.name === 'express') {
+      if (msg.receiver === 'browser') {
         // this.messages$.next(msg);
       } else {
-        // console.log(this.connector);
+        console.log('BUS.send.connector', this.name, msg.payload);
         (this.connector as NodeJS.Process).send(msg);
-        // this.send(msg);
       }
 
 
-    }
+    } else {
+      console.log('BUS:WTF');
 
-
-
-
-
-    if (msg.receiver === 'browser') {
-      this.messages$.next(msg);
-    }
-
-    if (msg.receiver === 'express') {
-      this.messagesExpress$.next(msg);
     }
 
   }
 
   on(topic: string, action: any): Subscription {
 
-    return merge(
-        this.messagesBrowser$,
-        this.messagesExpress$,
-      )
+    return this.messages$
       .pipe(
         filter( (msg: IMessage<TPayload>) => msg.topic === topic ),
-        map<IMessage<TPayload>, TPayload>( (msg) => msg.payload),
         tap( (msg: any) => {
-          console.log('Bus.on', msg.topic, this.name, '=>', msg.receiver);
+          console.log('BUS.tap', this.name, msg.topic, msg.sender, '=>', msg.receiver);
         })
       )
       .subscribe( action );
 
   }
-
-
-
 
 }
 

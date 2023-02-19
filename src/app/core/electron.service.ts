@@ -5,24 +5,18 @@ import { Injectable } from '@angular/core';
 import { ipcRenderer, webFrame } from 'electron';
 import * as childProcess from 'child_process';
 import * as fs from 'fs';
-import { BusService } from './bus.service';
-import { TemplateMiddle } from 'typescript/lib/tsserverlibrary';
+
 import { IConfig, IMessage } from '../../../app/interfaces';
 import Bus from '../../../app/bus';
+
+import { BusService } from './bus.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ElectronService {
 
-  public config: IConfig = {
-    api: {
-      root: '',
-      port: NaN,
-      ip: '',
-      protocol: '',
-    }
-  };
+  public config: null | IConfig = null;
 
   public childProcess: typeof childProcess;
   public ipcRenderer:  typeof ipcRenderer;
@@ -42,82 +36,112 @@ export class ElectronService {
 
     window.onmessage = (event) => {
 
-      console.log('ElectronService.onmessage', event.data);
+      console.log('ElectronService.onmessage', event.data, event.ports);
 
       // event.source === window means the message is coming from the preload
       // script, as opposed to from an <iframe> or other source.
       if (event.source === window && event.data === 'main-world-port') {
 
-        const [ port ] = event.ports;
+        const [ port ]: [any] = event.ports;
 
-        // init bus on first message
-        this.bus = this.busService.create('browser', 'mainport', port);
-
-        // Once we have the port, we can communicate directly with the main process.
         port.onmessage = (msg: IMessage<any>) => {
-
-          this.bus.emit(msg);
-
-          this.bus.on('ping', (msg: IMessage<number>) => {
-            this.bus.emit({ ...msg,
-              receiver: msg.sender,
-              payload:  msg.payload * 2
-            });
-          });
-
-          this.bus.on('config', (msg: IMessage<IConfig>) => {
-
-            const cfg = Object.assign(this.config, msg.payload);
-            cfg.api.root = `${cfg.api.protocol}://${cfg.api.ip}:${cfg.api.port}/`;
-
-            if (msg.payload.api.port) {
-
-              fetch(cfg.api.root)
-                .then(r => r.json())
-                .then( json => {
-                  console.log('ElectronService', json);
-                })
-                .catch(err => {
-                  console.warn('ElectronService.failed', cfg.api.root, err);
-                })
-              ;
-
-            }
-
-          });
-
-          // if ( e.data.ping) {
-
-          //   console.log('ElectronService', 'ping message', e.data);
-          //   port.postMessage({ ping: e.data.ping * 2 });
-
-          // } else if (e.data.config) {
-
-          //   const config = e.data.config;
-          //   const apiurl = `http://127.0.0.1:${config.port}/`;
-          //   console.log('ElectronService', 'config message', e.data);
-
-          //   fetch(apiurl)
-          //     .then(r => r.json())
-          //     .then( json => {
-          //       console.log('ElectronService', json);
-          //     })
-          //     .catch(err => {
-          //       console.warn('ElectronService.failed', apiurl, err);
-          //     })
-          //   ;
-
-          // } else {
-          //   console.log('ElectronService', 'unknown message', e.data);
-
-          // }
-
+          console.log('ElectronService.onPort', msg);
         };
 
+        // init bus on first message
+        this.bus = this.busService.create('browser', 'clientport', port);
+
+        this.bus.on('config', (msg: IMessage<IConfig>) => {
+
+          console.log('ElectronService.onConfig', msg);
+
+          this.config = Object.assign({}, msg.payload);
+
+          fetch(this.config.api.root)
+            .then(r => r.json())
+            .then( json => {
+              console.log('ElectronService.fetched', json);
+              this.bus.emit({
+                topic: 'ack',
+                receiver: 'electron',
+                payload: 'ack.payload',
+              });
+            })
+            .catch(err => {
+              console.warn('ElectronService.failed', this.config.api.root, err);
+            })
+          ;
+
+        });
+
+        // this should send the config as reply
+        // this.bus.emit({
+        //   topic: 'ack',
+        //   receiver: 'electron',
+        //   payload: 'ack.payload',
+        // });
 
 
+        // Once we have the port, we can communicate directly with the main process.
+        // port.onmessage = (msg: IMessage<any>) => {
 
+        //   this.bus.emit(msg);
 
+        //   this.bus.on('ping', (msg: IMessage<number>) => {
+        //     this.bus.emit({ ...msg,
+        //       receiver: msg.sender,
+        //       payload:  msg.payload * 2
+        //     });
+        //   });
+
+        //   this.bus.on('config', (msg: IMessage<IConfig>) => {
+
+        //     const cfg = Object.assign(this.config, msg.payload);
+        //     cfg.api.root = `${cfg.api.protocol}://${cfg.api.ip}:${cfg.api.port}/`;
+
+        //     if (msg.payload.api.port) {
+
+        //       fetch(cfg.api.root)
+        //         .then(r => r.json())
+        //         .then( json => {
+        //           console.log('ElectronService', json);
+        //         })
+        //         .catch(err => {
+        //           console.warn('ElectronService.failed', cfg.api.root, err);
+        //         })
+        //       ;
+
+        //     }
+
+        //   });
+
+        //   // if ( e.data.ping) {
+
+        //   //   console.log('ElectronService', 'ping message', e.data);
+        //   //   port.postMessage({ ping: e.data.ping * 2 });
+
+        //   // } else if (e.data.config) {
+
+        //   //   const config = e.data.config;
+        //   //   const apiurl = `http://127.0.0.1:${config.port}/`;
+        //   //   console.log('ElectronService', 'config message', e.data);
+
+        //   //   fetch(apiurl)
+        //   //     .then(r => r.json())
+        //   //     .then( json => {
+        //   //       console.log('ElectronService', json);
+        //   //     })
+        //   //     .catch(err => {
+        //   //       console.warn('ElectronService.failed', apiurl, err);
+        //   //     })
+        //   //   ;
+
+        //   // } else {
+        //   //   console.log('ElectronService', 'unknown message', e.data);
+
+        //   // }
+
+        // };
 
       }
     };

@@ -14,6 +14,7 @@ const config: IConfig = {
 
   thisYear: new Date().getFullYear(),
 
+  filePreload: 'preload.js',
   fileServers: '',
   fileExpress: `${__dirname}/resources/express/server`,
   pathResources: process.resourcesPath,

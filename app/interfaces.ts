@@ -3,8 +3,9 @@
 export type TPayload = string | number | boolean | IConfig;
 
 export type TSender = 'electron' | 'express' | 'browser';
-// type TSenders = TSender | TSender[];
-type TTopic = 'ping' | 'config';
+export type TBusType = 'mainport' | 'process' | 'child' | 'clientport';
+
+type TTopic = 'ping' | 'config' | 'ack';
 type TReceivers = TSender;
 
 export interface IMessage<T> {
@@ -15,6 +16,7 @@ export interface IMessage<T> {
 }
 
 export interface IConfig {
+
   args: string[];
   serve: boolean;
   isDevelopment: boolean;
@@ -22,8 +24,18 @@ export interface IConfig {
   isDev: boolean;
   isPacked: boolean;
 
+  screen?: {
+    workAreaSize: {
+      width: number,
+      height: number
+    },
+    rotation: number,
+    scaleFactor: number
+  }
+
   thisYear: number;
 
+  filePreload: string;
   fileServers?: string;
   fileExpress: string;
   fileDB?: string
