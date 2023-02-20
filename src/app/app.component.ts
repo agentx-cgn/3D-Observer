@@ -1,3 +1,4 @@
+/* eslint-disable space-before-function-paren */
 import { Component } from '@angular/core';
 import { ElectronService } from './core/electron.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -20,5 +21,8 @@ export class AppComponent {
     console.log('environment', JSON.stringify(environment));
 
   }
+
+  public onStart () {}
+  public onStop  () {}
 
 }

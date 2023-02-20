@@ -1,6 +1,6 @@
 // LOGGING
-const log  = require('electron-log');
-Object.assign(console, log.functions);
+// const log  = require('electron-log');
+// Object.assign(console, log.functions);
 // log.transports.file.level = 'silly';
 
 const { ipcRenderer } = require('electron')

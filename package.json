@@ -47,6 +47,7 @@
     "3d-force-graph": "1.71.1",
     "rxjs": "7.8.0",
     "three": "0.149.0",
+    "three-spritetext": "1.7.1",
     "tslib": "^2.4.0",
     "zone.js": "~0.11.8"
   },
@@ -66,6 +67,7 @@
     "@types/jasmine": "4.3.0",
     "@types/jasminewd2": "2.0.10",
     "@types/node": "18.11.0",
+    "@types/three": "0.149.0",
     "@typescript-eslint/eslint-plugin": "5.40.0",
     "@typescript-eslint/parser": "5.40.0",
     "conventional-changelog-cli": "2.2.2",
