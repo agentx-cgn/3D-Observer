@@ -175,11 +175,11 @@ export class HomeComponent implements AfterViewInit {
       .linkDirectionalParticleSpeed( (d: ILink) => d.value * 0.001)
 
       .onEngineStop( () => {
-        console.log('Home.engine', 'stopped');
         // this.graph.numDimensions(3); // Re-heat simulation)
+        this.graph.d3ReheatSimulation();
+        console.log('Home.engine', 'restarted');
       })
       .onEngineTick( () => {
-        // debugger;
         if (this.selectNode) {
           const scale = 0.3 * Math.sin(Date.now() / 300) + 1 ;
           this.selectNode.__threeObj.scale.set(scale, scale, scale);
@@ -187,8 +187,9 @@ export class HomeComponent implements AfterViewInit {
       })
     ;
 
-    this.graph.d3Force('charge').strength(-0.1); // the smaller, the more stick balls together
-    this.graph.d3AlphaDecay(0.0000001);  // def: 0.0228
+    this.graph.d3Force('charge').strength(-2); // the smaller, the more stick balls together
+    this.graph.d3Force('charge').distanceMin(10); // the smaller, the more stick balls together
+    this.graph.d3AlphaDecay(0.0228);  // def: 0.0228
     this.graph.d3Force('link').distance((link: ILink) => link.value);
 
     // add some nodes
@@ -299,13 +300,13 @@ export class HomeComponent implements AfterViewInit {
 
     const nodes: INode[] = ['info', 'peers', 'activity', 'rules'].map( item => {
 
-      const xyz = (
-        item === 'info'     ? { x: parent.x +1, y: parent.y +0, z: parent.z +1 } :
-        item === 'peers'    ? { x: parent.x -1, y: parent.y +0, z: parent.z +1 } :
-        item === 'activity' ? { x: parent.x +1, y: parent.y +0, z: parent.z -1 } :
-        item === 'rules'    ? { x: parent.x -1, y: parent.y +0, z: parent.z -1 } :
-                              { x: parent.x +3, y: parent.y +3, z: parent.z +3 }
-      );
+      // const xyz = (
+      //   item === 'info'     ? { x: parent.x +1, y: parent.y +0, z: parent.z +1 } :
+      //   item === 'peers'    ? { x: parent.x -1, y: parent.y +0, z: parent.z +1 } :
+      //   item === 'activity' ? { x: parent.x +1, y: parent.y +0, z: parent.z -1 } :
+      //   item === 'rules'    ? { x: parent.x -1, y: parent.y +0, z: parent.z -1 } :
+      //                         { x: parent.x +3, y: parent.y +3, z: parent.z +3 }
+      // );
 
       const id    = parent.id + '/' + item;
       const node  = { id, domain: parent.domain, size: 3, type: item as TNodeType, ...{ x: parent.x, y: parent.y, z: parent.z }, value: 5 };
@@ -314,12 +315,12 @@ export class HomeComponent implements AfterViewInit {
 
     });
 
-    links.push( { target: parent.id + '/info',     source: parent.id + '/peers',    width: 0, value: 30 } );
-    links.push( { target: parent.id + '/peers',    source: parent.id + '/activity', width: 0, value: 30 } );
-    links.push( { target: parent.id + '/activity', source: parent.id + '/rules',    width: 0, value: 30 } );
-    links.push( { target: parent.id + '/rules',    source: parent.id + '/info',     width: 0, value: 30 } );
-    links.push( { target: parent.id + '/rules',    source: parent.id + '/peers',     width: 0, value: 30 } );
-    links.push( { target: parent.id + '/activity', source: parent.id + '/info',     width: 0, value: 30 } );
+    links.push( { target: parent.id + '/info',     source: parent.id + '/peers',    width: 0, value: 40 } );
+    links.push( { target: parent.id + '/peers',    source: parent.id + '/activity', width: 0, value: 40 } );
+    links.push( { target: parent.id + '/activity', source: parent.id + '/rules',    width: 0, value: 40 } );
+    links.push( { target: parent.id + '/rules',    source: parent.id + '/info',     width: 0, value: 40 } );
+    links.push( { target: parent.id + '/rules',    source: parent.id + '/peers',    width: 0, value: 40 } );
+    links.push( { target: parent.id + '/activity', source: parent.id + '/info',     width: 0, value: 40 } );
 
     this.insertDataNodes(nodes, links);
 

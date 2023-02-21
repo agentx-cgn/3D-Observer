@@ -10,8 +10,10 @@ import { BusService } from './bus.service';
 })
 export class ElectronService {
 
-  public config: null | IConfig = null;
+  public busPromise: Promise<Bus>;
+  // public config: null | IConfig = null;
   private bus: Bus;
+
 
   constructor (
     private readonly busService: BusService,
@@ -19,7 +21,7 @@ export class ElectronService {
 
     console.log('ElectronService', 'Electron', this.isElectron ? 'found' : 'not found');
 
-    this.init();
+    // this.init();
 
   }
 
@@ -27,54 +29,34 @@ export class ElectronService {
     return !!(window && window.process && window.process.type);
   }
 
-  init () {
+  // init () {
 
-    window.onmessage = (event) => {
+  //   this.busPromise = new Promise( (resolve, reject) => {
 
-      // event.source === window means the message is coming from the preload
-      // script, as opposed to from an <iframe> or other source.
-      if (event.source === window && event.data === 'main-world-port') {
+  //     window.onmessage = (event) => {
 
-        console.log('ElectronService', event.data, event.ports[0]);
+  //       // event.source === window means the message is coming from the preload
+  //       // script, as opposed to from an <iframe> or other source.
+  //       if (event.source === window && event.data === 'main-world-port') {
 
-        const [ port ]: [any] = event.ports;
+  //         console.log('ElectronService', event.data, event.ports[0]);
 
-        // init bus on first message
-        this.bus = this.busService.create('browser', 'clientport', port);
+  //         const [ port ]: [any] = event.ports;
 
-        // config with api info, should be already in pipeline
-        this.bus.on('config', (msg: IMessage<IConfig>) => {
+  //         // init bus on first message
+  //         this.bus = this.busService.create('browser', 'clientport', port);
+  //         resolve(this.bus);
 
-          this.config = Object.assign({}, msg.payload);
 
-          // try out api...
-          fetch(this.config.api.root)
-            .then(r => r.json())
-            .then( json => {
+  //       } else {
+  //         // other stupid messages
+  //         console.log('ElectronService.onmessage', event.data);
 
-              console.log('ElectronService.fetched', JSON.stringify(json));
+  //       }
+  //     };
 
-              this.bus.emit({
-                topic: 'ack',
-                receiver: 'electron',
-                payload: 'ack.payload',
-              });
+  //   });
 
-            })
-            .catch(err => {
-              console.warn('ElectronService.failed', this.config.api.root, err);
-            })
-          ;
-
-        });
-
-      } else {
-        // other stupid messages
-        console.log('ElectronService.onmessage', event.data);
-
-      }
-    };
-
-  }
+  // }
 
 }

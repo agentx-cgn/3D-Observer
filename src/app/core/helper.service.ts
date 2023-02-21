@@ -13,7 +13,7 @@ const helper = {
     // https://stackoverflow.com/questions/7616461/generate-a-hash-from-string-in-javascript
     return s.split('').reduce(function(a, b) {
       a = ((a << 5) - a) + b.charCodeAt(0);
-      return a & a;
+      return Math.abs(a & a);
     }, 0);
   }
 

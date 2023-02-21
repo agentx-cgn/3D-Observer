@@ -255,6 +255,14 @@ function launchBrowser(): Promise<BrowserWindow> {
       resolve(win);
     });
 
+    win.webContents.on('dom-ready', () => {
+      console.log('EC.webContents', 'dom-ready');
+    });
+
+    win.webContents.on('ipc-message', () => {
+      console.log('EC.webContents', 'dom-ready');
+    });
+
     activateWindow();
 
     loadIndexHtml(win);
