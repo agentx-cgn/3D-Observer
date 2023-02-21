@@ -1,3 +1,5 @@
+/* eslint-disable max-len */
+/* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable no-debugger */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable no-underscore-dangle */
@@ -19,23 +21,30 @@ import { helper as H } from './../../core/helper.service';
 // https://github.com/vasturiano/3d-force-graph#api-reference
 // https://docs.joinmastodon.org/methods/instance/
 // Three Objs: https://github.com/trails-game/relation-graph-3d-force/blob/master/src/index.js
+// https://threejs.org/docs/#api/en/core/Object3D.scale
 
 
+type Coords = { x: number; y: number; z: number; };
 type TNodeType = 'server' | 'peers' | 'activities' | 'rules' | 'info';
+
 interface INode {
   id: string
   domain: string
   size: number
   type: TNodeType
+  value: number
   x?: number
   y?: number
   z?: number
+  __threeObj?: THREE.Object3D
+
 }
 
 interface ILink {
   target: string
   source: string
   value: number
+  width: number
 }
 
 @Component({
@@ -51,7 +60,9 @@ export class HomeComponent implements AfterViewInit {
 
   private graph = ForceGraph3D();
 
-  private hoverNode = undefined;
+  private hoverNode: INode | undefined;
+  private selectNode: INode | undefined;
+
   private initData = {
     nodes: [
       { id: 'start.social', size: 0 }
@@ -76,12 +87,12 @@ export class HomeComponent implements AfterViewInit {
     ;
   }
 
-  insertDataNode (node: INode, linkList: ILink[] ) {
+  insertDataNodes (dataNodes: INode[], linkList: ILink[] ) {
 
     const { nodes, links } = this.graph.graphData();
 
     this.graph.graphData({
-      nodes: [ ...nodes, node ],
+      nodes: [ ...nodes, ...dataNodes ],
       links: linkList.length ? [ ...links, ...linkList ] : [ ...links ]
     });
 
@@ -91,10 +102,10 @@ export class HomeComponent implements AfterViewInit {
 
     const { nodes, links } = this.graph.graphData();
 
-    const value = ~~(Math.random() * 10) +2;
+    // const value = ~~(Math.random() * 10) +2;
     const candidates = nodes.filter( (n: INode) => n.domain === node.domain && n.type === 'server');
     const link = candidates.length
-      ? { target: candidates[~~(Math.random() * candidates.length)].id, source: node.id, value }
+      ? { target: candidates[~~(Math.random() * candidates.length)].id, source: node.id, value: 100, width: 1 }
       : undefined
     ;
 
@@ -136,44 +147,62 @@ export class HomeComponent implements AfterViewInit {
 
     this.graph(this.container.nativeElement)
       // .graphData(gData)
+      // .nodeAutoColorBy('domain')
+
       .graphData(this.initData)
       .onBackgroundClick(this.onBackgroundClick.bind(this))
       .backgroundColor('#0000')
 
       .enableNodeDrag(true)
       .onNodeClick(this.onNodeClick.bind(this))
-      // .nodeAutoColorBy('domain')
       .nodeColor(this.randomColor)
       .nodeResolution(32)  // 8
       .nodeOpacity(90) // .75
       .nodeLabel('id')
-      .nodeVal('size')
-      .onNodeHover(node => this.hoverNode = node)
+      .nodeVal('value')
+      .onNodeHover((node: INode) => this.hoverNode = node)
+      .nodeThreeObject((node: INode) => (
+        this.sphereGeometry(node)
+        // node.type === 'server' ? this.sphereGeometry(node) :
+        // node.type === 'peers'  ? this.spriteText(node) :
+        // node.type === 'rules'  ? this.spriteImage(node) :
+        // false
+      ))
 
-      .linkWidth('value')
+      .linkWidth('width')
+      .linkVisibility( (link: ILink) => !!link.width )
       .linkDirectionalParticles('value')
       .linkDirectionalParticleSpeed( (d: ILink) => d.value * 0.001)
 
-      .nodeThreeObject((node: INode) => (
-          node.type === 'peers' ? this.spriteText(node) :
-          node.type === 'rules' ? this.spriteImage(node) :
-          false
-        ))
+      .onEngineStop( () => {
+        console.log('Home.engine', 'stopped');
+        // this.graph.numDimensions(3); // Re-heat simulation)
+      })
+      .onEngineTick( () => {
+        // debugger;
+        if (this.selectNode) {
+          const scale = 0.3 * Math.sin(Date.now() / 300) + 1 ;
+          this.selectNode.__threeObj.scale.set(scale, scale, scale);
+        }
+      })
     ;
 
     this.graph.d3Force('charge').strength(-0.1); // the smaller, the more stick balls together
     this.graph.d3AlphaDecay(0.0000001);  // def: 0.0228
+    this.graph.d3Force('link').distance((link: ILink) => link.value);
 
+    // add some nodes
+    const testServers = servers.slice(0, 10);
     interval(100)
       .pipe(
-        take(servers.length),
-        map(i => servers.sort()[i])
+        take(testServers.length),
+        map(i => testServers.sort()[i])
       )
       .subscribe(id => {
 
         const domain = id.split('.').slice(-1)[0];
-        const size   = ~~(Math.random()*10) +2;
-        const node   = { id, size, domain, type: 'server' as TNodeType};
+        const size   = 10; //~~(Math.random()*10) +2;
+        const node   = { id, size, domain, type: 'server' as TNodeType, value: 10 };
 
         // console.log('subscribe', node);
 
@@ -182,6 +211,19 @@ export class HomeComponent implements AfterViewInit {
       })
     ;
 
+
+  }
+
+  sphereGeometry (node: INode) {
+
+    return new THREE.Mesh(
+      new THREE.SphereGeometry(node.size),
+      new THREE.MeshLambertMaterial({
+        color: this.randomColor(node),
+        transparent: true,
+        opacity: 0.8
+      })
+    );
 
   }
 
@@ -197,7 +239,7 @@ export class HomeComponent implements AfterViewInit {
     const imgTexture = new THREE.TextureLoader().load(`./assets/sprites/${type}.png`);
     const material   = new THREE.SpriteMaterial({ map: imgTexture });
     const sprite     = new THREE.Sprite(material);
-    sprite.scale.set(12, 12, 1);
+    sprite.scale.set(4, 4, 1);
     return sprite;
   }
 
@@ -207,6 +249,24 @@ export class HomeComponent implements AfterViewInit {
       node.type === 'peers'  ? H.colorFromString(node.domain, 40, 40) :
         H.colorFromString(node.domain, 40, 40)
     );
+  }
+
+  zoomToNode (node: INode) {
+
+    // Aim at node from outside it
+    const distance = 100;
+    const distRatio = 1 + distance/Math.hypot(node.x, node.y, node.z);
+
+    const newPos = node.x || node.y || node.z
+      ? { x: node.x * distRatio, y: node.y * distRatio, z: node.z * distRatio }
+      : { x: 0, y: 0, z: distance }; // special case if node is in (0,0,0)
+
+    this.graph.cameraPosition(
+      newPos, // new position
+      node as Coords, // lookAt ({ x, y, z })
+      3000  // ms transition duration
+    );
+
   }
 
 
@@ -225,7 +285,9 @@ export class HomeComponent implements AfterViewInit {
 
   onNodeClick (node: INode, e: Event) {
 
+    this.selectNode = node;
     node.type === 'server' && this.pokeNode(node);
+    this.zoomToNode(node);
 
   }
 
@@ -233,7 +295,9 @@ export class HomeComponent implements AfterViewInit {
 
     console.log('pokeNode', parent);
 
-    ['info', 'peers', 'activity', 'rules'].forEach( item => {
+    const links = [];
+
+    const nodes: INode[] = ['info', 'peers', 'activity', 'rules'].map( item => {
 
       const xyz = (
         item === 'info'     ? { x: parent.x +1, y: parent.y +0, z: parent.z +1 } :
@@ -244,12 +308,20 @@ export class HomeComponent implements AfterViewInit {
       );
 
       const id    = parent.id + '/' + item;
-      const node  = { id, domain: parent.domain, size: 1, type: item as TNodeType, ...xyz };
-      const links = [ { target: parent.id, source: id, value: 1 } ];
-
-      this.insertDataNode(node, links);
+      const node  = { id, domain: parent.domain, size: 3, type: item as TNodeType, ...{ x: parent.x, y: parent.y, z: parent.z }, value: 5 };
+      links.push( { target: parent.id, source: id, value: 10 } );
+      return node;
 
     });
+
+    links.push( { target: parent.id + '/info',     source: parent.id + '/peers',    width: 0, value: 30 } );
+    links.push( { target: parent.id + '/peers',    source: parent.id + '/activity', width: 0, value: 30 } );
+    links.push( { target: parent.id + '/activity', source: parent.id + '/rules',    width: 0, value: 30 } );
+    links.push( { target: parent.id + '/rules',    source: parent.id + '/info',     width: 0, value: 30 } );
+    links.push( { target: parent.id + '/rules',    source: parent.id + '/peers',     width: 0, value: 30 } );
+    links.push( { target: parent.id + '/activity', source: parent.id + '/info',     width: 0, value: 30 } );
+
+    this.insertDataNodes(nodes, links);
 
   }
 
