@@ -350,6 +350,12 @@ function launchApp () {
       // TODO: disable in PROD
       app.commandLine.appendSwitch('ignore-certificate-errors', 'true');
 
+      console.log(app.getVersion());
+      console.log(app.getLocale());
+      console.log(app.getPath('userData'));
+      console.log(app.getLocaleCountryCode());
+      console.log(app.getPreferredSystemLanguages());
+
       app.setAboutPanelOptions({
         applicationName: 'Fediverse Explorer',
         applicationVersion: app.getVersion(),
