@@ -241,7 +241,10 @@ function launchBrowser(): Promise<IMessage<TPayload>> {
     win.webContents.on('did-finish-load', () => {
       console.log('ELC.webContents', 'did-finish-load');
       createBrowserChannel(win)
-        .then(ack => resolve(ack))
+        .then(ack => {
+          Bus.connect(busExp, busWin)
+          resolve(ack);
+        })
       ;
       // resolve(createBrowserChannel());
     });

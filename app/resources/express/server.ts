@@ -9,7 +9,7 @@ import sqlite3 from 'sqlite3';
 import dotenv from 'dotenv';
 import { AddressInfo } from 'node:net';
 
-import { IConfig } from '../../interfaces';
+import { IApiRequest, IConfig, IMessage } from '../../interfaces';
 import Bus from '../../bus';
 import apiRouter from './api-router';
 
@@ -63,6 +63,18 @@ class App {
     });
 
     this.bus = new Bus('express', 'process', process);
+
+    this.bus.on('request', (msg: IMessage<IApiRequest>) => {
+      console.log('EXP.request', msg);
+      this.bus.emit({
+        topic: 'response',
+        receiver: msg.sender,
+        payload: {
+          ...msg.payload,
+          data: { huhu: 'huhu' }
+        }
+      })
+    });
 
     this.bus.on('config', (msg) => {
 

@@ -2,12 +2,13 @@
 import { Component } from '@angular/core';
 import { ElectronService } from './core/electron.service';
 import { TranslateService } from '@ngx-translate/core';
+
+
 import { environment } from '../environments/environment';
 import { BusService } from './core/bus.service';
-import { IConfig, IMessage, IResApi } from '../../app/interfaces';
+import { IConfig, IMessage, IApiResonse } from '../../app/interfaces';
 import Bus from '../../app/bus';
 
-// import { MessageChannelMain } from 'electron';
 
 @Component({
   selector: 'app-root',
@@ -19,23 +20,13 @@ export class AppComponent {
   public config: null | IConfig = null;
   private bus: Promise<Bus>;
 
-  private ipcRenderer: any;
-
   constructor(
     private electronService: ElectronService,
     private translate: TranslateService,
     private busService: BusService,
   ) {
 
-    // const { port1, port2 } = new window.require('electron').MessageChannelMain();
-
-    // this.ipcRenderer = window.require('electron').ipcRenderer;
-    // this.MessageChannelMain = window.require('electron').MessageChannelMain;
-
-    // console.log(this.ipcRenderer, port2);
-    // this.ipcRenderer.send('window-world-port', port2);
-
-    console.log('environment', JSON.stringify(environment));
+    console.log('App.Env', JSON.stringify(environment));
 
     this.translate.setDefaultLang('en');
     this.bus = this.electronService.busPromise;
@@ -66,8 +57,6 @@ export class AppComponent {
 
     });
 
-
-
   }
 
   public onStart () {}
@@ -87,8 +76,8 @@ export class AppComponent {
   }
   private async listen () {
 
-    (await this.bus).on('response', (msg: IMessage<IResApi>) => {
-      console.log('APPComp', msg);
+    (await this.bus).on('response', (msg: IMessage<IApiResonse>) => {
+      console.log('APPComp.response', msg);
     });
 
     // config with api info, should be already in pipeline

@@ -1,11 +1,13 @@
 
 
-export type TPayload = string | number | boolean | IConfig | IReqApi;
+export type TPayload = string | number | boolean | IConfig | IApiRequest | IApiResponse;
 
-export type TSender = 'electron' | 'express' | 'browser';
+export type TSender  = 'electron' | 'express' | 'browser';
 export type TBusType = 'mainport' | 'process' | 'child' | 'clientport';
+export type TTopic   = 'ping' | 'config' | 'ack' | 'request' | 'response';
 
-type TTopic = 'ping' | 'config' | 'ack' | 'request';
+export type TMsgFilter = ( msg: IMessage<TPayload> ) => boolean;
+
 type TReceivers = TSender;
 
 export interface IMessage<T> {
@@ -15,12 +17,12 @@ export interface IMessage<T> {
   payload: T;
 }
 
-export interface IReqApi {
+export interface IApiRequest {
   server: string
   endpoint: string
 }
 
-export interface IResApi {
+export interface IApiResponse {
   server: string
   endpoint: string
   data: any
