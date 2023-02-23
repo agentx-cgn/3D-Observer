@@ -101,7 +101,7 @@ export class AppComponent {
         .then(r => r.json())
         .then( async json => {
 
-          console.log('APP.fetched', JSON.stringify(json));
+          console.log('%cAPP.fetched', '{ color: darkgreen; font-weight: 800 }', JSON.stringify(json));
 
           (await this.bus).emit({
             topic: 'ack',

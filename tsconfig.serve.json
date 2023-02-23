@@ -26,7 +26,6 @@
     "app/interfaces.ts",
     "app/preload.ts",
     "app/resources/express/server.ts",
-    "app/resources/express/init-routes.ts",
     "app/resources/express/api-router.ts"
   ],
   "exclude": [

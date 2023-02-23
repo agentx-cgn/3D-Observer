@@ -1,14 +1,6 @@
-// import express from 'express'
-// import initServers from '../data/init-servers.json' assert {type: 'json'}
-// import package_json from '../../package.json' assert {type: 'json'}
-
 import * as express from "express";
 import init_servers from './data/init-servers.json'
 import package_json from '../../package.json'
-
-// const express      = require(' express');
-// const initServers  = require('./data/init-servers.json');
-// const package_json = require('../../package.json')
 
 const template = {
   'messages': [
@@ -70,8 +62,5 @@ const apiRouter  = express.Router()
 const controller = new Controller()
 
 apiRouter.get('/init-servers',      controller.InitServer)
-
-// export default router
-// module.exports = router;
 
 export default apiRouter

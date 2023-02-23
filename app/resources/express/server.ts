@@ -1,19 +1,16 @@
 
 import express from 'express'
-// import * as express from "express";
-
 import cors from 'cors'
 import bodyParser from 'body-parser';
-
 import log from 'electron-log'
 import fs from 'fs'
 import path from 'path';
 import sqlite3 from 'sqlite3';
 import dotenv from 'dotenv';
-import Bus from '../../bus';
-import { IConfig } from '../../interfaces';
 import { AddressInfo } from 'node:net';
 
+import { IConfig } from '../../interfaces';
+import Bus from '../../bus';
 import apiRouter from './api-router';
 
 dotenv.config()
@@ -28,16 +25,11 @@ const preConfig = {
     root: '',
     family: ''
   },
-  // pathData: path.join(__dirname, 'data'),
-  // fileServers: path.join(__dirname, 'data', 'init-servers.json'),
-  // fileDB: '',
 }
 
 let
   config: null | IConfig = null
 ;
-
-// const sqlite3     = require('sqlite3').verbose();
 
 class App {
 
@@ -76,11 +68,6 @@ class App {
 
       config = Object.assign({}, msg.payload, preConfig);
 
-      // config.fileDB = config.isDev
-      //   ? path.join(config.pathApp, 'app', 'resources', 'express', 'data', 'observations.sqlite')
-      //   : path.join(config.pathApp, '', 'resources', 'app.asar.unpacked', 'express', 'data', 'observations.sqlite')
-      // ;
-
       this.activate().then( (adr: AddressInfo) => {
 
         config.api.port   = adr.port;
@@ -100,68 +87,7 @@ class App {
 
     });
 
-
-
-
-    // this.middleware();
-    // this.errorHandlerMdw();
-
-    // wait for first message
-    // process.on('message', (msg: any) => {
-
-    //   console.log('EXP.process.message', msg);
-
-    //   if (msg.topic === 'config') {
-
-    //     config = msg.payload;
-
-    //     preConfig.fileDB = config.isDev
-    //       ? path.join(config.pathApp, 'app', 'resources', 'express', 'data', 'observations.sqlite')
-    //       : path.join(config.pathApp, '', 'resources', 'app.asar.unpacked', 'express', 'data', 'observations.sqlite')
-    //     ;
-
-    //     this.activate().then( (adr: AddressInfo) => {
-
-    //       preConfig.api.port   = adr.port;
-    //       preConfig.api.ip     = adr.address;
-    //       preConfig.api.family = adr.family;
-
-    //       config = Object.assign(config, preConfig);
-
-    //       // this.bus = new Bus('express', 'process', process);
-
-    //       console.log('EXP.config', config);
-    //       console.log('EXP.-------------------------');
-
-    //       // this.bus.emit({
-    //       //   topic: 'config',
-    //       //   receiver: 'electron',
-    //       //   payload: config,
-    //       // });
-
-    //       // this.bus.on('config', (msg) => {
-    //       //   const cfg = msg.config;
-    //       // });
-
-    //     });
-
-    //   }
-
-    // });
-
   }
-
-  // startListening () {
-
-  //   return new Promise( (resolve, reject) => {
-
-
-  //   })
-
-
-
-  // }
-
 
   loadData () {
 
@@ -194,7 +120,6 @@ class App {
       console.error('EX.DB.loadData.error', err);
 
     }
-
 
   }
 
@@ -248,9 +173,6 @@ class App {
     this.app.use(express.json())
     this.app.use(bodyParser.json());
     this.app.use(bodyParser.urlencoded({ extended: false }));
-    // const dbCon = require('./setup/db');
-    // this.express.locals = { ...this.express.locals, db: dbCon() };
-    // this.express.locals.db.sequelize.sync();
   }
 
   errorHandlerMdw () {
@@ -269,18 +191,6 @@ class App {
     });
 
   }
-
-  // async routes () {
-
-  //   let router = express.Router();
-
-  //   router.get('/', (req, res, next) => {
-  //     res.send({ express: `API works on ${ip}:${port}` });
-  //   });
-
-  //   this.express.use('/', router);
-
-  // }
 
 }
 

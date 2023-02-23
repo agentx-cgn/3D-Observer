@@ -5,7 +5,8 @@ import Bus from './bus';
 import { IConfig, IMessage, TPayload } from './interfaces';
 import { ChildProcess } from 'node:child_process';
 import config from './config';
-const { fork } = require("child_process");
+// const { fork } = require("child_process");
+import { fork } from 'child_process'
 
 // https://github.com/mslipper/electron-child-process-playground/tree/master/src
 
@@ -31,7 +32,14 @@ console.log('#')
 console.log('## # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # ')
 console.log('ELC.starting...', config);
 
-// (event: Electron.Event, launchInfo: Record<string, any> | Electron.NotificationResponse)
+// SETUP: copy DB, if not exists in user path
+// '/Users/noiv/Library/Application Support/3D-Observer/observations.sqlite'
+if (config.existsFileDBSource && !config.existsFileDBTarget) {
+  fs.copyFileSync(config.fileDBSource, config.fileDBTarget, fs.constants.COPYFILE_EXCL)
+  console.log('ECL.coppied.DB', config.fileDBTarget)
+} else {
+  console.log('ECL.DB.exists', config.fileDBTarget)
+}
 
 // waiting for app.ready
 const promise = launchApp()
@@ -57,16 +65,6 @@ const promise = launchApp()
 
   })
 
-  // waiting for comm established
-  // .then(win => {
-  //   return createBrowserChannel(win);
-  // })
-
-  // setup some minor events
-  // .then( response => {
-  //   return activateWindow();
-  // })
-
   // wait for finish // did-finish-load
   .then( response => {
 
@@ -86,6 +84,60 @@ const promise = launchApp()
 
 ;
 
+
+function launchApp () {
+
+  return new Promise( (resolve, reject) => {
+
+    try {
+
+      // TODO: disable in PROD
+      app.commandLine.appendSwitch('ignore-certificate-errors', 'true');
+
+      app.setAboutPanelOptions({
+        applicationName: 'Fediverse Explorer',
+        applicationVersion: app.getVersion(),
+        version: app.getVersion(),
+        website: 'https://github.com',
+        copyright: `© 2022-${config.thisYear} vion11@gmail.com`
+      });
+
+      // This method will be called when Electron has finished
+      // initialization and is ready to create browser windows.
+      // Some APIs can only be used after this event occurs.
+      app.on('ready', async (event: Electron.Event, launchInfo: Record<string, any> | Electron.NotificationResponse) => {
+        resolve([event, launchInfo]);
+      });
+
+      // Quit when all windows are closed.
+      app.on('window-all-closed', () => {
+
+        // Stops the child/express process
+        childController.abort();
+
+        // On OS X it is common for applications and their menu bar
+        // to stay active until the user quits explicitly with Cmd + Q
+        if (process.platform !== 'darwin') {
+          app.quit();
+        }
+
+      });
+
+      app.on('activate', () => {
+        // On OS X it's common to re-create a window in the app when the
+        // dock icon is clicked and there are no other windows open.
+        if (win === null) {
+          launchBrowser();
+        }
+      });
+
+    } catch (err) {
+      reject(err)
+    }
+
+  });
+
+}
 
 function launchExpress(): Promise<IConfig> {
 
@@ -119,35 +171,6 @@ function launchExpress(): Promise<IConfig> {
     child.on('close', (code) => console.log('ELC.child.onClose', code));
 
   });
-
-  // // child.send({ apppath: app.getAppPath(), isdev: serve });
-
-  // probably Abort Error
-  // child.on('message', (data) => {
-  //   console.log('ELC.child.onMessage', data)
-  //   resolve(data);
-  // });
-
-  // console.log('ELC.trying', urlexpress);
-  // http.get(urlexpress, res => {
-
-  //   console.log('ELC.trying.status', res.statusCode, res.statusMessage);
-  //   // console.log('ELC.response',res.statusCode, res.statusMessage, Object.keys(res), res.rawHeaders);
-
-  //   let data = [];
-
-  //   res.on('data', chunk => {
-  //     data.push(chunk);
-  //   });
-
-  //   res.on('end', () => {
-  //     const text = JSON.parse(Buffer.concat(data).toString());
-  //     console.log('ELC.trying.end', text, data);
-  //   });
-
-  // }).on('error', err => {
-  //   console.warn('EC.error.trying', err.message);
-  // });
 
 }
 
@@ -190,36 +213,6 @@ function setApplicationMenu() {
 
 }
 
-function loadIndexHtml (win:BrowserWindow) {
-
-  let href = '';
-
-  if (config.serve) {
-    const debug = require('electron-debug');
-    debug();
-    require('electron-reloader')(module);
-    href = 'https://localhost:4200';
-
-  } else {
-
-    // Path when running electron executable
-    let pathIndex = './index.html';
-
-    // Path when running electron in local folder
-    if (fs.existsSync(path.join(__dirname, '../dist/index.html'))) {
-      pathIndex = '../dist/index.html';
-    }
-
-    const url = new URL(path.join('file:', __dirname, pathIndex));
-    href = url.href
-
-  }
-
-  console.log('ELC.loadIndexHtml', href);
-  win.loadURL(href);
-
-
-}
 
 function launchBrowser(): Promise<IMessage<TPayload>> {
 
@@ -279,51 +272,11 @@ function launchBrowser(): Promise<IMessage<TPayload>> {
 
     });
 
-    // activateWindow();
-
     loadIndexHtml(win);
 
   });
 
 }
-
-// function activateWindow() {
-
-//   return new Promise( (resolve, reject) => {
-
-//     // https://www.electronjs.org/docs/latest/api/web-contents
-
-// ^^
-
-//     // win.webContents.on('console-message', (...args) => {
-
-//     //   let msg = args[2];
-
-//     //   msg = (
-//     //     msg.includes('allowRunningInsecureContent')      ? '' :
-//     //     msg.includes('Insecure Content-Security-Policy') ? '' :
-//     //     msg.trim().slice(0, 40)
-//     //   );
-
-//     //   // console.log('WIN', args[2].slice(0, 40));
-
-//     // });
-
-//     // Emitted when the window is closed.
-//     win.on('closed', () => {
-
-//       // Dereference the window object, usually you would store window
-//       // in an array if your app supports multi windows, this is the time
-//       // when you should delete the corresponding element.
-//       win = null;
-
-//     });
-
-//     resolve(true);
-
-//   });
-
-// }
 
 function createBrowserChannel(win: BrowserWindow): Promise<IMessage<TPayload>> {
 
@@ -357,81 +310,33 @@ function createBrowserChannel(win: BrowserWindow): Promise<IMessage<TPayload>> {
 
 }
 
-function launchApp () {
+function loadIndexHtml (win:BrowserWindow) {
 
-  return new Promise( (resolve, reject) => {
+  let href = '';
 
-    try {
+  if (config.serve) {
+    const debug = require('electron-debug');
+    debug();
+    require('electron-reloader')(module);
+    href = 'https://localhost:4200';
 
-      // TODO: disable in PROD
-      app.commandLine.appendSwitch('ignore-certificate-errors', 'true');
+  } else {
 
-      // console.log(app.getVersion());
-      // console.log(app.getLocale());
-      // console.log(app.getPath('userData'));
-      // console.log(app.getLocaleCountryCode());
-      // console.log(app.getPreferredSystemLanguages());
+    // Path when running electron executable
+    let pathIndex = './index.html';
 
-      app.setAboutPanelOptions({
-        applicationName: 'Fediverse Explorer',
-        applicationVersion: app.getVersion(),
-        version: app.getVersion(),
-        website: 'https://github.com',
-        copyright: `© 2022-${config.thisYear} vion11@gmail.com`
-      });
-
-      // This method will be called when Electron has finished
-      // initialization and is ready to create browser windows.
-      // Some APIs can only be used after this event occurs.
-      app.on('ready', async (event: Electron.Event, launchInfo: Record<string, any> | Electron.NotificationResponse) => {
-        resolve([event, launchInfo]);
-      });
-
-      // Quit when all windows are closed.
-      app.on('window-all-closed', () => {
-
-        // Stops the child/express process
-        childController.abort();
-
-        // On OS X it is common for applications and their menu bar
-        // to stay active until the user quits explicitly with Cmd + Q
-        if (process.platform !== 'darwin') {
-          app.quit();
-        }
-
-      });
-
-      app.on('activate', () => {
-        // On OS X it's common to re-create a window in the app when the
-        // dock icon is clicked and there are no other windows open.
-        if (win === null) {
-          launchBrowser();
-        }
-      });
-
-    } catch (err) {
-      reject(err)
+    // Path when running electron in local folder
+    if (fs.existsSync(path.join(__dirname, '../dist/index.html'))) {
+      pathIndex = '../dist/index.html';
     }
 
-  });
+    const url = new URL(path.join('file:', __dirname, pathIndex));
+    href = url.href
+
+  }
+
+  console.log('ELC.loadIndexHtml', href);
+  win.loadURL(href);
+
 
 }
-
-
-// const { exec } = require('child_process')
-
-// function run(cmd, options) {
-//   return new Promise((resolve, reject) => {
-//     exec(cmd, options, (error, stdout, stderr) => {
-//       if (error) return reject(error)
-//       if (stderr) return reject(stderr)
-//       resolve(stdout)
-//     })
-//   })
-// }
-
-// // usage example
-// ;(async () => {
-//   const result = await run('echo "hello"', { maxBuffer: 1024 * 1024 * 2 })
-//   console.log(result) // hello
-// })()
