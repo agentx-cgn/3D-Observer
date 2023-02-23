@@ -3,17 +3,17 @@
 export type TPayload = string | number | boolean | IConfig | IApiRequest | IApiResponse;
 
 export type TSender  = 'electron' | 'express' | 'browser';
-export type TBusType = 'mainport' | 'process' | 'child' | 'clientport';
+// export type TBusType = 'mainport' | 'process' | 'child' | 'clientport';
 export type TTopic   = 'ping' | 'config' | 'ack' | 'request' | 'response';
 
 export type TMsgFilter = ( msg: IMessage<TPayload> ) => boolean;
 
-type TReceivers = TSender;
+export type TReceiver = TSender;
 
 export interface IMessage<T> {
   topic: TTopic;
   sender?: TSender;
-  receiver: TReceivers;
+  receiver: TReceiver;
   payload: T;
 }
 

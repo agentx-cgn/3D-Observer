@@ -149,7 +149,7 @@ function launchExpress(): Promise<IConfig> {
 
     const child: ChildProcess = fork(config.fileExpress, ['child'], { signal });
 
-    busExp = new Bus('electron', 'process', child);
+    busExp = new Bus('electron', 'express', child);
 
     // expect initial config w/ port back from express
     busExp.on('config', (msg: IMessage<IConfig>) => {
@@ -289,7 +289,7 @@ function createBrowserChannel(win: BrowserWindow): Promise<IMessage<TPayload>> {
     const { port1, port2 } = new MessageChannelMain()
 
     // always create a new bus, when browser loads or reloads
-    busWin = new Bus('electron', 'mainport', port2);
+    busWin = new Bus('electron', 'browser', port2);
 
     // We can also receive messages from the main world of the renderer.
     // wait for browser bus ready

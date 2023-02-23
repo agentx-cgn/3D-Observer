@@ -2,7 +2,7 @@
 import { Injectable } from '@angular/core';
 
 import { Subscription } from 'rxjs';
-import { IMessage, TPayload, TSender } from '../../../app/interfaces';
+import { IMessage, TPayload, TReceiver, TSender, TTopic } from '../../../app/interfaces';
 import Bus from '../../../app/bus';
 
 @Injectable({
@@ -12,10 +12,8 @@ export class BusService {
 
   private bus: Bus | undefined;
 
-  constructor() { }
-
-  create(name: TSender, type, connector): Bus {
-    this.bus = new Bus(name, type, connector);
+  create(source: TSender, target: TReceiver, connector): Bus {
+    this.bus = new Bus(source, target, connector);
     return this.bus;
   }
 
@@ -24,9 +22,8 @@ export class BusService {
     this.bus.emit(msg);
   }
 
-  on(topic: string, action: any): Subscription {
+  on(topic: TTopic, action: any): Subscription {
     return this.bus.on(topic, action);
   }
-
 
 }

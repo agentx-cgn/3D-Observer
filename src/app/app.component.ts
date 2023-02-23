@@ -6,7 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 import { environment } from '../environments/environment';
 import { BusService } from './core/bus.service';
-import { IConfig, IMessage, IApiResonse } from '../../app/interfaces';
+import { IConfig, IMessage, IApiResponse } from '../../app/interfaces';
 import Bus from '../../app/bus';
 
 
@@ -44,7 +44,7 @@ export class AppComponent {
           const [ port ]: [any] = event.ports;
 
           // init bus on first message
-          const bus = this.busService.create('browser', 'clientport', port);
+          const bus = this.busService.create('browser', 'electron', port);
           resolve(bus);
           this.listen();
 
@@ -76,7 +76,7 @@ export class AppComponent {
   }
   private async listen () {
 
-    (await this.bus).on('response', (msg: IMessage<IApiResonse>) => {
+    (await this.bus).on('response', (msg: IMessage<IApiResponse>) => {
       console.log('APPComp.response', msg);
     });
 

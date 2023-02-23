@@ -62,7 +62,7 @@ class App {
 
     });
 
-    this.bus = new Bus('express', 'process', process);
+    this.bus = new Bus('express', 'electron', process);
 
     this.bus.on('request', (msg: IMessage<IApiRequest>) => {
       console.log('EXP.request', msg);

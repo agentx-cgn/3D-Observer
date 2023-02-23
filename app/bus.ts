@@ -1,7 +1,9 @@
-import { Subject, Subscription, merge } from 'rxjs';
-import { filter, map, tap } from 'rxjs/operators';
-import { IMessage, TBusType, TMsgFilter, TPayload, TSender, TTopic } from './interfaces';
+import { Subject, Subscription } from 'rxjs';
+import { filter, tap } from 'rxjs/operators';
+
 import EventEmitter from 'node:events';
+
+import { IMessage, TMsgFilter, TPayload, TReceiver, TSender, TTopic } from './interfaces';
 
 const DEBUG = true;
 
@@ -9,49 +11,54 @@ class Bus {
 
   static connect(bus1: Bus, bus2: Bus): void {
 
-    bus1.on( (msg: IMessage<TPayload>) => msg.receiver === bus2.name, (msg: IMessage<TPayload>) => {
-      bus1.emit(msg);
+    bus1.on( (msg: IMessage<TPayload>) => msg.receiver === bus2.target, (msg: IMessage<TPayload>) => {
+      console.log('BUS.forwarding', msg.sender, '=>', msg.receiver);
+      bus2.emit(msg, true);
     });
 
-    bus2.on( (msg: IMessage<TPayload>) => msg.receiver === bus1.name, (msg: IMessage<TPayload>) => {
-      bus2.emit(msg);
+    bus2.on( (msg: IMessage<TPayload>) => msg.receiver === bus1.target, (msg: IMessage<TPayload>) => {
+      console.log('BUS.forwarding', msg.sender, '=>', msg.receiver);
+      bus1.emit(msg, true);
     });
 
-    console.log('BUS.connected', bus1.name, '<=>', bus2.name);
+    console.log('BUS.connected', bus1.target, '<=>', bus2.target);
 
   }
 
-  public name: TSender;
-  public type: TBusType;
+  public source: TSender;
+  public target: TReceiver;
 
   private messages$ = new Subject<IMessage<TPayload>>();
 
   private connector: NodeJS.Process | EventEmitter | MessagePort | any;
 
-  constructor (name: TSender, type: TBusType, connector) {
+  constructor (source: TSender, target: TReceiver, connector) {
 
-    DEBUG && console.log('BUS.constructor', name, type);
+    DEBUG && console.log(`BUS.${this.source}.constructor`, '=>', target);
 
-    this.name = name;
-    this.type = type;
+    this.source    = source;
+    this.target    = target;
     this.connector = connector;
 
-    if (type === 'mainport') {
+    if (source === 'electron' && target === 'browser') {
       connector.on('message', (event: MessageEvent) => {
-        DEBUG && console.log('BUS.connector.on', this.name, event.data.topic);
+        DEBUG && console.log(`BUS.${this.source}.connector.on`, event.data.topic);
         this.messages$.next(event.data);
       });
       connector.start();
 
-    } else if (type === 'child' || type === 'process') {
+    } else if (
+      source === 'electron' && target === 'express' ||
+      source === 'express'  && target === 'electron'
+      ) {
       connector.on('message', (msg) => {
-        DEBUG && console.log('BUS.connector.on', this.name, msg.topic);
+        DEBUG && console.log(`BUS.${this.source}.connector.on`, msg.topic);
         this.messages$.next(msg);
       });
 
-    } else if (type === 'clientport') {
+    } else if (source === 'browser' && target === 'electron') {
       connector.onmessage = (event: MessageEvent) => {
-        DEBUG && console.log('BUS.connector.on', this.name, event.data.topic);
+        DEBUG && console.log(`BUS.${this.source}.connector.on`, event.data.topic);
         this.messages$.next(event.data);
       };
 
@@ -59,13 +66,13 @@ class Bus {
 
   }
 
-  emit (msg: IMessage<TPayload>) {
+  emit (msg: IMessage<TPayload>, bridge=false) {
 
-    // console.log('BUS.emit', msg.topic, this.name, '=>', msg.receiver);
+    console.log(`BUS.${this.source}.emit`, msg.topic, '=>', msg.receiver);
 
-    msg.sender = this.name;
+    !bridge && (msg.sender = this.source);
 
-    if (this.name === 'browser') {
+    if (this.source === 'browser') {
       if (msg.receiver === 'browser') {
         this.messages$.next(msg);
       } else {
@@ -73,8 +80,11 @@ class Bus {
         this.connector.postMessage(msg);
       }
 
-    } else if (this.name === 'electron') {
-      if (msg.receiver === 'browser') {
+    } else if (this.source === 'electron') {
+      if (msg.receiver === 'electron') {
+        this.messages$.next(msg);
+
+      } else if (msg.receiver === 'browser') {
         console.log('BUS.send.connector', msg.sender, '=>', msg.receiver, msg.topic);
         this.connector.postMessage(msg);
 
@@ -83,9 +93,9 @@ class Bus {
         (this.connector as NodeJS.Process).send(msg);
       }
 
-    } else if (this.name === 'express') {
-      if (msg.receiver === 'browser') {
-        // this.messages$.next(msg);
+    } else if (this.source === 'express') {
+      if (msg.receiver === 'express') {
+        this.messages$.next(msg);
       } else {
         console.log('BUS.send.connector', msg.sender, '=>', msg.receiver, msg.topic);
         (this.connector as NodeJS.Process).send(msg);
@@ -102,15 +112,12 @@ class Bus {
   on(msgFilter: TTopic | TMsgFilter, action: any): Subscription {
 
     const tapper = (msg: any) => {
-      console.log('BUS.tap', this.name, msg.topic, msg.sender, '=>', msg.receiver);
+      console.log('BUS.tap', this.source, msg.topic, msg.sender, '=>', msg.receiver);
     }
 
     if ( typeof msgFilter === 'function') {
       return this.messages$
         .pipe (
-
-
-
           filter( msgFilter ),
           tap( tapper )
         )
