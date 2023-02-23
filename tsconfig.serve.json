@@ -6,6 +6,7 @@
     "esModuleInterop": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "resolveJsonModule": true,
     "module": "commonjs",
     "target": "es2015",
     "types": [
@@ -23,7 +24,10 @@
     "app/main.ts",
     "app/config.ts",
     "app/interfaces.ts",
-    "app/resources/express/server.ts"
+    "app/preload.ts",
+    "app/resources/express/server.ts",
+    "app/resources/express/init-routes.ts",
+    "app/resources/express/api-router.ts"
   ],
   "exclude": [
     "node_modules",

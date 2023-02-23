@@ -1,8 +1,11 @@
 
 import { IConfig } from "./interfaces"
 import { app } from 'electron';
+// import package_json from '../package.json'
 
 const config: IConfig = {
+
+  version: app.getVersion(),
 
   args: process.argv.slice(1),
   serve: process.argv.slice(1).some(val => val === '--serve'),
@@ -12,14 +15,18 @@ const config: IConfig = {
   isDev: process.argv.slice(1).some(val => val === '--serve'),
   isPacked: app.isPackaged,
 
+  userLanguages: app.getPreferredSystemLanguages(),
+
   thisYear: new Date().getFullYear(),
 
   filePreload: 'preload.js',
   fileServers: '',
   fileExpress: `${__dirname}/resources/express/server`,
+
   pathResources: process.resourcesPath,
   pathApp: app.getAppPath(),
   pathData: '',
+  pathUser: app.getPath('userData')
 
 }
 

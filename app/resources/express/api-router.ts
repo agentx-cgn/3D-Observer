@@ -2,9 +2,13 @@
 // import initServers from '../data/init-servers.json' assert {type: 'json'}
 // import package_json from '../../package.json' assert {type: 'json'}
 
-const express      = require('express');
-const initServers  = require('./data/init-servers.json');
-const package_json = require('../../package.json')
+import * as express from "express";
+import init_servers from './data/init-servers.json'
+import package_json from '../../package.json'
+
+// const express      = require(' express');
+// const initServers  = require('./data/init-servers.json');
+// const package_json = require('../../package.json')
 
 const template = {
   'messages': [
@@ -38,7 +42,7 @@ class Controller {
 
     try {
       container.meta.language = req.query.lang ?? 'xx';
-      container.data = initServers;
+      container.data = init_servers;
 
       container.meta.response_time = Date.now() - t1
       return res.json(container);
@@ -51,7 +55,7 @@ class Controller {
 
       container.meta.response_time = Date.now() - t1
       container.messages = [
-        { text: error, severity: 'error', code: 0 }
+        { text: error, severity: 'error', code: '' }
       ]
 
       res.status(500).send(res.json(container))
@@ -62,10 +66,12 @@ class Controller {
 
 }
 
-const router     = express.Router()
+const apiRouter  = express.Router()
 const controller = new Controller()
 
-router.get('/init-servers',      controller.InitServer)
+apiRouter.get('/init-servers',      controller.InitServer)
 
 // export default router
-module.exports = router;
+// module.exports = router;
+
+export default apiRouter

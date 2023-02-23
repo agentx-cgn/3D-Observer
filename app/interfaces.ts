@@ -28,12 +28,16 @@ export interface IResApi {
 
 export interface IConfig {
 
+  version: string
+
   args: string[];
   serve: boolean;
   isDevelopment: boolean;
   isAsar: boolean;
   isDev: boolean;
   isPacked: boolean;
+
+  userLanguages: string[]
 
   screen?: {
     workAreaSize: {
@@ -54,6 +58,7 @@ export interface IConfig {
   pathResources: string;
   pathApp?: string;
   pathData?: string
+  pathUser: string
 
   api?: {
     root: string;

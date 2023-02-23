@@ -4,17 +4,19 @@ const { ipcRenderer } = require('electron')
 // We need to wait until the main world is ready to receive the message before
 // sending the port. We create this promise in the preload so it's guaranteed
 // to register the onload listener before the load event is fired.
-const windowLoaded = new Promise(resolve => {
+const windowLoaded = new Promise<void>(resolve => {
+
   window.onload = () => {
     console.log('PRE.window loaded');
     ipcRenderer.postMessage('window-world-port', 'huhu');
     resolve();
   }
-})
+
+});
 
 ipcRenderer.on('main-world-port', async (event) => {
 
-  await windowLoaded
+  await windowLoaded;
 
   // We use regular window.postMessage to transfer the port from the isolated
   // world to the main world.
