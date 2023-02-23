@@ -25,7 +25,10 @@ export interface IApiRequest {
 export interface IApiResponse {
   server: string
   endpoint: string
-  data: any
+  status?: number
+  headers?: Record<string, string>
+  body?: any
+  error?: any
 }
 
 export interface IConfig {

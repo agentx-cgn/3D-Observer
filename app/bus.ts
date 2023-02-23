@@ -34,7 +34,7 @@ class Bus {
 
   constructor (source: TSender, target: TReceiver, connector) {
 
-    DEBUG && console.log(`BUS.${this.source}.constructor`, '=>', target);
+    DEBUG && console.log(`BUS.${source}.constructor`, '=>', target);
 
     this.source    = source;
     this.target    = target;

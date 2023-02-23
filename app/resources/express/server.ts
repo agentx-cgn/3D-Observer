@@ -1,5 +1,6 @@
 
 import express from 'express'
+import axios from 'axios'
 import cors from 'cors'
 import bodyParser from 'body-parser';
 import log from 'electron-log'
@@ -9,7 +10,7 @@ import sqlite3 from 'sqlite3';
 import dotenv from 'dotenv';
 import { AddressInfo } from 'node:net';
 
-import { IApiRequest, IConfig, IMessage } from '../../interfaces';
+import { IApiRequest, IApiResponse, IConfig, IMessage } from '../../interfaces';
 import Bus from '../../bus';
 import apiRouter from './api-router';
 
@@ -40,8 +41,8 @@ class App {
 
   constructor() {
 
-    this.app = express();
-    this.router  = express.Router();
+    this.app    = express();
+    this.router = express.Router();
     this.app.use(cors());
     this.app.use(express.json())
     this.app.use(bodyParser.json());
@@ -65,15 +66,37 @@ class App {
     this.bus = new Bus('express', 'electron', process);
 
     this.bus.on('request', (msg: IMessage<IApiRequest>) => {
+
+      const self = this;
+
       console.log('EXP.request', msg);
-      this.bus.emit({
-        topic: 'response',
-        receiver: msg.sender,
-        payload: {
-          ...msg.payload,
-          data: { huhu: 'huhu' }
-        }
-      })
+
+      axios.get('https://berlin.social/api/v1/instance/peers')
+        .then( (res) => {
+
+          if ( res.status === 200) {
+            const payload = { status: res.status, headers: res.headers, body: res.data, ...msg.payload }
+            self.bus.emit({
+              topic:    'response',
+              receiver: msg.sender,
+              payload,
+            })
+
+          } else {
+            console.log('AXIOS', res.status, res.statusText)
+
+          }
+
+        })
+        .catch(function (error) {
+          // handle error
+          console.log('AXIOS', error);
+          return { error };
+        })
+        // .finally(function () {
+        // })
+      ;
+
     });
 
     this.bus.on('config', (msg) => {
@@ -141,9 +164,10 @@ class App {
 
       const cfg = config;
 
-      process.on('message', (msg) => {
-        console.log('EXP.message', msg);
-      });
+      // to debug lost messages
+      // process.on('message', (msg) => {
+      //   console.log('EXP.message', msg);
+      // });
 
       // most basic end point
       this.app.use(this.router.get('/', (req, res) => {
@@ -157,17 +181,16 @@ class App {
       const server = this.app.listen(preConfig.api.port, preConfig.api.ip, () => {
         const adr = (server.address() as AddressInfo);
         console.log(`EX.listening on`, adr.address, adr.port);
-        // process.send({ port });
         resolve(adr);
       });
 
-      var route, routes = [];
-
+      // log routes to console
+      let route: any, routes = [];
       this.app._router.stack.forEach(function(middleware){
         if(middleware.route){ // routes registered directly on the app
           routes.push(middleware.route);
         } else if(middleware.name === 'router'){ // router middleware
-          middleware.handle.stack.forEach(function(handler){
+          middleware.handle.stack.forEach(function(handler: any){
             route = handler.route;
             route && routes.push(route);
           });
