@@ -51,14 +51,18 @@ export interface IConfig {
   thisYear: number;
 
   filePreload: string;
-  fileServers?: string;
+  fileServers: string;
   fileExpress: string;
-  fileDB?: string
+  fileDBSource: string
+  fileDBTarget: string
 
   pathResources: string;
-  pathApp?: string;
-  pathData?: string
+  pathApp: string;
+  pathData: string
   pathUser: string
+
+  existsFileDBTarget: boolean
+  existsFileDBSource: boolean
 
   api?: {
     root: string;

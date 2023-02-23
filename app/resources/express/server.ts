@@ -28,9 +28,9 @@ const preConfig = {
     root: '',
     family: ''
   },
-  pathData: path.join(__dirname, 'data'),
-  fileServers: path.join(__dirname, 'data', 'init-servers.json'),
-  fileDB: '',
+  // pathData: path.join(__dirname, 'data'),
+  // fileServers: path.join(__dirname, 'data', 'init-servers.json'),
+  // fileDB: '',
 }
 
 let
@@ -76,10 +76,10 @@ class App {
 
       config = Object.assign({}, msg.payload, preConfig);
 
-      config.fileDB = config.isDev
-        ? path.join(config.pathApp, 'app', 'resources', 'express', 'data', 'observations.sqlite')
-        : path.join(config.pathApp, '', 'resources', 'app.asar.unpacked', 'express', 'data', 'observations.sqlite')
-      ;
+      // config.fileDB = config.isDev
+      //   ? path.join(config.pathApp, 'app', 'resources', 'express', 'data', 'observations.sqlite')
+      //   : path.join(config.pathApp, '', 'resources', 'app.asar.unpacked', 'express', 'data', 'observations.sqlite')
+      // ;
 
       this.activate().then( (adr: AddressInfo) => {
 
@@ -109,7 +109,7 @@ class App {
     // wait for first message
     // process.on('message', (msg: any) => {
 
-    //   console.log('EX.process.message', msg);
+    //   console.log('EXP.process.message', msg);
 
     //   if (msg.topic === 'config') {
 
@@ -130,8 +130,8 @@ class App {
 
     //       // this.bus = new Bus('express', 'process', process);
 
-    //       console.log('EX.config', config);
-    //       console.log('EX.-------------------------');
+    //       console.log('EXP.config', config);
+    //       console.log('EXP.-------------------------');
 
     //       // this.bus.emit({
     //       //   topic: 'config',
@@ -170,17 +170,17 @@ class App {
 
     try {
 
-      console.log('EX.JSON.trying...', cfg.fileServers);
+      console.log('EXP.JSON.trying...', cfg.fileServers);
       const initServers = JSON.parse(fs.readFileSync(cfg.fileServers, 'utf8'));
-      console.log('EX.JSON.success', initServers.length, 'servers');
+      console.log('EXP.JSON.success', initServers.length, 'servers');
 
       console.log('TEST', path.resolve(String(process.resourcesPath),  'app/resources/express/data/database.db3'));
-      console.log('EX.DB.trying...', cfg.fileDB);
-      let db = new sqlite3.Database(cfg.fileDB, sqlite3.OPEN_READWRITE, (err) => {
+      console.log('EXP.DB.trying...', cfg.fileDBSource);
+      let db = new sqlite3.Database(cfg.fileDBSource, sqlite3.OPEN_READWRITE, (err) => {
         if (err) {
           console.error('EX.DB.error', err.message);
         } else {
-          console.log('EX.DB.success');
+          console.log('EXP.DB.success');
         }
       });
 
@@ -205,7 +205,7 @@ class App {
       const cfg = config;
 
       process.on('message', (msg) => {
-        console.log('EX.message', msg);
+        console.log('EXP.message', msg);
       });
 
       // most basic end point
@@ -237,7 +237,7 @@ class App {
         }
       });
 
-      console.log('EX.activated', routes.map( r => ({ p: r.path, m: r.methods })));
+      console.log('EXP.activated', routes.map( r => ({ p: r.path, m: r.methods })));
 
     });
 

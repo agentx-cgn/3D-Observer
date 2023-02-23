@@ -2,7 +2,7 @@ require('dotenv').config();
 const path = require('path');
 
 !process.env.DATABASE_STORAGE && console.warn('EX.env.missing');
- process.env.DATABASE_STORAGE && console.log('EX.storage', process.env.DATABASE_STORAGE);
+ process.env.DATABASE_STORAGE && console.log('EXP.storage', process.env.DATABASE_STORAGE);
 
 const databaseConfig = {
   database:  process.env.DATABASE_NAME ?? '',
