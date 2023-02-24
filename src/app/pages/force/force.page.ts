@@ -1,12 +1,3 @@
-/* eslint-disable @angular-eslint/component-class-suffix */
-/* eslint-disable max-len */
-/* eslint-disable @typescript-eslint/naming-convention */
-/* eslint-disable no-debugger */
-/* eslint-disable @typescript-eslint/no-unused-expressions */
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable @typescript-eslint/member-delimiter-style */
-/* eslint-disable no-bitwise */
-/* eslint-disable space-before-function-paren */
 
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { interval } from 'rxjs';
@@ -18,6 +9,7 @@ import servers from '../../../assets/json/servers.json';
 import { INode, ILink, TNodeType, Coords } from '../../../../app/interfaces';
 
 import { ForceService } from './force.service';
+import * as THREE  from 'three';
 
 // https://github.com/vasturiano/3d-force-graph#api-reference
 // https://docs.joinmastodon.org/methods/instance/
@@ -36,16 +28,9 @@ export class ForcePage implements AfterViewInit {
 
   public zInterface = 0;
 
-  private cfg = {
-    background_color: 'black',
-    nodeResolution: 32,
-    nodeOpacity: 0.9
-  };
+  private cfg: any;
 
   private graph = ForceGraph3D();
-
-  private hoverNode: INode | undefined;
-  private selectNode: INode | undefined;
 
   private initData = {
     nodes: [
@@ -54,18 +39,17 @@ export class ForcePage implements AfterViewInit {
     links: []
   };
 
-  // private source$;
-
   constructor(
     private readonly svc: ForceService
   ) {
     console.log('Force.constructor', (window as any).__THREE__);
+    this.cfg = this.svc.cfg;
   }
 
   onResize(event) {
 
-    const width  = event.target.innerWidth;
-    const height = event.target.innerHeight;
+    const width: number  = event.target.innerWidth;
+    const height: number = event.target.innerHeight;
 
     this.graph
       .width(width)
@@ -85,11 +69,11 @@ export class ForcePage implements AfterViewInit {
       .enableNodeDrag(true)
       .onNodeClick(this.onNodeClick.bind(this))
       .nodeColor(this.svc.randomColor)
-      .nodeResolution(this.cfg.nodeResolution)  // 8
-      .nodeOpacity(this.cfg.nodeOpacity) // .75
+      .nodeResolution(this.cfg.nodeResolution)
+      .nodeOpacity(this.cfg.nodeOpacity)
       .nodeLabel('id')
       .nodeVal('value')
-      .onNodeHover((node: INode) => this.hoverNode = node)
+      .onNodeHover((node: INode) => this.svc.hoverNode = node)
       .nodeThreeObject((node: INode) => (
         this.svc.sphereGeometry(node)
         // node.type === 'server' ? this.sphereGeometry(node) :
@@ -104,25 +88,32 @@ export class ForcePage implements AfterViewInit {
       .linkDirectionalParticleSpeed( (d: ILink) => d.value * 0.001)
 
       .onEngineStop( () => {
-        // this.graph.numDimensions(3); // Re-heat simulation)
         this.graph.d3ReheatSimulation();
         console.log('Home.engine', 'restarted');
       })
       .onEngineTick( () => {
-        if (this.selectNode) {
+        if (this.svc.selectNode) {
           const scale = 0.3 * Math.sin(Date.now() / 300) + 1 ;
-          this.selectNode.__threeObj.scale.set(scale, scale, scale);
+          this.svc.selectNode.__threeObj.scale.set(scale, scale, scale);
         }
       })
     ;
 
-    this.graph.d3Force('charge').strength(-2); // the smaller, the more stick balls together
-    this.graph.d3Force('charge').distanceMin(10); // the smaller, the more stick balls together
-    this.graph.d3AlphaDecay(0.0228);  // def: 0.0228
+    this.graph.d3Force('charge').strength(this.cfg.chargeStrength); // the smaller, the more stick balls together
+    this.graph.d3Force('charge').distanceMin(this.cfg.chargeDistanceMin); // the smaller, the more stick balls together
+    this.graph.d3AlphaDecay(this.cfg.alphaDecay);
     this.graph.d3Force('link').distance((link: ILink) => link.value);
 
+    this.graph.scene().fog = new THREE.Fog( 0x000000, -50, 2000 );
+
+    this.initGraph();
+
+  }
+
+  initGraph () {
+
     // add some nodes
-    const testServers = servers.slice(0, 10);
+    const testServers = servers.slice(0, 100);
     interval(100)
       .pipe(
         take(testServers.length),
@@ -131,16 +122,13 @@ export class ForcePage implements AfterViewInit {
       .subscribe(id => {
 
         const domain = id.split('.').slice(-1)[0];
-        const size   = 10; //~~(Math.random()*10) +2;
-        const node   = { id, size, domain, type: 'server' as TNodeType, value: 10 };
-
-        // console.log('subscribe', node);
+        const size   = this.cfg.server.size;
+        const node   = { id, size, domain, type: 'server' as TNodeType, value: this.cfg.server.value};
 
         this.svc.insertServerNode(node);
 
       })
     ;
-
 
   }
 
@@ -155,20 +143,18 @@ export class ForcePage implements AfterViewInit {
       : { x: 0, y: 0, z: distance }; // special case if node is in (0,0,0)
 
     this.graph.cameraPosition(
-      newPos, // new position
-      node as Coords, // lookAt ({ x, y, z })
-      3000  // ms transition duration
+      newPos,                 // new position
+      node as Coords,         // lookAt ({ x, y, z })
+      this.cfg.zoom.duration  // ms transition duration
     );
 
   }
-
 
   onClickInterface () {
     this.zInterface = 0;
   }
 
   onBackgroundClick (e: Event) {
-    // console.log(this, e);
     this.graph
       .zoomToFit()
       .d3ReheatSimulation()
@@ -178,7 +164,7 @@ export class ForcePage implements AfterViewInit {
 
   onNodeClick (node: INode, e: Event) {
 
-    this.selectNode = node;
+    this.svc.selectNode = node;
     node.type === 'server' && this.pokeNode(node);
     this.zoomToNode(node);
 
@@ -192,31 +178,33 @@ export class ForcePage implements AfterViewInit {
 
     const nodes: INode[] = ['info', 'peers', 'activity', 'rules'].map( item => {
 
-      // const xyz = (
-      //   item === 'info'     ? { x: parent.x +1, y: parent.y +0, z: parent.z +1 } :
-      //   item === 'peers'    ? { x: parent.x -1, y: parent.y +0, z: parent.z +1 } :
-      //   item === 'activity' ? { x: parent.x +1, y: parent.y +0, z: parent.z -1 } :
-      //   item === 'rules'    ? { x: parent.x -1, y: parent.y +0, z: parent.z -1 } :
-      //                         { x: parent.x +3, y: parent.y +3, z: parent.z +3 }
-      // );
-
       const id    = parent.id + '/' + item;
-      const node  = { id, domain: parent.domain, size: 3, type: item as TNodeType, ...{ x: parent.x, y: parent.y, z: parent.z }, value: 5 };
-      links.push( { target: parent.id, source: id, value: 10 } );
+      const node  = {
+        id,
+        domain: parent.domain,
+        size:   this.cfg.satellite.size,
+        value:  this.cfg.satellite.value,
+        type:   item as TNodeType,
+        ...{ x: parent.x, y: parent.y, z: parent.z },
+      };
+
+      links.push( { target: parent.id, source: id, ...this.cfg.satellite.links } );
+
       return node;
 
     });
 
-    links.push( { target: parent.id + '/info',     source: parent.id + '/peers',    width: 0, value: 40 } );
-    links.push( { target: parent.id + '/peers',    source: parent.id + '/activity', width: 0, value: 40 } );
-    links.push( { target: parent.id + '/activity', source: parent.id + '/rules',    width: 0, value: 40 } );
-    links.push( { target: parent.id + '/rules',    source: parent.id + '/info',     width: 0, value: 40 } );
-    links.push( { target: parent.id + '/rules',    source: parent.id + '/peers',    width: 0, value: 40 } );
-    links.push( { target: parent.id + '/activity', source: parent.id + '/info',     width: 0, value: 40 } );
+    const props = { width: 0, value: 40 };
+
+    links.push( { target: parent.id + '/info',     source: parent.id + '/peers',    ...props } );
+    links.push( { target: parent.id + '/peers',    source: parent.id + '/activity', ...props } );
+    links.push( { target: parent.id + '/activity', source: parent.id + '/rules',    ...props } );
+    links.push( { target: parent.id + '/rules',    source: parent.id + '/info',     ...props } );
+    links.push( { target: parent.id + '/rules',    source: parent.id + '/peers',    ...props } );
+    links.push( { target: parent.id + '/activity', source: parent.id + '/info',     ...props } );
 
     this.svc.insertDataNodes(nodes, links);
 
   }
-
 
 }

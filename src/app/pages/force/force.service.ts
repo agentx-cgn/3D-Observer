@@ -23,6 +23,45 @@ import { helper as H } from '../../core/helper.service';
 export class ForceService {
 
   public graph = ForceGraph3D();
+  public v3Camera: THREE.Vector3;
+  public scene: THREE.Scene;
+
+  public selectNode: INode | undefined;
+  public hoverNode: INode | undefined;
+
+  public cfg = {
+    background_color: 'black',
+    nodeResolution: 32,
+    nodeOpacity: 0.9,
+    chargeStrength: -2,
+    chargeDistanceMin: 10,
+    alphaDecay: 0.0228,     // def: 0.0228
+    server: {
+      size: 10,
+      opacity: 1,
+      value: 10
+    },
+    satellite: {
+      size: 3,
+      opacity: 0.9,
+      value: 5,
+      links: { value: 10, width: 1 }
+    },
+    zoom: {
+      duration: 3000
+    }
+  };
+
+  onEngineTick () {
+    if (this.selectNode) {
+      const scale = 0.3 * Math.sin(Date.now() / 300) + 1 ;
+      this.selectNode.__threeObj.scale.set(scale, scale, scale);
+    }
+    const cam = this.graph.camera();
+    this.v3Camera = cam.position.clone();
+    this.v3Camera.applyMatrix4( cam.matrixWorld );
+
+  }
 
   insertDataNodes (dataNodes: INode[], linkList: ILink[] ) {
 

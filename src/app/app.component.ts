@@ -6,6 +6,7 @@ import { environment } from '../environments/environment';
 import { BusService } from './core/bus.service';
 import { IConfig, IMessage, IApiResponse } from '../../app/interfaces';
 import Bus from '../../app/bus';
+import { ForceService } from './pages/force/force.service';
 
 
 @Component({
@@ -21,6 +22,7 @@ export class AppComponent {
   constructor(
     private translate: TranslateService,
     private busService: BusService,
+    public force: ForceService,
   ) {
 
     console.log('App.Env', JSON.stringify(environment));

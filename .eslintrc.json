@@ -28,6 +28,15 @@
         "plugin:@angular-eslint/template/process-inline-templates"
       ],
       "rules": {
+        "max-len": 0,
+        "no-bitwise": 0,
+        "no-debugger": 0,
+        "no-underscore-dangle": 0,
+        "space-before-function-paren": 0,
+        "@typescript-eslint/naming-convention": 0,
+        "@angular-eslint/component-class-suffix": 0,
+        "@typescript-eslint/no-unused-expressions": 0,
+        "@typescript-eslint/member-delimiter-style": 0,
         "prefer-arrow/prefer-arrow-functions": 0,
         "@angular-eslint/directive-selector":  0,
         "@angular-eslint/component-selector": [
