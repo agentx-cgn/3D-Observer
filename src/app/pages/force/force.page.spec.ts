@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { HomeComponent } from './home.component';
+import { ForcePage } from './force.page';
 import { TranslateModule } from '@ngx-translate/core';
 import { RouterTestingModule } from '@angular/router/testing';
 
-describe('HomeComponent', () => {
-  let component: HomeComponent;
-  let fixture: ComponentFixture<HomeComponent>;
+describe('ForcePage', () => {
+  let component: ForcePage;
+  let fixture: ComponentFixture<ForcePage>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [HomeComponent],
+      declarations: [ForcePage],
       imports: [TranslateModule.forRoot(), RouterTestingModule]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(HomeComponent);
+    fixture = TestBed.createComponent(ForcePage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

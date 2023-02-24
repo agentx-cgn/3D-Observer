@@ -1,6 +1,5 @@
 /* eslint-disable no-underscore-dangle */
 import { Injectable } from '@angular/core';
-
 import { Subscription } from 'rxjs';
 import { IMessage, TPayload, TReceiver, TSender, TTopic } from '../../../app/interfaces';
 import Bus from '../../../app/bus';

@@ -1,7 +1,7 @@
 {
   "name": "3D-Observer",
   "version": "0.0.1",
-  "description": "3D Observer of the Mastodon Univers",
+  "description": "3D Observer of the Fediverse",
   "homepage": "",
   "author": {
     "name": "Vion",
@@ -12,7 +12,7 @@
   "dependencies": {
     "axios": "^1.3.4",
     "bcrypt": "5.1.0",
-    "body-parser": "1.20.1",
+    "body-parser": "1.20.2",
     "cors": "2.8.5",
     "dotenv": "16.0.3",
     "electron-log": "5.0.0-beta.16",

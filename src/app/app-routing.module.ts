@@ -2,11 +2,11 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
-import { HomeComponent } from './pages/home/home.component';
+import { ForcePage } from './pages/force/force.page';
 
 const routes: Routes = [
   {
-    path: '',   component: HomeComponent
+    path: '',   component: ForcePage
   },
   {
     path: '**',    component: PageNotFoundComponent

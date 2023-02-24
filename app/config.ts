@@ -4,8 +4,6 @@ import { app } from 'electron';
 import path from 'path'
 import fs from 'fs'
 
-// import package_json from '../package.json'
-
 const args     = process.argv.slice(1)
 const isDev    = args.some(val => val === '--serve')
 const pathApp  = app.getAppPath()

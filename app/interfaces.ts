@@ -1,4 +1,5 @@
 
+import * as THREE  from 'three';
 
 export type TPayload = string | number | boolean | IConfig | IApiRequest | IApiResponse;
 
@@ -76,4 +77,26 @@ export interface IConfig {
     protocol: string;
     family: string;
   }
+}
+
+export type Coords = { x: number; y: number; z: number; };
+export type TNodeType = 'server' | 'peers' | 'activities' | 'rules' | 'info';
+
+export interface INode {
+  id: string
+  domain: string
+  size: number
+  type: TNodeType
+  value: number
+  x?: number
+  y?: number
+  z?: number
+  __threeObj?: THREE.Object3D
+}
+
+export interface ILink {
+  target: string
+  source: string
+  value: number
+  width: number
 }

@@ -1,19 +1,19 @@
-import { app, BrowserWindow, screen, Menu, MenuItem, MessageChannelMain } from 'electron';
-import * as path from 'path';
-import * as fs from 'fs';
-import Bus from './bus';
-import { IConfig, IMessage, TPayload } from './interfaces';
-import { ChildProcess } from 'node:child_process';
-import config from './config';
-// const { fork } = require("child_process");
+import { app, BrowserWindow, screen, Menu, MenuItem, MessageChannelMain } from 'electron'
+import { ChildProcess } from 'node:child_process'
 import { fork } from 'child_process'
+import * as path from 'path'
+import * as fs from 'fs'
+
+import { IConfig, IMessage, TPayload } from './interfaces'
+import Bus from './bus'
+import config from './config'
 
 // https://github.com/mslipper/electron-child-process-playground/tree/master/src
 
 // LOGGING
-const log  = require('electron-log');
-Object.assign(console, log.functions);
-log.transports.file.level = 'silly';
+const log  = require('electron-log')
+Object.assign(console, log.functions)
+log.transports.file.level = 'silly'
 
 let
   win: BrowserWindow = null,

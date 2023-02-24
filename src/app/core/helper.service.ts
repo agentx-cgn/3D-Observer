@@ -17,11 +17,6 @@ const helper = {
     }, 0);
   }
 
-
-
-
-
-
 };
 
 export { helper };

@@ -1,3 +1,4 @@
+/* eslint-disable @angular-eslint/component-class-suffix */
 /* eslint-disable max-len */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable no-debugger */
@@ -6,17 +7,17 @@
 /* eslint-disable @typescript-eslint/member-delimiter-style */
 /* eslint-disable no-bitwise */
 /* eslint-disable space-before-function-paren */
-import ForceGraph3D from '3d-force-graph';
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { interval } from 'rxjs';
-import { switchMap, map, take } from 'rxjs/operators';
-import SpriteText from 'three-spritetext';
-import * as THREE  from 'three';
+import { map, take } from 'rxjs/operators';
+
+import ForceGraph3D from '3d-force-graph';
 
 import servers from '../../../assets/json/servers.json';
+import { INode, ILink, TNodeType, Coords } from '../../../../app/interfaces';
 
-import { helper as H } from './../../core/helper.service';
+import { ForceService } from './force.service';
 
 // https://github.com/vasturiano/3d-force-graph#api-reference
 // https://docs.joinmastodon.org/methods/instance/
@@ -24,39 +25,22 @@ import { helper as H } from './../../core/helper.service';
 // https://threejs.org/docs/#api/en/core/Object3D.scale
 
 
-type Coords = { x: number; y: number; z: number; };
-type TNodeType = 'server' | 'peers' | 'activities' | 'rules' | 'info';
-
-interface INode {
-  id: string
-  domain: string
-  size: number
-  type: TNodeType
-  value: number
-  x?: number
-  y?: number
-  z?: number
-  __threeObj?: THREE.Object3D
-
-}
-
-interface ILink {
-  target: string
-  source: string
-  value: number
-  width: number
-}
-
 @Component({
   selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  templateUrl: './force.page.html',
+  styleUrls: ['./force.page.scss']
 })
-export class HomeComponent implements AfterViewInit {
+export class ForcePage implements AfterViewInit {
 
   @ViewChild('container') container: ElementRef;
 
   public zInterface = 0;
+
+  private cfg = {
+    background_color: 'black',
+    nodeResolution: 32,
+    nodeOpacity: 0.9
+  };
 
   private graph = ForceGraph3D();
 
@@ -72,97 +56,42 @@ export class HomeComponent implements AfterViewInit {
 
   // private source$;
 
-  constructor(private router: Router) {
-
-    console.log('Home.three', (window as any).__THREE__);
-
+  constructor(
+    private readonly svc: ForceService
+  ) {
+    console.log('Force.constructor', (window as any).__THREE__);
   }
 
   onResize(event) {
+
     const width  = event.target.innerWidth;
     const height = event.target.innerHeight;
+
     this.graph
       .width(width)
       .height(height)
     ;
-  }
-
-  insertDataNodes (dataNodes: INode[], linkList: ILink[] ) {
-
-    const { nodes, links } = this.graph.graphData();
-
-    this.graph.graphData({
-      nodes: [ ...nodes, ...dataNodes ],
-      links: linkList.length ? [ ...links, ...linkList ] : [ ...links ]
-    });
-
-  }
-
-  insertServerNode (node: INode) {
-
-    const { nodes, links } = this.graph.graphData();
-
-    // const value = ~~(Math.random() * 10) +2;
-    const candidates = nodes.filter( (n: INode) => n.domain === node.domain && n.type === 'server');
-    const link = candidates.length
-      ? { target: candidates[~~(Math.random() * candidates.length)].id, source: node.id, value: 100, width: 1 }
-      : undefined
-    ;
-
-    // console.log('insert', node, link);
-
-    this.graph.graphData({
-      nodes: [ ...nodes, node ],
-      links: link ? [ ...links, link ] : [ ...links ]
-    });
-
-  }
-
-  removeNode(node: INode) {
-
-    const { nodes, links } = this.graph.graphData();
-    const newlinks = links.filter(l => l.source !== node && l.target !== node); // Remove links attached to node
-    const index = nodes.findIndex( n => n.id === node.id);
-
-    nodes.splice(index, 1); // Remove node
-    nodes.forEach((n, idx) => { n.id = idx; }); // Reset node ids to array index
-
-    this.graph.graphData({ nodes, links: newlinks });
 
   }
 
   ngAfterViewInit(): void {
 
-
-    const N = 300;
-    const gData = {
-      nodes: [...Array(N).keys()].map(i => ({ id: i })),
-      links: [...Array(N).keys()]
-        .filter(id => id)
-        .map(id => ({
-          source: id,
-          target: Math.round(Math.random() * (id-1))
-        }))
-    };
-
-    this.graph(this.container.nativeElement)
-      // .graphData(gData)
-      // .nodeAutoColorBy('domain')
+    this.svc.graph = this.graph(this.container.nativeElement)
 
       .graphData(this.initData)
       .onBackgroundClick(this.onBackgroundClick.bind(this))
-      .backgroundColor('#0000')
+      .backgroundColor(this.cfg.background_color)
 
       .enableNodeDrag(true)
       .onNodeClick(this.onNodeClick.bind(this))
-      .nodeColor(this.randomColor)
-      .nodeResolution(32)  // 8
-      .nodeOpacity(90) // .75
+      .nodeColor(this.svc.randomColor)
+      .nodeResolution(this.cfg.nodeResolution)  // 8
+      .nodeOpacity(this.cfg.nodeOpacity) // .75
       .nodeLabel('id')
       .nodeVal('value')
       .onNodeHover((node: INode) => this.hoverNode = node)
       .nodeThreeObject((node: INode) => (
-        this.sphereGeometry(node)
+        this.svc.sphereGeometry(node)
         // node.type === 'server' ? this.sphereGeometry(node) :
         // node.type === 'peers'  ? this.spriteText(node) :
         // node.type === 'rules'  ? this.spriteImage(node) :
@@ -207,49 +136,12 @@ export class HomeComponent implements AfterViewInit {
 
         // console.log('subscribe', node);
 
-        this.insertServerNode(node);
+        this.svc.insertServerNode(node);
 
       })
     ;
 
 
-  }
-
-  sphereGeometry (node: INode) {
-
-    return new THREE.Mesh(
-      new THREE.SphereGeometry(node.size),
-      new THREE.MeshLambertMaterial({
-        color: this.randomColor(node),
-        transparent: true,
-        opacity: 0.8
-      })
-    );
-
-  }
-
-  spriteText (node: INode) {
-    const sprite: any = new SpriteText(node.id);
-    sprite.material.depthWrite = false; // make sprite background transparent
-    sprite.color = this.randomColor(node);
-    sprite.textHeight = 4;
-    return sprite;
-  }
-
-  spriteImage ({ type }) {
-    const imgTexture = new THREE.TextureLoader().load(`./assets/sprites/${type}.png`);
-    const material   = new THREE.SpriteMaterial({ map: imgTexture });
-    const sprite     = new THREE.Sprite(material);
-    sprite.scale.set(4, 4, 1);
-    return sprite;
-  }
-
-  randomColor(node: INode) {
-    return (
-      node.type === 'server' ? H.colorFromString(node.domain, 70, 50) :
-      node.type === 'peers'  ? H.colorFromString(node.domain, 40, 40) :
-        H.colorFromString(node.domain, 40, 40)
-    );
   }
 
   zoomToNode (node: INode) {
@@ -322,7 +214,7 @@ export class HomeComponent implements AfterViewInit {
     links.push( { target: parent.id + '/rules',    source: parent.id + '/peers',    width: 0, value: 40 } );
     links.push( { target: parent.id + '/activity', source: parent.id + '/info',     width: 0, value: 40 } );
 
-    this.insertDataNodes(nodes, links);
+    this.svc.insertDataNodes(nodes, links);
 
   }
 

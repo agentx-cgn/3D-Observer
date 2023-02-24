@@ -5,23 +5,23 @@ import EventEmitter from 'node:events';
 
 import { IMessage, TMsgFilter, TPayload, TReceiver, TSender, TTopic } from './interfaces';
 
-const DEBUG = true;
+const DEBUG = false;
 
 class Bus {
 
   static connect(bus1: Bus, bus2: Bus): void {
 
     bus1.on( (msg: IMessage<TPayload>) => msg.receiver === bus2.target, (msg: IMessage<TPayload>) => {
-      console.log('BUS.forwarding', msg.sender, '=>', msg.receiver);
+      DEBUG && console.log('BUS.forwarding', msg.sender, '=>', msg.receiver);
       bus2.emit(msg, true);
     });
 
     bus2.on( (msg: IMessage<TPayload>) => msg.receiver === bus1.target, (msg: IMessage<TPayload>) => {
-      console.log('BUS.forwarding', msg.sender, '=>', msg.receiver);
+      DEBUG && console.log('BUS.forwarding', msg.sender, '=>', msg.receiver);
       bus1.emit(msg, true);
     });
 
-    console.log('BUS.connected', bus1.target, '<=>', bus2.target);
+    DEBUG && console.log('BUS.connected', bus1.target, '<=>', bus2.target);
 
   }
 
@@ -68,7 +68,7 @@ class Bus {
 
   emit (msg: IMessage<TPayload>, bridge=false) {
 
-    console.log(`BUS.${this.source}.emit`, msg.topic, '=>', msg.receiver);
+    DEBUG && console.log(`BUS.${this.source}.emit`, msg.topic, '=>', msg.receiver);
 
     !bridge && (msg.sender = this.source);
 
@@ -103,7 +103,7 @@ class Bus {
 
 
     } else {
-      console.log('BUS:WTF');
+      console.warn('BUS:WTF');
 
     }
 
@@ -112,7 +112,7 @@ class Bus {
   on(msgFilter: TTopic | TMsgFilter, action: any): Subscription {
 
     const tapper = (msg: any) => {
-      console.log('BUS.tap', this.source, msg.topic, msg.sender, '=>', msg.receiver);
+      DEBUG && console.log('BUS.tap', this.source, msg.topic, msg.sender, '=>', msg.receiver);
     }
 
     if ( typeof msgFilter === 'function') {

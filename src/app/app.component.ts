@@ -1,8 +1,6 @@
 /* eslint-disable space-before-function-paren */
 import { Component } from '@angular/core';
-import { ElectronService } from './core/electron.service';
 import { TranslateService } from '@ngx-translate/core';
-
 
 import { environment } from '../environments/environment';
 import { BusService } from './core/bus.service';
@@ -21,7 +19,6 @@ export class AppComponent {
   private bus: Promise<Bus>;
 
   constructor(
-    private electronService: ElectronService,
     private translate: TranslateService,
     private busService: BusService,
   ) {
@@ -29,7 +26,6 @@ export class AppComponent {
     console.log('App.Env', JSON.stringify(environment));
 
     this.translate.setDefaultLang('en');
-    this.bus = this.electronService.busPromise;
 
     this.bus = new Promise( (resolve, reject) => {
 

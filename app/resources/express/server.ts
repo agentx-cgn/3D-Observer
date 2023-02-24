@@ -1,6 +1,6 @@
 
 import express from 'express'
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import cors from 'cors'
 import bodyParser from 'body-parser';
 import log from 'electron-log'
@@ -71,7 +71,7 @@ class App {
 
       console.log('EXP.request', msg);
 
-      axios.get('https://berlin.social/api/v1/instance/peers')
+      axios.get<Promise<AxiosResponse<any, any>>>('https://berlin.social/api/v1/instance/peers')
         .then( (res) => {
 
           if ( res.status === 200) {
@@ -93,8 +93,8 @@ class App {
           console.log('AXIOS', error);
           return { error };
         })
-        // .finally(function () {
-        // })
+        .finally(function () {
+        })
       ;
 
     });
