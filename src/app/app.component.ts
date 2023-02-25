@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 import { environment } from '../environments/environment';
 import { BusService } from './core/bus.service';
-import { IConfig, IMessage, IApiResponse, ILink, INode, IGraphData } from '../../app/interfaces';
+import { IConfig, IMessage, IApiResponse } from '../../app/interfaces';
 import { ForceService } from './pages/force/force.service';
 import { filter } from 'rxjs/operators';
 
@@ -17,7 +17,9 @@ import { filter } from 'rxjs/operators';
 export class AppComponent {
 
   public config: null | IConfig = null;
-  // public bus: Promise<Bus>;
+  public camera = '';
+  public bounding = '';
+
 
   constructor(
     public force: ForceService,
@@ -35,6 +37,14 @@ export class AppComponent {
         this.listen();
       })
     ;
+
+    // this.force.camera$.subscribe( val => {
+    //   this.camera = JSON.stringify(val);
+    // })
+
+    // this.force.bounding$.subscribe( val => {
+    //   this.bounding = JSON.stringify(val);
+    // })
 
   }
 

@@ -85,16 +85,8 @@ export class ForcePage implements AfterViewInit {
       .linkDirectionalParticles('value')
       .linkDirectionalParticleSpeed( (d: ILink) => d.value * 0.001)
 
-      .onEngineStop( () => {
-        this.graph.d3ReheatSimulation();
-        console.log('Home.engine', 'restarted');
-      })
-      .onEngineTick( () => {
-        if (this.svc.selectNode) {
-          const scale = 0.3 * Math.sin(Date.now() / 300) + 1 ;
-          this.svc.selectNode.__threeObj.scale.set(scale, scale, scale);
-        }
-      })
+      .onEngineStop(this.svc.onEngineStop.bind(this.svc))
+      .onEngineTick(this.svc.onEngineTick.bind(this.svc))
     ;
 
     this.graph.d3Force('charge').strength(this.cfg.chargeStrength); // the smaller, the more stick balls together
@@ -102,16 +94,16 @@ export class ForcePage implements AfterViewInit {
     this.graph.d3AlphaDecay(this.cfg.alphaDecay);
     this.graph.d3Force('link').distance((link: ILink) => link.value);
 
-    this.graph.scene().fog = new THREE.Fog( 0x000000, -50, 2000 );
-
     this.initGraph();
+    this.svc.init();
 
   }
 
   initGraph () {
 
     // add some nodes
-    const testServers = servers.slice(0, 3);
+    const testServers = servers.slice(0, 30);
+
     interval(100)
       .pipe(
         take(testServers.length),
@@ -130,23 +122,23 @@ export class ForcePage implements AfterViewInit {
 
   }
 
-  zoomToNode (node: INode) {
+  // zoomToNode (node: INode) {
 
-    // Aim at node from outside it
-    const distance = 100;
-    const distRatio = 1 + distance/Math.hypot(node.x, node.y, node.z);
+  //   // Aim at node from outside it
+  //   const distance = 100;
+  //   const distRatio = 1 + distance/Math.hypot(node.x, node.y, node.z);
 
-    const newPos = node.x || node.y || node.z
-      ? { x: node.x * distRatio, y: node.y * distRatio, z: node.z * distRatio }
-      : { x: 0, y: 0, z: distance }; // special case if node is in (0,0,0)
+  //   const newPos = node.x || node.y || node.z
+  //     ? { x: node.x * distRatio, y: node.y * distRatio, z: node.z * distRatio }
+  //     : { x: 0, y: 0, z: distance }; // special case if node is in (0,0,0)
 
-    this.graph.cameraPosition(
-      newPos,                 // new position
-      node as Coords,         // lookAt ({ x, y, z })
-      this.cfg.zoom.duration  // ms transition duration
-    );
+  //   this.graph.cameraPosition(
+  //     newPos,                 // new position
+  //     node as Coords,         // lookAt ({ x, y, z })
+  //     this.cfg.zoom.duration  // ms transition duration
+  //   );
 
-  }
+  // }
 
   onClickInterface () {
     this.zInterface = 0;
@@ -164,7 +156,7 @@ export class ForcePage implements AfterViewInit {
 
     this.svc.selectNode = node;
     node.type === 'server' && this.pokeNode(node);
-    this.zoomToNode(node);
+    this.svc.zoomToNode(node);
 
   }
 

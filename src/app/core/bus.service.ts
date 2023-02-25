@@ -1,15 +1,12 @@
-/* eslint-disable no-underscore-dangle */
 import { Injectable } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
-import { IMessage, TPayload, TReceiver, TSender, TTopic } from '../../../app/interfaces';
+import { IMessage, TPayload, TTopic } from '../../../app/interfaces';
 import Bus from '../../../app/bus';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BusService {
-
-  // private bus: Bus | undefined;
 
   public created$ = new Subject<boolean>();
 
@@ -30,11 +27,9 @@ export class BusService {
           const [ port ]: [any] = event.ports;
 
           // init bus on first message
-          // bus = this.create('browser', 'electron', port);
-          const bus = new Bus('browser', 'electron', port);;
+          const bus = new Bus('browser', 'electron', port);
           this.created$.next(true)
           resolve(bus);
-          // this.listen();
 
         } else {
           // other stupid messages
@@ -49,13 +44,7 @@ export class BusService {
 
   }
 
-  // create(source: TSender, target: TReceiver, connector): Bus {
-  //   this.bus = new Bus(source, target, connector);
-  //   return this.bus;
-  // }
-
   async emit(msg: IMessage<TPayload>) {
-    console.log('BusService.emit', msg.payload);
     (await this.bus).emit(msg);
   }
 

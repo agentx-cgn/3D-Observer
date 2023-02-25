@@ -1,14 +1,5 @@
-/* eslint-disable @angular-eslint/component-class-suffix */
-/* eslint-disable max-len */
-/* eslint-disable @typescript-eslint/naming-convention */
-/* eslint-disable no-debugger */
-/* eslint-disable @typescript-eslint/no-unused-expressions */
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable @typescript-eslint/member-delimiter-style */
-/* eslint-disable no-bitwise */
-/* eslint-disable space-before-function-paren */
-
 import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 import ForceGraph3D from '3d-force-graph';
 import SpriteText from 'three-spritetext';
@@ -17,6 +8,9 @@ import * as THREE  from 'three';
 import { Coords, IGraphData, ILink, IMessage, INode } from '../../../../app/interfaces';
 import { helper as H } from '../../core/helper.service';
 import { BusService } from '../../core/bus.service';
+
+
+interface IBoundingBox { x: [number, number]; y: [number, number]; z: [number, number]; }
 
 @Injectable({
   providedIn: 'root'
@@ -27,8 +21,17 @@ export class ForceService {
   public v3Camera: THREE.Vector3;
   public scene: THREE.Scene;
 
+  public state$   = new BehaviorSubject<any>(null)
+
+  public camera$   = new BehaviorSubject<THREE.Vector3 | null>(null)
+  public bounding$ = new BehaviorSubject<IBoundingBox | null>(null)
+
   public selectNode: INode | undefined;
   public hoverNode: INode | undefined;
+
+  private boxHelper: THREE.BoxHelper;
+  private box3Helper: THREE.Box3Helper;
+  private box3: THREE.Box3;
 
   public cfg = {
     background_color: 'black',
@@ -59,9 +62,42 @@ export class ForceService {
     this.listen();
   }
 
-  public export () {
+  public init () {
 
-    // debugger;
+    const scene = this.graph.scene();
+    scene.add( new THREE.BoxHelper( scene ) );
+
+    scene.fog = new THREE.Fog( 0x000000, -50, 2000 );
+
+    // const box = new THREE.BoxHelper( scene, 0xffff00 );
+    // scene.add( box );
+
+    // this.boxHelper = new THREE.BoxHelper(scene, 0xffff00);
+    // scene.add(this.boxHelper);
+    // this.boxHelper.update();
+
+    const axesHelper = new THREE.AxesHelper( 50 );
+    scene.add( axesHelper );
+
+    this.box3 = new THREE.Box3();
+    this.box3.setFromCenterAndSize( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 50, 50, 50 ) );
+    // this.boxHelper.setFromObject(this.box3);
+    // scene.add(this.boxHelper);
+
+    this.box3Helper = new THREE.Box3Helper( this.box3, new THREE.Color('green') );
+    scene.add( this.box3Helper );
+
+  }
+
+  public import (payload) {
+
+    const { nodes, links } = payload;
+    this.selectNode = undefined;
+    this.graph.graphData({ nodes, links });
+
+
+  }
+  public export () {
 
     const { nodes, links } = this.graph.graphData();
     const payload = { nodes: [], links: [] };
@@ -83,26 +119,67 @@ export class ForceService {
   private listen () {
 
     this.bus.on('graphdata.get', (msg: IMessage<IGraphData>) => {
-
       const { links, nodes } = msg.payload;
-
-      console.log('ForceService.listen', nodes, links);
-
       this.graph.graphData({ nodes, links });
-
     });
 
   }
 
+  onEngineStop () {
+    this.graph.d3ReheatSimulation();
+    console.log('Force.engine', 'restarted');
+  }
+
   onEngineTick () {
 
-    if (this.selectNode) {
-      const scale = 0.3 * Math.sin(Date.now() / 300) + 1 ;
-      this.selectNode.__threeObj.scale.set(scale, scale, scale);
+    const state: any = {};
+
+    if (this.graph) {
+
+      const scene = this.graph.scene();
+      const cam = this.graph.camera();
+      const v3  = cam.position.clone();
+      const box = this.graph.getGraphBbox();
+
+      scene.traverse(function(obj){
+
+        if(obj.type === 'Mesh'){
+          console.log()
+        }
+
+      });
+
+      v3.applyMatrix4( cam.matrixWorld );
+
+      const distance = v3.length();
+
+      state.cam = v3;
+      state.len = ~~distance;
+
+      if (box) {
+
+        this.bounding$.next(box);
+
+        const max = Math.max.apply(null, [ ...box.x, ...box.y, ...box.z ].map(Math.abs))
+        // scene.fog = new THREE.Fog( 0x000000, distance - max, distance + max );
+        // scene.fog = new THREE.Fog( 0x000000, distance -500 , distance + max );
+        // scene.fog = new THREE.Fog( 0x000000, 500   , max * 2 );
+
+        this.box3.setFromCenterAndSize( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( max, max, max ) );
+
+        state.max = ~~max;
+
+      }
+
+
+      if (this.selectNode) {
+        const scale = 0.3 * Math.sin(Date.now() / 300) + 1 ;
+        this.selectNode.__threeObj.scale.set(scale, scale, scale);
+      }
+
     }
-    const cam = this.graph.camera();
-    this.v3Camera = cam.position.clone();
-    this.v3Camera.applyMatrix4( cam.matrixWorld );
+
+    this.state$.next(state);
 
   }
 

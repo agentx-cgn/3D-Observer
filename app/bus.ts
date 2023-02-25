@@ -76,7 +76,7 @@ class Bus {
       if (msg.receiver === 'browser') {
         this.messages$.next(msg);
       } else {
-        console.log('BUS.emit.connector', msg.sender, '=>', msg.receiver, msg.topic);
+        console.log(`BUS.${this.source}.connector`, msg.sender, '=>', msg.receiver, msg.topic);
         this.connector.postMessage(msg);
       }
 
@@ -85,11 +85,11 @@ class Bus {
         this.messages$.next(msg);
 
       } else if (msg.receiver === 'browser') {
-        console.log('BUS.send.connector', msg.sender, '=>', msg.receiver, msg.topic);
+        console.log(`BUS.${this.source}.connector`, msg.sender, '=>', msg.receiver, msg.topic);
         this.connector.postMessage(msg);
 
       } else {
-        console.log('BUS.send.connector', msg.sender, '=>', msg.receiver, msg.topic);
+        console.log(`BUS.${this.source}.connector`, msg.sender, '=>', msg.receiver, msg.topic);
         (this.connector as NodeJS.Process).send(msg);
       }
 
@@ -97,7 +97,7 @@ class Bus {
       if (msg.receiver === 'express') {
         this.messages$.next(msg);
       } else {
-        console.log('BUS.send.connector', msg.sender, '=>', msg.receiver, msg.topic);
+        console.log(`BUS.${this.source}.connector`, msg.sender, '=>', msg.receiver, msg.topic);
         (this.connector as NodeJS.Process).send(msg);
       }
 

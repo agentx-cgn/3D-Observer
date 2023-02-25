@@ -1,7 +1,6 @@
 import Bus from "../../bus";
 import { IApiRequest, IConfig, IGraphData, IMessage } from "../../interfaces";
 import axios, { AxiosResponse } from "axios";
-// import sqlite3 from 'sqlite3';
 import { Database, OPEN_READWRITE, RunResult } from 'sqlite3';
 
 const Actions = function (cfg: IConfig): any {
@@ -27,7 +26,7 @@ const Actions = function (cfg: IConfig): any {
         }
       });
 
-      bus.on('request',   self.onRequest);
+      bus.on('request',       self.onRequest);
       bus.on('graphdata.set', self.onGraphdataSet);
       bus.on('graphdata.get', self.onGraphdataGet);
 
