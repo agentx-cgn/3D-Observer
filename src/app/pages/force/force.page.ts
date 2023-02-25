@@ -33,9 +33,7 @@ export class ForcePage implements AfterViewInit {
   private graph = ForceGraph3D();
 
   private initData = {
-    nodes: [
-      { id: 'start.social', size: 0 }
-    ],
+    nodes: [],
     links: []
   };
 
@@ -113,7 +111,7 @@ export class ForcePage implements AfterViewInit {
   initGraph () {
 
     // add some nodes
-    const testServers = servers.slice(0, 100);
+    const testServers = servers.slice(0, 3);
     interval(100)
       .pipe(
         take(testServers.length),

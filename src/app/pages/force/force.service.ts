@@ -14,8 +14,9 @@ import ForceGraph3D from '3d-force-graph';
 import SpriteText from 'three-spritetext';
 import * as THREE  from 'three';
 
-import { Coords, ILink, INode } from '../../../../app/interfaces';
+import { Coords, IGraphData, ILink, IMessage, INode } from '../../../../app/interfaces';
 import { helper as H } from '../../core/helper.service';
+import { BusService } from '../../core/bus.service';
 
 @Injectable({
   providedIn: 'root'
@@ -52,7 +53,49 @@ export class ForceService {
     }
   };
 
+  constructor (
+    private readonly bus: BusService
+  ) {
+    this.listen();
+  }
+
+  public export () {
+
+    // debugger;
+
+    const { nodes, links } = this.graph.graphData();
+    const payload = { nodes: [], links: [] };
+
+    payload.nodes = nodes.map( (node: INode) => {
+      const  { id, domain, size, type, value, x, y, z } = node;
+      return { id, domain, size, type, value, x, y, z };
+    });
+
+    payload.links = links.map( (link: any) => {
+      const  { target, source, value, width } = link;
+      return { target: target.id, source: source.id, value, width };
+    });
+
+    return payload;
+
+  }
+
+  private listen () {
+
+    this.bus.on('graphdata.get', (msg: IMessage<IGraphData>) => {
+
+      const { links, nodes } = msg.payload;
+
+      console.log('ForceService.listen', nodes, links);
+
+      this.graph.graphData({ nodes, links });
+
+    });
+
+  }
+
   onEngineTick () {
+
     if (this.selectNode) {
       const scale = 0.3 * Math.sin(Date.now() / 300) + 1 ;
       this.selectNode.__threeObj.scale.set(scale, scale, scale);
@@ -78,14 +121,11 @@ export class ForceService {
 
     const { nodes, links } = this.graph.graphData();
 
-    // const value = ~~(Math.random() * 10) +2;
     const candidates = nodes.filter( (n: INode) => n.domain === node.domain && n.type === 'server');
     const link = candidates.length
       ? { target: candidates[~~(Math.random() * candidates.length)].id, source: node.id, value: 100, width: 1 }
       : undefined
     ;
-
-    // console.log('insert', node, link);
 
     this.graph.graphData({
       nodes: [ ...nodes, node ],

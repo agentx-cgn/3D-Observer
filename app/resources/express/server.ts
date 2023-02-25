@@ -1,22 +1,23 @@
 
 import express from 'express'
-import axios, { AxiosResponse } from 'axios'
+// import axios, { AxiosResponse } from 'axios'
 import cors from 'cors'
 import bodyParser from 'body-parser';
 import log from 'electron-log'
-import fs from 'fs'
-import path from 'path';
-import sqlite3 from 'sqlite3';
+// import fs from 'fs'
+// import path from 'path';
+// import sqlite3 from 'sqlite3';
 import dotenv from 'dotenv';
 import { AddressInfo } from 'node:net';
 
-import { IApiRequest, IApiResponse, IConfig, IMessage } from '../../interfaces';
+import { IConfig } from '../../interfaces';
 import Bus from '../../bus';
 import apiRouter from './api-router';
+import { Actions } from './actions'
 
 dotenv.config()
-Object.assign(console, log.functions);
-log.transports.file.level = 'silly';
+Object.assign(console, log.functions)
+log.transports.file.level = 'silly'
 
 const preConfig = {
   api: {
@@ -29,7 +30,8 @@ const preConfig = {
 }
 
 let
-  config: null | IConfig = null
+  config: null | IConfig = null,
+  actions: any
 ;
 
 class App {
@@ -40,6 +42,8 @@ class App {
   private bus: Bus
 
   constructor() {
+
+    // Prepare Express
 
     this.app    = express();
     this.router = express.Router();
@@ -63,45 +67,14 @@ class App {
 
     });
 
+    // Prepare Bus and wait for config
+
     this.bus = new Bus('express', 'electron', process);
-
-    this.bus.on('request', (msg: IMessage<IApiRequest>) => {
-
-      const self = this;
-
-      console.log('EXP.request', msg);
-
-      axios.get<Promise<AxiosResponse<any, any>>>('https://berlin.social/api/v1/instance/peers')
-        .then( (res) => {
-
-          if ( res.status === 200) {
-            const payload = { status: res.status, headers: res.headers, body: res.data, ...msg.payload }
-            self.bus.emit({
-              topic:    'response',
-              receiver: msg.sender,
-              payload,
-            })
-
-          } else {
-            console.log('AXIOS', res.status, res.statusText)
-
-          }
-
-        })
-        .catch(function (error) {
-          // handle error
-          console.log('AXIOS', error);
-          return { error };
-        })
-        .finally(function () {
-        })
-      ;
-
-    });
 
     this.bus.on('config', (msg) => {
 
-      config = Object.assign({}, msg.payload, preConfig);
+      config  = Object.assign({}, msg.payload, preConfig);
+      actions = Actions(config).listen(this.bus);
 
       this.activate().then( (adr: AddressInfo) => {
 
@@ -124,39 +97,38 @@ class App {
 
   }
 
-  loadData () {
+  // loadData () {
 
-    const cfg = config;
+  //   const cfg = config;
+
+  //   try {
+
+  //     console.log('EXP.JSON.trying...', cfg.fileServers);
+  //     const initServers = JSON.parse(fs.readFileSync(cfg.fileServers, 'utf8'));
+  //     console.log('EXP.JSON.success', initServers.length, 'servers');
+
+  //     console.log('TEST', path.resolve(String(process.resourcesPath),  'app/resources/express/data/database.db3'));
+  //     console.log('EXP.DB.trying...', cfg.fileDBSource);
+  //     let db = new sqlite3.Database(cfg.fileDBSource, sqlite3.OPEN_READWRITE, (err) => {
+  //       if (err) {
+  //         console.error('EX.DB.error', err.message);
+  //       } else {
+  //         console.log('EXP.DB.success');
+  //       }
+  //     });
+
+  //     db.each('SELECT domain FROM domains LIMIT 3;', (err, row) => {
+  //       err && console.error(err.message);
+  //       console.log(row.domain);
+  //     });
 
 
-    try {
+  //   } catch (err) {
+  //     console.error('EX.DB.loadData.error', err);
 
-      console.log('EXP.JSON.trying...', cfg.fileServers);
-      const initServers = JSON.parse(fs.readFileSync(cfg.fileServers, 'utf8'));
-      console.log('EXP.JSON.success', initServers.length, 'servers');
+  //   }
 
-      console.log('TEST', path.resolve(String(process.resourcesPath),  'app/resources/express/data/database.db3'));
-      console.log('EXP.DB.trying...', cfg.fileDBSource);
-      let db = new sqlite3.Database(cfg.fileDBSource, sqlite3.OPEN_READWRITE, (err) => {
-        if (err) {
-          console.error('EX.DB.error', err.message);
-        } else {
-          console.log('EXP.DB.success');
-        }
-      });
-
-      db.each('SELECT domain FROM domains LIMIT 3;', (err, row) => {
-        err && console.error(err.message);
-        console.log(row.domain);
-      });
-
-
-    } catch (err) {
-      console.error('EX.DB.loadData.error', err);
-
-    }
-
-  }
+  // }
 
   activate () {
 

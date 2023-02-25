@@ -66,11 +66,9 @@ const promise = launchApp()
   })
 
   // wait for finish // did-finish-load
-  .then( response => {
+  .then( msg => {
 
-    // console.log('EXP.Browser.reponse', response);
-
-    console.log('ELC.loading.done', response);
+    console.log('ELC.loading.done', msg.topic, msg.sender);
     console.log('####################################');
     console.log('#')
     console.log('#')
@@ -249,9 +247,9 @@ function launchBrowser(): Promise<IMessage<TPayload>> {
       // resolve(createBrowserChannel());
     });
 
-    win.webContents.on('dom-ready', () => {
-      console.log('ELC.webContents', 'dom-ready');
-    });
+    // win.webContents.on('dom-ready', () => {
+    //   console.log('ELC.webContents', 'dom-ready');
+    // });
 
     win.webContents.on('ipc-message', (data) => {
       console.log('ELC.webContents', 'ipc-message', data);

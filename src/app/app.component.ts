@@ -4,9 +4,9 @@ import { TranslateService } from '@ngx-translate/core';
 
 import { environment } from '../environments/environment';
 import { BusService } from './core/bus.service';
-import { IConfig, IMessage, IApiResponse } from '../../app/interfaces';
-import Bus from '../../app/bus';
+import { IConfig, IMessage, IApiResponse, ILink, INode, IGraphData } from '../../app/interfaces';
 import { ForceService } from './pages/force/force.service';
+import { filter } from 'rxjs/operators';
 
 
 @Component({
@@ -17,51 +17,54 @@ import { ForceService } from './pages/force/force.service';
 export class AppComponent {
 
   public config: null | IConfig = null;
-  private bus: Promise<Bus>;
+  // public bus: Promise<Bus>;
 
   constructor(
-    private translate: TranslateService,
-    private busService: BusService,
     public force: ForceService,
+    private bus: BusService,
+    private translate: TranslateService,
   ) {
 
     console.log('App.Env', JSON.stringify(environment));
 
     this.translate.setDefaultLang('en');
 
-    this.bus = new Promise( (resolve, reject) => {
-
-      window.onmessage = (event) => {
-
-        // event.source === window means the message is coming from the preload
-        // script, as opposed to from an <iframe> or other source.
-        if (event.source === window && event.data === 'main-world-port') {
-
-          console.log('APP.onmessage.ports', event.data, event.ports[0]);
-
-          const [ port ]: [any] = event.ports;
-
-          // init bus on first message
-          const bus = this.busService.create('browser', 'electron', port);
-          resolve(bus);
-          this.listen();
-
-        } else {
-          // other stupid messages
-          console.log('APP.onmessage.other', event.data);
-
-        }
-      };
-
-    });
+    this.bus.created$
+      .pipe(filter( v => v))
+      .subscribe( () => {
+        this.listen();
+      })
+    ;
 
   }
 
   public onStart () {}
   public onStop  () {}
-  public async onRequest  () {
 
-    (await this.bus).emit({
+  public async onSave  () {
+
+    const { nodes, links } = this.force.export();
+
+    this.bus.emit({
+      receiver: 'express',
+      topic:    'graphdata.set',
+      payload: { nodes, links }
+    });
+
+  }
+
+  public onLoad  () {
+
+    this.bus.emit({
+      receiver: 'express',
+      topic:    'graphdata.get',
+      payload:   null
+    });
+  }
+
+  public onRequest  () {
+
+    this.bus.emit({
       receiver: 'express',
       topic: 'request',
       payload: {
@@ -70,18 +73,20 @@ export class AppComponent {
       }
     });
 
-
   }
-  private async listen () {
 
-    (await this.bus).on('response', (msg: IMessage<IApiResponse>) => {
+  private listen () {
+
+    this.bus.on('response', (msg: IMessage<IApiResponse>) => {
       console.log('APPComp.response', msg);
     });
 
     // config with api info, should be already in pipeline
-    (await this.bus).on('config', (msg: IMessage<IConfig>) => {
+    this.bus.on('config', (msg: IMessage<IConfig>) => {
 
       this.config = Object.assign({}, msg.payload);
+
+      console.log('App.config', this.config);
 
       // try out api...
       fetch(this.config.api.root)

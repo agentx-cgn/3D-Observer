@@ -11,7 +11,7 @@ html, body {
 * { margin: 0; padding: 0}
 
 header {
-  z-index: 5;
+  z-index: 7;
   position: relative;
   width: 100%;
   top: 0;
@@ -19,6 +19,25 @@ header {
   color: white;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 16px;
+
+  button {
+    font-family: monospace;
+    font-size: 16px;
+    font-weight: 600;
+    background-color: transparent;
+    color: white;
+    border: 3px solid #FFF4;
+    border-radius: 7px;
+    padding: 4px 8px;
+    margin: 4px 8px;
+  }
+
+  button:hover {
+    background-color: white;
+    border: 3px solid #FFFF;
+    color: black;
+  }
+
 }
 
 main {
@@ -43,7 +62,7 @@ footer {
 
 
 aside {
-  z-index: 7;
+  z-index: 5;
   position: absolute;
   top: 0;
   right: 0;
@@ -57,22 +76,6 @@ aside {
   border: 1px solid black;
   border-radius: 9px;
 
-  button {
-    font-family: monospace;
-    font-size: 16px;
-    font-weight: 600;
-    background-color: transparent;
-    color: white;
-    border: 3px solid #FFF4;
-    border-radius: 7px;
-    padding: 4px 8px;
-    margin: 4px 8px;
-  }
 
-  button:hover {
-    background-color: white;
-    border: 3px solid #FFFF;
-    color: black;
-  }
 
 }

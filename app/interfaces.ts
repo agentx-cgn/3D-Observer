@@ -1,11 +1,29 @@
 
 import * as THREE  from 'three';
 
-export type TPayload = string | number | boolean | IConfig | IApiRequest | IApiResponse;
+export type TPayload =
+  string |
+  null |
+  // number |
+  // boolean |
+  IConfig |
+  IApiRequest |
+  IApiResponse |
+  IGraphData
+;
+
+export type TTopic =
+  'ping' |
+  'ack' |
+  'config' |
+  'request' |
+  'response' |
+  'graphdata.set' |
+  'graphdata.get' |
+  'last'
+;
 
 export type TSender  = 'electron' | 'express' | 'browser';
-// export type TBusType = 'mainport' | 'process' | 'child' | 'clientport';
-export type TTopic   = 'ping' | 'config' | 'ack' | 'request' | 'response';
 
 export type TMsgFilter = ( msg: IMessage<TPayload> ) => boolean;
 
@@ -19,7 +37,7 @@ export interface IMessage<T> {
 }
 
 export interface IApiRequest {
-  server: string
+  domain: string
   endpoint: string
 }
 
@@ -30,6 +48,11 @@ export interface IApiResponse {
   headers?: Record<string, string>
   body?: any
   error?: any
+}
+
+export interface IGraphData {
+  nodes: INode[]
+  links: ILink[]
 }
 
 export interface IConfig {
@@ -88,6 +111,7 @@ export interface INode {
   size: number
   type: TNodeType
   value: number
+  index?: number
   x?: number
   y?: number
   z?: number

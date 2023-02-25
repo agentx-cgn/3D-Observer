@@ -31,7 +31,9 @@ const config: IConfig = {
 
   userLanguages: app.getPreferredSystemLanguages(),
 
-  thisYear: new Date().getFullYear(),
+  thisYear:      new Date().getFullYear(),
+
+  screen: { workAreaSize: { width: NaN, height: NaN }, rotation: NaN, scaleFactor: NaN },
 
   existsFileDBTarget,
   existsFileDBSource,
