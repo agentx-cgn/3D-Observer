@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/member-ordering */
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
@@ -8,6 +9,7 @@ import * as THREE  from 'three';
 import { Coords, IGraphData, ILink, IMessage, INode } from '../../../../app/interfaces';
 import { helper as H } from '../../core/helper.service';
 import { BusService } from '../../core/bus.service';
+import { ForceMeshes } from './force.meshes';
 
 
 interface IBoundingBox { x: [number, number]; y: [number, number]; z: [number, number]; }
@@ -21,17 +23,13 @@ export class ForceService {
   public v3Camera: THREE.Vector3;
   public scene: THREE.Scene;
 
-  public state$   = new BehaviorSubject<any>(null)
+  public state$   = new BehaviorSubject<any>(null);
 
-  public camera$   = new BehaviorSubject<THREE.Vector3 | null>(null)
-  public bounding$ = new BehaviorSubject<IBoundingBox | null>(null)
+  public camera$   = new BehaviorSubject<THREE.Vector3 | null>(null);
+  public bounding$ = new BehaviorSubject<IBoundingBox | null>(null);
 
   public selectNode: INode | undefined;
   public hoverNode: INode | undefined;
-
-  private boxHelper: THREE.BoxHelper;
-  private box3Helper: THREE.Box3Helper;
-  private box3: THREE.Box3;
 
   public cfg = {
     background_color: 'black',
@@ -51,13 +49,23 @@ export class ForceService {
       value: 5,
       links: { value: 10, width: 1 }
     },
-    zoom: {
-      duration: 3000
+    zoomToNode: {
+      duration: 3000,
+      distance: 200
+    },
+    zoomToFit: {
+      duration: 300,
+      padding: 20,
     }
   };
 
+  private boxHelper: THREE.BoxHelper;
+  private box3Helper: THREE.Box3Helper;
+  private box3: THREE.Box3;
+
   constructor (
-    private readonly bus: BusService
+    private readonly bus: BusService,
+    public readonly meshes: ForceMeshes
   ) {
     this.listen();
   }
@@ -67,7 +75,7 @@ export class ForceService {
     const scene = this.graph.scene();
     scene.add( new THREE.BoxHelper( scene ) );
 
-    scene.fog = new THREE.Fog( 0x000000, -50, 2000 );
+    // scene.fog = new THREE.Fog( 0x000000, -50, 2000 );
 
     // const box = new THREE.BoxHelper( scene, 0xffff00 );
     // scene.add( box );
@@ -116,6 +124,28 @@ export class ForceService {
 
   }
 
+  public zoomToFit () {
+    this.graph.zoomToFit(this.cfg.zoomToFit.duration, this.cfg.zoomToFit.padding);
+  }
+
+  public zoomToNode (node: INode) {
+
+    // Aim at node from outside it
+    const distance  = this.cfg.zoomToNode.distance;
+    const distRatio = 1 + distance / Math.hypot(node.x, node.y, node.z);
+
+    const newPos = node.x || node.y || node.z
+      ? { x: node.x * distRatio, y: node.y * distRatio, z: node.z * distRatio }
+      : { x: 0, y: 0, z: distance }; // special case if node is in (0,0,0)
+
+    this.graph.cameraPosition (
+      newPos,                 // new position
+      node as Coords,         // lookAt ({ x, y, z })
+      this.cfg.zoomToNode.duration  // ms transition duration
+    );
+
+  }
+
   private listen () {
 
     this.bus.on('graphdata.get', (msg: IMessage<IGraphData>) => {
@@ -125,12 +155,12 @@ export class ForceService {
 
   }
 
-  onEngineStop () {
+  public onEngineStop () {
     this.graph.d3ReheatSimulation();
     console.log('Force.engine', 'restarted');
   }
 
-  onEngineTick () {
+  public onEngineTick () {
 
     const state: any = {};
 
@@ -144,7 +174,7 @@ export class ForceService {
       scene.traverse(function(obj){
 
         if(obj.type === 'Mesh'){
-          console.log()
+          console.log();
         }
 
       });
@@ -153,14 +183,14 @@ export class ForceService {
 
       const distance = v3.length();
 
-      state.cam = v3;
+      state.cam = { x: Math.floor(v3.x), y: Math.floor(v3.y), z: Math.floor(v3.z)} ;
       state.len = ~~distance;
 
       if (box) {
 
         this.bounding$.next(box);
 
-        const max = Math.max.apply(null, [ ...box.x, ...box.y, ...box.z ].map(Math.abs))
+        const max = Math.max.apply(null, [ ...box.x, ...box.y, ...box.z ].map(Math.abs));
         // scene.fog = new THREE.Fog( 0x000000, distance - max, distance + max );
         // scene.fog = new THREE.Fog( 0x000000, distance -500 , distance + max );
         // scene.fog = new THREE.Fog( 0x000000, 500   , max * 2 );
@@ -221,62 +251,6 @@ export class ForceService {
     nodes.forEach((n, idx) => { n.id = idx; }); // Reset node ids to array index
 
     this.graph.graphData({ nodes, links: newlinks });
-
-  }
-
-
-  sphereGeometry (node: INode) {
-
-    return new THREE.Mesh(
-      new THREE.SphereGeometry(node.size),
-      new THREE.MeshLambertMaterial({
-        color: this.randomColor(node),
-        transparent: true,
-        opacity: 0.8
-      })
-    );
-
-  }
-
-  spriteText (node: INode) {
-    const sprite: any = new SpriteText(node.id);
-    sprite.material.depthWrite = false; // make sprite background transparent
-    sprite.color = this.randomColor(node);
-    sprite.textHeight = 4;
-    return sprite;
-  }
-
-  spriteImage ({ type }) {
-    const imgTexture = new THREE.TextureLoader().load(`./assets/sprites/${type}.png`);
-    const material   = new THREE.SpriteMaterial({ map: imgTexture });
-    const sprite     = new THREE.Sprite(material);
-    sprite.scale.set(4, 4, 1);
-    return sprite;
-  }
-
-  randomColor(node: INode) {
-    return (
-      node.type === 'server' ? H.colorFromString(node.domain, 70, 50) :
-      node.type === 'peers'  ? H.colorFromString(node.domain, 40, 40) :
-        H.colorFromString(node.domain, 40, 40)
-    );
-  }
-
-  zoomToNode (node: INode) {
-
-    // Aim at node from outside it
-    const distance = 100;
-    const distRatio = 1 + distance/Math.hypot(node.x, node.y, node.z);
-
-    const newPos = node.x || node.y || node.z
-      ? { x: node.x * distRatio, y: node.y * distRatio, z: node.z * distRatio }
-      : { x: 0, y: 0, z: distance }; // special case if node is in (0,0,0)
-
-    this.graph.cameraPosition(
-      newPos, // new position
-      node as Coords, // lookAt ({ x, y, z })
-      3000  // ms transition duration
-    );
 
   }
 

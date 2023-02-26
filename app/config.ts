@@ -44,6 +44,10 @@ const config: IConfig = {
   fileExpress:  path.join(__dirname, 'resources', 'express', 'server'),
   fileServers:  path.join(__dirname, 'resources', 'express', 'server', 'data', 'init-servers.json'),
 
+  // /Users/noiv/Library/Logs/3D-Observer/main.log
+  // fileLog: log.transports.file.resolvePathFn = () => path.join(APP_DATA, 'logs/main.log');
+
+
   pathApp,
   pathData:      path.join(__dirname, 'resources', 'express', 'server', 'data', 'init-servers.json'),
   pathResources: process.resourcesPath,

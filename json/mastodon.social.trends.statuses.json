@@ -1,0 +1,1715 @@
+[
+  {
+    "id": "109926971933384037",
+    "created_at": "2023-02-25T19:14:37.011Z",
+    "in_reply_to_id": null,
+    "in_reply_to_account_id": null,
+    "sensitive": false,
+    "spoiler_text": "",
+    "visibility": "public",
+    "language": "en",
+    "uri": "https://mastodon.social/users/JonBaker/statuses/109926971933384037",
+    "url": "https://mastodon.social/@JonBaker/109926971933384037",
+    "replies_count": 45,
+    "reblogs_count": 1060,
+    "favourites_count": 1765,
+    "edited_at": null,
+    "favourited": false,
+    "reblogged": false,
+    "muted": false,
+    "bookmarked": false,
+    "content": "\u003cp\u003eBOSS: I need you to put these coupon stickers on all the Pick Me Up boxes\u003c/p\u003e\u003cp\u003eEMPLOYEE: Do you care where we place those stickers?\u003c/p\u003e\u003cp\u003eBOSS: Yeah, *on the box*. Don’t make me repeat myself. Idiots.\u003c/p\u003e",
+    "filtered": [],
+    "reblog": null,
+    "application": {
+      "name": "Metatext",
+      "website": "https://metabolist.org/metatext"
+    },
+    "account": {
+      "id": "26524",
+      "username": "JonBaker",
+      "acct": "JonBaker",
+      "display_name": "Jon Baker",
+      "locked": false,
+      "bot": false,
+      "discoverable": true,
+      "group": false,
+      "created_at": "2017-03-30T00:00:00.000Z",
+      "note": "\u003cp\u003eGeek, father, artist, and lover of all things comedy. Despite my better judgement, I draw the webcomic Alarmingly Bad\u003c/p\u003e",
+      "url": "https://mastodon.social/@JonBaker",
+      "avatar": "https://files.mastodon.social/accounts/avatars/000/026/524/original/55ee05c08e42f336.jpg",
+      "avatar_static": "https://files.mastodon.social/accounts/avatars/000/026/524/original/55ee05c08e42f336.jpg",
+      "header": "https://files.mastodon.social/accounts/headers/000/026/524/original/2e74c3e60fc436eb.jpg",
+      "header_static": "https://files.mastodon.social/accounts/headers/000/026/524/original/2e74c3e60fc436eb.jpg",
+      "followers_count": 1231,
+      "following_count": 152,
+      "statuses_count": 1389,
+      "last_status_at": "2023-02-25",
+      "noindex": false,
+      "emojis": [],
+      "roles": [],
+      "fields": [
+        {
+          "name": "Website",
+          "value": "\u003ca href=\"https://alarminglybad.com/\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\"\u003e\u003cspan class=\"invisible\"\u003ehttps://\u003c/span\u003e\u003cspan class=\"\"\u003ealarminglybad.com/\u003c/span\u003e\u003cspan class=\"invisible\"\u003e\u003c/span\u003e\u003c/a\u003e",
+          "verified_at": null
+        },
+        {
+          "name": "Instagram",
+          "value": "\u003ca href=\"https://www.instagram.com/alarminglybad/\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\"\u003e\u003cspan class=\"invisible\"\u003ehttps://www.\u003c/span\u003e\u003cspan class=\"\"\u003einstagram.com/alarminglybad/\u003c/span\u003e\u003cspan class=\"invisible\"\u003e\u003c/span\u003e\u003c/a\u003e",
+          "verified_at": null
+        },
+        {
+          "name": "Reddit",
+          "value": "\u003ca href=\"https://www.reddit.com/r/AlarminglyBad/\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\"\u003e\u003cspan class=\"invisible\"\u003ehttps://www.\u003c/span\u003e\u003cspan class=\"\"\u003ereddit.com/r/AlarminglyBad/\u003c/span\u003e\u003cspan class=\"invisible\"\u003e\u003c/span\u003e\u003c/a\u003e",
+          "verified_at": null
+        },
+        {
+          "name": "TikTok",
+          "value": "\u003ca href=\"https://www.tiktok.com/@alarminglybad\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\"\u003e\u003cspan class=\"invisible\"\u003ehttps://www.\u003c/span\u003e\u003cspan class=\"\"\u003etiktok.com/@alarminglybad\u003c/span\u003e\u003cspan class=\"invisible\"\u003e\u003c/span\u003e\u003c/a\u003e",
+          "verified_at": null
+        }
+      ]
+    },
+    "media_attachments": [
+      {
+        "id": "109926970271425228",
+        "type": "image",
+        "url": "https://files.mastodon.social/media_attachments/files/109/926/970/271/425/228/original/dcfe9049fbb4149a.jpeg",
+        "preview_url": "https://files.mastodon.social/media_attachments/files/109/926/970/271/425/228/small/dcfe9049fbb4149a.jpeg",
+        "remote_url": null,
+        "preview_remote_url": null,
+        "text_url": null,
+        "meta": {
+          "original": {
+            "width": 616,
+            "height": 711,
+            "size": "616x711",
+            "aspect": 0.8663853727144867
+          },
+          "small": {
+            "width": 447,
+            "height": 516,
+            "size": "447x516",
+            "aspect": 0.8662790697674418
+          },
+          "focus": {
+            "x": -0.1411230061231509,
+            "y": 0.5988456428825082
+          }
+        },
+        "description": "A supermarket display of Fuck Me Ups",
+        "blurhash": "UAJs:{rYEhRPHCNFNGRiE1S#t6j[uiV@r=IV"
+      }
+    ],
+    "mentions": [],
+    "tags": [],
+    "emojis": [],
+    "card": null,
+    "poll": null
+  },
+  {
+    "id": "109928692642064312",
+    "created_at": "2023-02-26T02:32:12.948Z",
+    "in_reply_to_id": null,
+    "in_reply_to_account_id": null,
+    "sensitive": false,
+    "spoiler_text": "",
+    "visibility": "public",
+    "language": "en",
+    "uri": "https://mastodon.social/users/zackwhittaker/statuses/109928692642064312",
+    "url": "https://mastodon.social/@zackwhittaker/109928692642064312",
+    "replies_count": 18,
+    "reblogs_count": 243,
+    "favourites_count": 432,
+    "edited_at": null,
+    "favourited": false,
+    "reblogged": false,
+    "muted": false,
+    "bookmarked": false,
+    "content": "\u003cp\u003eHow app changelogs should be vs. how app changelogs usually are.\u003c/p\u003e",
+    "filtered": [],
+    "reblog": null,
+    "application": {
+      "name": "Mastodon for iOS",
+      "website": "https://app.joinmastodon.org/ios"
+    },
+    "account": {
+      "id": "109246358402616382",
+      "username": "zackwhittaker",
+      "acct": "zackwhittaker",
+      "display_name": "Zack Whittaker",
+      "locked": false,
+      "bot": false,
+      "discoverable": true,
+      "group": false,
+      "created_at": "2022-10-28T00:00:00.000Z",
+      "note": "\u003cp\u003eSecurity editor, TechCrunch\u003cbr /\u003ezack.whittaker@techcrunch.com\u003cbr /\u003eSignal: +1 646.755.8849\u003cbr /\u003eNew York, NY\u003c/p\u003e",
+      "url": "https://mastodon.social/@zackwhittaker",
+      "avatar": "https://files.mastodon.social/accounts/avatars/109/246/358/402/616/382/original/759653b7fd86e033.jpg",
+      "avatar_static": "https://files.mastodon.social/accounts/avatars/109/246/358/402/616/382/original/759653b7fd86e033.jpg",
+      "header": "https://files.mastodon.social/accounts/headers/109/246/358/402/616/382/original/8d9baf4a241c8286.jpg",
+      "header_static": "https://files.mastodon.social/accounts/headers/109/246/358/402/616/382/original/8d9baf4a241c8286.jpg",
+      "followers_count": 7954,
+      "following_count": 173,
+      "statuses_count": 192,
+      "last_status_at": "2023-02-26",
+      "noindex": false,
+      "emojis": [],
+      "roles": [],
+      "fields": [
+        {
+          "name": "Twitter",
+          "value": "\u003ca href=\"https://twitter.com/zackwhittaker\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\"\u003e\u003cspan class=\"invisible\"\u003ehttps://\u003c/span\u003e\u003cspan class=\"\"\u003etwitter.com/zackwhittaker\u003c/span\u003e\u003cspan class=\"invisible\"\u003e\u003c/span\u003e\u003c/a\u003e",
+          "verified_at": null
+        },
+        {
+          "name": "Newsletter",
+          "value": "\u003ca href=\"https://this.weekinsecurity.com\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\"\u003e\u003cspan class=\"invisible\"\u003ehttps://\u003c/span\u003e\u003cspan class=\"\"\u003ethis.weekinsecurity.com\u003c/span\u003e\u003cspan class=\"invisible\"\u003e\u003c/span\u003e\u003c/a\u003e",
+          "verified_at": "2022-10-28T15:18:21.095+00:00"
+        }
+      ]
+    },
+    "media_attachments": [
+      {
+        "id": "109928680496974500",
+        "type": "image",
+        "url": "https://files.mastodon.social/media_attachments/files/109/928/680/496/974/500/original/d1279b5b432849f3.png",
+        "preview_url": "https://files.mastodon.social/media_attachments/files/109/928/680/496/974/500/small/d1279b5b432849f3.png",
+        "remote_url": null,
+        "preview_remote_url": null,
+        "text_url": null,
+        "meta": {
+          "original": {
+            "width": 1179,
+            "height": 1346,
+            "size": "1179x1346",
+            "aspect": 0.8759286775631501
+          },
+          "small": {
+            "width": 449,
+            "height": 513,
+            "size": "449x513",
+            "aspect": 0.8752436647173489
+          }
+        },
+        "description": "a screenshot of two iOS app updates, one for Mastodon with a very detailed and bulleted release notes compared to Google Calendar which just says \"Bug fixes and performance improvements\" and that's it.",
+        "blurhash": "U997eS_4WGRjjfN2RljuWHt9t9fRoi%NxvWC"
+      }
+    ],
+    "mentions": [],
+    "tags": [],
+    "emojis": [],
+    "card": null,
+    "poll": null
+  },
+  {
+    "id": "109927870731312701",
+    "created_at": "2023-02-25T23:03:11.584Z",
+    "in_reply_to_id": null,
+    "in_reply_to_account_id": null,
+    "sensitive": false,
+    "spoiler_text": "",
+    "visibility": "public",
+    "language": "en",
+    "uri": "https://mastodon.social/users/QasimRashid/statuses/109927870731312701",
+    "url": "https://mastodon.social/@QasimRashid/109927870731312701",
+    "replies_count": 39,
+    "reblogs_count": 369,
+    "favourites_count": 591,
+    "edited_at": null,
+    "favourited": false,
+    "reblogged": false,
+    "muted": false,
+    "bookmarked": false,
+    "content": "\u003cp\u003eDilbert cartoonist Scott Adams maligns Black people as “a racist hate group.”\u003c/p\u003e\u003cp\u003eLemme get this straight: White people in power kidnapped, trafficked, raped, \u0026amp; enslaved Black people for 300 years, subjected Black people to Jim Crow for another 100 years, subjected Black people to mass incarceration \u0026amp; the war on drugs for another 60 years, paid $0 reparations ever—\u0026amp; Adams feels HE’S the victim?\u003c/p\u003e\u003cp\u003eReminds me of that old saying—When you’ve had privilege your whole life, equality feels like oppression.\u003c/p\u003e",
+    "filtered": [],
+    "reblog": null,
+    "application": {
+      "name": "Mastodon for iOS",
+      "website": "https://app.joinmastodon.org/ios"
+    },
+    "account": {
+      "id": "109257982635114466",
+      "username": "QasimRashid",
+      "acct": "QasimRashid",
+      "display_name": "Qasim Rashid, Esq.",
+      "locked": false,
+      "bot": false,
+      "discoverable": true,
+      "group": false,
+      "created_at": "2022-10-30T00:00:00.000Z",
+      "note": "\u003cp\u003eHuman Rights Lawyer • Author • Dad Jokes • Host of The Qasim Rashid Show on Sirius XM Channel 126 Sundays @ 10am EST\u003c/p\u003e",
+      "url": "https://mastodon.social/@QasimRashid",
+      "avatar": "https://files.mastodon.social/accounts/avatars/109/257/982/635/114/466/original/515326afc9591b4d.jpeg",
+      "avatar_static": "https://files.mastodon.social/accounts/avatars/109/257/982/635/114/466/original/515326afc9591b4d.jpeg",
+      "header": "https://files.mastodon.social/accounts/headers/109/257/982/635/114/466/original/68927aa0ee32a4aa.jpeg",
+      "header_static": "https://files.mastodon.social/accounts/headers/109/257/982/635/114/466/original/68927aa0ee32a4aa.jpeg",
+      "followers_count": 45841,
+      "following_count": 15,
+      "statuses_count": 599,
+      "last_status_at": "2023-02-26",
+      "noindex": false,
+      "emojis": [],
+      "roles": [],
+      "fields": [
+        {
+          "name": "Join My Email List Serve",
+          "value": "\u003ca href=\"https://landing.mailerlite.com/webforms/landing/q9i0r8\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\"\u003e\u003cspan class=\"invisible\"\u003ehttps://\u003c/span\u003e\u003cspan class=\"ellipsis\"\u003elanding.mailerlite.com/webform\u003c/span\u003e\u003cspan class=\"invisible\"\u003es/landing/q9i0r8\u003c/span\u003e\u003c/a\u003e",
+          "verified_at": null
+        },
+        {
+          "name": "Download TurnSignl",
+          "value": "\u003ca href=\"https://m.turnsignl.com/get_app/NbAW\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\"\u003e\u003cspan class=\"invisible\"\u003ehttps://\u003c/span\u003e\u003cspan class=\"\"\u003em.turnsignl.com/get_app/NbAW\u003c/span\u003e\u003cspan class=\"invisible\"\u003e\u003c/span\u003e\u003c/a\u003e",
+          "verified_at": null
+        },
+        {
+          "name": "See my work on LinkTree",
+          "value": "\u003ca href=\"https://linktr.ee/qasimrashid\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\"\u003e\u003cspan class=\"invisible\"\u003ehttps://\u003c/span\u003e\u003cspan class=\"\"\u003elinktr.ee/qasimrashid\u003c/span\u003e\u003cspan class=\"invisible\"\u003e\u003c/span\u003e\u003c/a\u003e",
+          "verified_at": null
+        },
+        {
+          "name": "Personal Website",
+          "value": "\u003ca href=\"https://www.qasimrashid.com/\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\"\u003e\u003cspan class=\"invisible\"\u003ehttps://www.\u003c/span\u003e\u003cspan class=\"\"\u003eqasimrashid.com/\u003c/span\u003e\u003cspan class=\"invisible\"\u003e\u003c/span\u003e\u003c/a\u003e",
+          "verified_at": null
+        }
+      ]
+    },
+    "media_attachments": [],
+    "mentions": [],
+    "tags": [],
+    "emojis": [],
+    "card": null,
+    "poll": null
+  },
+  {
+    "id": "109928463560099694",
+    "created_at": "2023-02-26T01:33:52.000Z",
+    "in_reply_to_id": null,
+    "in_reply_to_account_id": null,
+    "sensitive": false,
+    "spoiler_text": "",
+    "visibility": "public",
+    "language": "en",
+    "uri": "https://universeodon.com/users/godpod/statuses/109928463268377375",
+    "url": "https://universeodon.com/@godpod/109928463268377375",
+    "replies_count": 28,
+    "reblogs_count": 401,
+    "favourites_count": 109,
+    "edited_at": null,
+    "favourited": false,
+    "reblogged": false,
+    "muted": false,
+    "bookmarked": false,
+    "content": "\u003cp\u003eNEW COMMANDMENT:\u003cbr\u003eThou shalt not use your religion to take away other people’s rights.\u003c/p\u003e",
+    "filtered": [],
+    "reblog": null,
+    "account": {
+      "id": "109363193416754359",
+      "username": "godpod",
+      "acct": "godpod@universeodon.com",
+      "display_name": "God :verified:",
+      "locked": false,
+      "bot": false,
+      "discoverable": true,
+      "group": false,
+      "created_at": "2022-11-18T00:00:00.000Z",
+      "note": "\u003cp\u003eCreator of the Universe. Host of the God Pod. Follow for more divine comedy. Discord:\u2028\u003ca href=\"https://discord.gg/7v3Cc4pjMC\" rel=\"nofollow noopener noreferrer\" target=\"_blank\"\u003e\u003cspan class=\"invisible\"\u003ehttps://\u003c/span\u003e\u003cspan class=\"\"\u003ediscord.gg/7v3Cc4pjMC\u003c/span\u003e\u003cspan class=\"invisible\"\u003e\u003c/span\u003e\u003c/a\u003e\u003c/p\u003e",
+      "url": "https://universeodon.com/@godpod",
+      "avatar": "https://files.mastodon.social/cache/accounts/avatars/109/363/193/416/754/359/original/076bfc1d88d33202.jpg",
+      "avatar_static": "https://files.mastodon.social/cache/accounts/avatars/109/363/193/416/754/359/original/076bfc1d88d33202.jpg",
+      "header": "https://files.mastodon.social/cache/accounts/headers/109/363/193/416/754/359/original/9238a3120e2c8705.jpg",
+      "header_static": "https://files.mastodon.social/cache/accounts/headers/109/363/193/416/754/359/original/9238a3120e2c8705.jpg",
+      "followers_count": 114295,
+      "following_count": 181,
+      "statuses_count": 746,
+      "last_status_at": "2023-02-26",
+      "emojis": [
+        {
+          "shortcode": "verified",
+          "url": "https://files.mastodon.social/cache/custom_emojis/images/000/452/462/original/947cae7ac4dfdfa0.png",
+          "static_url": "https://files.mastodon.social/cache/custom_emojis/images/000/452/462/static/947cae7ac4dfdfa0.png",
+          "visible_in_picker": true
+        }
+      ],
+      "fields": [
+        {
+          "name": "God Pod on Apple Podcasts",
+          "value": "\u003ca href=\"https://podcasts.apple.com/us/podcast/the-god-pod/id1457338192\" rel=\"nofollow noopener noreferrer\" target=\"_blank\"\u003e\u003cspan class=\"invisible\"\u003ehttps://\u003c/span\u003e\u003cspan class=\"ellipsis\"\u003epodcasts.apple.com/us/podcast/\u003c/span\u003e\u003cspan class=\"invisible\"\u003ethe-god-pod/id1457338192\u003c/span\u003e\u003c/a\u003e",
+          "verified_at": null
+        },
+        {
+          "name": "God Pod on Spotify",
+          "value": "\u003ca href=\"https://open.spotify.com/show/4XyL160zExrq1mKsg5FKjO\" rel=\"nofollow noopener noreferrer\" target=\"_blank\"\u003e\u003cspan class=\"invisible\"\u003ehttps://\u003c/span\u003e\u003cspan class=\"ellipsis\"\u003eopen.spotify.com/show/4XyL160z\u003c/span\u003e\u003cspan class=\"invisible\"\u003eExrq1mKsg5FKjO\u003c/span\u003e\u003c/a\u003e",
+          "verified_at": null
+        },
+        {
+          "name": "God Pod Discord",
+          "value": "\u003ca href=\"https://discord.gg/2sEyFPh\" rel=\"nofollow noopener noreferrer\" target=\"_blank\"\u003e\u003cspan class=\"invisible\"\u003ehttps://\u003c/span\u003e\u003cspan class=\"\"\u003ediscord.gg/2sEyFPh\u003c/span\u003e\u003cspan class=\"invisible\"\u003e\u003c/span\u003e\u003c/a\u003e",
+          "verified_at": null
+        }
+      ]
+    },
+    "media_attachments": [],
+    "mentions": [],
+    "tags": [],
+    "emojis": [],
+    "card": null,
+    "poll": null
+  },
+  {
+    "id": "109929152345825666",
+    "created_at": "2023-02-26T04:29:07.470Z",
+    "in_reply_to_id": null,
+    "in_reply_to_account_id": null,
+    "sensitive": false,
+    "spoiler_text": "",
+    "visibility": "public",
+    "language": "en",
+    "uri": "https://mastodon.social/users/dangillmor/statuses/109929152345825666",
+    "url": "https://mastodon.social/@dangillmor/109929152345825666",
+    "replies_count": 14,
+    "reblogs_count": 134,
+    "favourites_count": 162,
+    "edited_at": "2023-02-26T04:30:16.446Z",
+    "favourited": false,
+    "reblogged": false,
+    "muted": false,
+    "bookmarked": false,
+    "content": "\u003cp\u003eChatGPT appears to have a refined sense of the absurd. I asked it to write a ridiculous (but standard) Republican-Democrat, both-sides New York Times political story, and it did exactly that.\u003c/p\u003e",
+    "filtered": [],
+    "reblog": null,
+    "application": {
+      "name": "Web",
+      "website": null
+    },
+    "account": {
+      "id": "109208442152198181",
+      "username": "dangillmor",
+      "acct": "dangillmor",
+      "display_name": "Dan Gillmor",
+      "locked": false,
+      "bot": false,
+      "discoverable": true,
+      "group": false,
+      "created_at": "2022-10-21T00:00:00.000Z",
+      "note": "\u003cp\u003eBio and disclosures: dangillmor.com/about/ Boosts mean I think you should see this -- usually but not always an endorsement.\u003c/p\u003e\u003cp\u003eCalifornia, Nara, Arizona etc.  ·  dangillmor.com\u003c/p\u003e",
+      "url": "https://mastodon.social/@dangillmor",
+      "avatar": "https://files.mastodon.social/accounts/avatars/109/208/442/152/198/181/original/a98930cc33876975.png",
+      "avatar_static": "https://files.mastodon.social/accounts/avatars/109/208/442/152/198/181/original/a98930cc33876975.png",
+      "header": "https://mastodon.social/headers/original/missing.png",
+      "header_static": "https://mastodon.social/headers/original/missing.png",
+      "followers_count": 14163,
+      "following_count": 743,
+      "statuses_count": 2136,
+      "last_status_at": "2023-02-26",
+      "noindex": false,
+      "emojis": [],
+      "roles": [],
+      "fields": [
+        {
+          "name": "Personal site",
+          "value": "\u003ca href=\"https://dangillmor.com\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\"\u003e\u003cspan class=\"invisible\"\u003ehttps://\u003c/span\u003e\u003cspan class=\"\"\u003edangillmor.com\u003c/span\u003e\u003cspan class=\"invisible\"\u003e\u003c/span\u003e\u003c/a\u003e",
+          "verified_at": null
+        }
+      ]
+    },
+    "media_attachments": [
+      {
+        "id": "109929139608807609",
+        "type": "image",
+        "url": "https://files.mastodon.social/media_attachments/files/109/929/139/608/807/609/original/8798c8f5bbde2c4b.png",
+        "preview_url": "https://files.mastodon.social/media_attachments/files/109/929/139/608/807/609/small/8798c8f5bbde2c4b.png",
+        "remote_url": null,
+        "preview_remote_url": null,
+        "text_url": null,
+        "meta": {
+          "original": {
+            "width": 586,
+            "height": 758,
+            "size": "586x758",
+            "aspect": 0.7730870712401056
+          },
+          "small": {
+            "width": 422,
+            "height": 546,
+            "size": "422x546",
+            "aspect": 0.7728937728937729
+          },
+          "focus": {
+            "x": -0.06,
+            "y": 0.98
+          }
+        },
+        "description": "ChatGPT prompt: Write a news story in the style of the New York Times Washington bureau, on the debate that has arisen because Republicans say the sky is green while Democrats say the sky is blue.\n\nResult: WASHINGTON - A fierce debate has erupted on Capitol Hill, with Republicans claiming that the sky is green and Democrats insisting that it is blue. The disagreement has caused a stir among lawmakers, as each side accuses the other of peddling falsehoods.\n\nAt the heart of the dispute is a fundamental disagreement over what constitutes objective reality. Republicans have argued that the sky is green because they believe that the blue color is a result of a liberal media conspiracy to deceive the public. Democrats, on the other hand, point to scientific evidence that clearly shows that the sky is, in fact, blue.\n\n\"The sky is blue. That is just a fact,\" said Representative Alexandria Ocasio-Cortez, Democrat of New York. \"I can't believe we're even having this debate. This is just another example of how far the Republican Party has gone off the rails.\"\n\nBut Republicans remain adamant in their insistence that the sky is green. \"The Democrats can talk all they want about 'facts' and 'science', but the truth is that the sky is green,\" said Senator Ted Cruz, Republican of Texas. \"This is just another attempt by the left to push their radical agenda on the American people.\"\n\n--more--",
+        "blurhash": "U4RMb%fj~pxt~pR*M{Rj?bbFM{NG_3M{RjWB"
+      }
+    ],
+    "mentions": [],
+    "tags": [],
+    "emojis": [],
+    "card": null,
+    "poll": null
+  },
+  {
+    "id": "109929400969559120",
+    "created_at": "2023-02-26T05:31:28.000Z",
+    "in_reply_to_id": null,
+    "in_reply_to_account_id": null,
+    "sensitive": false,
+    "spoiler_text": "",
+    "visibility": "public",
+    "language": "en",
+    "uri": "https://hachyderm.io/users/molly0xfff/statuses/109929397502366127",
+    "url": "https://hachyderm.io/@molly0xfff/109929397502366127",
+    "replies_count": 34,
+    "reblogs_count": 169,
+    "favourites_count": 44,
+    "edited_at": null,
+    "favourited": false,
+    "reblogged": false,
+    "muted": false,
+    "bookmarked": false,
+    "content": "\u003cp\u003eonce again begging these people to talk to even just one woman before creating their system where people are supposed to record their daily whereabouts and movements to a blockchain\u003c/p\u003e",
+    "filtered": [],
+    "reblog": null,
+    "account": {
+      "id": "109332160649392039",
+      "username": "molly0xfff",
+      "acct": "molly0xfff@hachyderm.io",
+      "display_name": "Molly White",
+      "locked": false,
+      "bot": false,
+      "discoverable": true,
+      "group": false,
+      "created_at": "2022-11-12T00:00:00.000Z",
+      "note": "\u003cp\u003ecrypto researcher \u0026amp; critic, software engineer, wikipedian • \u003cspan class=\"h-card\"\u003e\u003ca href=\"https://indieweb.social/@web3isgreat\" class=\"u-url mention\" rel=\"nofollow noopener noreferrer\" target=\"_blank\"\u003e@\u003cspan\u003eweb3isgreat\u003c/span\u003e\u003c/a\u003e\u003c/span\u003e creator •  fellow @ Harvard Library Innovation Lab • writing \u003ca href=\"https://newsletter.mollywhite.net/\" rel=\"nofollow noopener noreferrer\" target=\"_blank\"\u003e\u003cspan class=\"invisible\"\u003ehttps://\u003c/span\u003e\u003cspan class=\"\"\u003enewsletter.mollywhite.net/\u003c/span\u003e\u003cspan class=\"invisible\"\u003e\u003c/span\u003e\u003c/a\u003e\u003cbr\u003eshe/her • 💗💜💙\u003c/p\u003e",
+      "url": "https://hachyderm.io/@molly0xfff",
+      "avatar": "https://files.mastodon.social/cache/accounts/avatars/109/332/160/649/392/039/original/4186dce0328705ed.jpeg",
+      "avatar_static": "https://files.mastodon.social/cache/accounts/avatars/109/332/160/649/392/039/original/4186dce0328705ed.jpeg",
+      "header": "https://files.mastodon.social/cache/accounts/headers/109/332/160/649/392/039/original/9d71ead9a7baac53.jpeg",
+      "header_static": "https://files.mastodon.social/cache/accounts/headers/109/332/160/649/392/039/original/9d71ead9a7baac53.jpeg",
+      "followers_count": 53443,
+      "following_count": 564,
+      "statuses_count": 1258,
+      "last_status_at": "2023-02-26",
+      "emojis": [],
+      "fields": [
+        {
+          "name": "website",
+          "value": "\u003ca href=\"https://www.mollywhite.net\" rel=\"nofollow noopener noreferrer\" target=\"_blank\"\u003e\u003cspan class=\"invisible\"\u003ehttps://www.\u003c/span\u003e\u003cspan class=\"\"\u003emollywhite.net\u003c/span\u003e\u003cspan class=\"invisible\"\u003e\u003c/span\u003e\u003c/a\u003e",
+          "verified_at": "2023-02-26T09:23:22.849+00:00"
+        },
+        {
+          "name": "twitter",
+          "value": "\u003ca href=\"https://twitter.com/molly0xFFF\" rel=\"nofollow noopener noreferrer\" target=\"_blank\"\u003e\u003cspan class=\"invisible\"\u003ehttps://\u003c/span\u003e\u003cspan class=\"\"\u003etwitter.com/molly0xFFF\u003c/span\u003e\u003cspan class=\"invisible\"\u003e\u003c/span\u003e\u003c/a\u003e",
+          "verified_at": null
+        },
+        {
+          "name": "newsletter",
+          "value": "\u003ca href=\"https://newsletter.mollywhite.net\" rel=\"nofollow noopener noreferrer\" target=\"_blank\"\u003e\u003cspan class=\"invisible\"\u003ehttps://\u003c/span\u003e\u003cspan class=\"\"\u003enewsletter.mollywhite.net\u003c/span\u003e\u003cspan class=\"invisible\"\u003e\u003c/span\u003e\u003c/a\u003e",
+          "verified_at": null
+        },
+        {
+          "name": "etc",
+          "value": "\u003ca href=\"https://www.mollywhite.net/linktree\" rel=\"nofollow noopener noreferrer\" target=\"_blank\"\u003e\u003cspan class=\"invisible\"\u003ehttps://www.\u003c/span\u003e\u003cspan class=\"\"\u003emollywhite.net/linktree\u003c/span\u003e\u003cspan class=\"invisible\"\u003e\u003c/span\u003e\u003c/a\u003e",
+          "verified_at": "2023-02-26T09:23:23.820+00:00"
+        }
+      ]
+    },
+    "media_attachments": [
+      {
+        "id": "109929400876682986",
+        "type": "image",
+        "url": "https://files.mastodon.social/cache/media_attachments/files/109/929/400/876/682/986/original/950f97c664ee57c2.png",
+        "preview_url": "https://files.mastodon.social/cache/media_attachments/files/109/929/400/876/682/986/small/950f97c664ee57c2.png",
+        "remote_url": "https://media.hachyderm.io/media_attachments/files/109/929/395/959/297/488/original/e236834120743a02.png",
+        "preview_remote_url": null,
+        "text_url": null,
+        "meta": {
+          "focus": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "original": {
+            "width": 1506,
+            "height": 1306,
+            "size": "1506x1306",
+            "aspect": 1.1531393568147015
+          },
+          "small": {
+            "width": 515,
+            "height": 447,
+            "size": "515x447",
+            "aspect": 1.1521252796420582
+          }
+        },
+        "description": "How does a blockchain-based ridesharing system work? A blockchain-based ridesharing system uses distributed ledger technology to facilitate peer-to-peer transactions between riders and drivers without needing a central authority.   Here’s how it typically works:  Registration: Riders and drivers register on the blockchain-based ridesharing platform by creating a digital identity. The platform may require users to provide personal information, such as their name, phone number and payment information. Ride request: When making a ride request, a passenger must include the pick-up and drop-off locations, the vehicle they need and the fare they are prepared to pay. This information is stored on the blockchain. Driver selection: The algorithm matches the rider with a driver who fits their needs. The ride request may be approved or denied by the driver. Ride confirmation: The smart contract is activated to start the ride if the driver agrees. The rider is informed of the driver’s arrival and",
+        "blurhash": "U5RypXNM_2?a?FR.adWA%joGR:M|S-oFxvRn"
+      }
+    ],
+    "mentions": [],
+    "tags": [],
+    "emojis": [],
+    "card": null,
+    "poll": null
+  },
+  {
+    "id": "109927511734501890",
+    "created_at": "2023-02-25T21:31:52.000Z",
+    "in_reply_to_id": null,
+    "in_reply_to_account_id": null,
+    "sensitive": false,
+    "spoiler_text": "",
+    "visibility": "public",
+    "language": "en",
+    "uri": "https://wandering.shop/users/nutjob4life/statuses/109927511673247972",
+    "url": "https://wandering.shop/@nutjob4life/109927511673247972",
+    "replies_count": 18,
+    "reblogs_count": 549,
+    "favourites_count": 159,
+    "edited_at": null,
+    "favourited": false,
+    "reblogged": false,
+    "muted": false,
+    "bookmarked": false,
+    "content": "\u003cp\u003eCATHOLIC CHURCH: No meat on Fridays\u003cbr\u003ePEOPLE: Ok so no eggs for breakfast\u003cbr\u003eCC: No, eggs are ok\u003cbr\u003eP: But eggs are chicken\u003cbr\u003eCC: Not until they hatch\u003cbr\u003eP: So the thing isn't the thing until it's born?\u003cbr\u003eCC: Correct—um, no, wait.\u003c/p\u003e",
+    "filtered": [],
+    "reblog": null,
+    "account": {
+      "id": "109245422515682350",
+      "username": "nutjob4life",
+      "acct": "nutjob4life@wandering.shop",
+      "display_name": "Sean Kelly",
+      "locked": false,
+      "bot": false,
+      "discoverable": true,
+      "group": false,
+      "created_at": "2022-10-28T00:00:00.000Z",
+      "note": "\u003cp\u003eNASA scientist at JPL ⎸ Python hacker ⎸ science fiction and science fact ⎸ /ʃɔːn/ /ˈkɛli/ ⎸ Also jokes\u003c/p\u003e",
+      "url": "https://wandering.shop/@nutjob4life",
+      "avatar": "https://files.mastodon.social/cache/accounts/avatars/109/245/422/515/682/350/original/360ad2238d48b55a.jpeg",
+      "avatar_static": "https://files.mastodon.social/cache/accounts/avatars/109/245/422/515/682/350/original/360ad2238d48b55a.jpeg",
+      "header": "https://files.mastodon.social/cache/accounts/headers/109/245/422/515/682/350/original/e7732914f5767066.jpeg",
+      "header_static": "https://files.mastodon.social/cache/accounts/headers/109/245/422/515/682/350/original/e7732914f5767066.jpeg",
+      "followers_count": 215,
+      "following_count": 361,
+      "statuses_count": 366,
+      "last_status_at": "2023-02-26",
+      "emojis": [],
+      "fields": [
+        {
+          "name": "Home",
+          "value": "\u003ca href=\"https://www.seankelly.biz/\" rel=\"nofollow noopener noreferrer\" target=\"_blank\"\u003e\u003cspan class=\"invisible\"\u003ehttps://www.\u003c/span\u003e\u003cspan class=\"\"\u003eseankelly.biz/\u003c/span\u003e\u003cspan class=\"invisible\"\u003e\u003c/span\u003e\u003c/a\u003e",
+          "verified_at": "2023-02-26T01:16:49.001+00:00"
+        },
+        {
+          "name": "Pronouns",
+          "value": "He, him, his",
+          "verified_at": null
+        },
+        {
+          "name": "GitHub",
+          "value": "\u003ca href=\"https://github.com/nutjob4life\" rel=\"nofollow noopener noreferrer\" target=\"_blank\"\u003e\u003cspan class=\"invisible\"\u003ehttps://\u003c/span\u003e\u003cspan class=\"\"\u003egithub.com/nutjob4life\u003c/span\u003e\u003cspan class=\"invisible\"\u003e\u003c/span\u003e\u003c/a\u003e",
+          "verified_at": null
+        }
+      ]
+    },
+    "media_attachments": [],
+    "mentions": [],
+    "tags": [],
+    "emojis": [],
+    "card": null,
+    "poll": null
+  },
+  {
+    "id": "109927203185110371",
+    "created_at": "2023-02-25T20:13:23.000Z",
+    "in_reply_to_id": null,
+    "in_reply_to_account_id": null,
+    "sensitive": false,
+    "spoiler_text": "",
+    "visibility": "public",
+    "language": "en",
+    "uri": "https://universeodon.com/users/KFuentesGeorge/statuses/109927203075963947",
+    "url": "https://universeodon.com/@KFuentesGeorge/109927203075963947",
+    "replies_count": 31,
+    "reblogs_count": 675,
+    "favourites_count": 161,
+    "edited_at": null,
+    "favourited": false,
+    "reblogged": false,
+    "muted": false,
+    "bookmarked": false,
+    "content": "\u003cp\u003e\"Fun\" fact - white supremacy is really bad for (most) white people!\u003c/p\u003e\u003cp\u003eHere are some things white people lost out on because of racism:\u003c/p\u003e\u003cp\u003e-Walkable cities (because white flight post Civil Rights mean the creation of the suburbs)\u003cbr\u003e-Good, cheap public transit (because they didn't want Those People to go to the newly created suburbs\u003cbr\u003e-Universal single-payer health care (because You Know Who would be \"welfare queens\")\u003cbr\u003e-Police who are accountable to the public (need to keep Wink Wink Nudge Nudge in line)\u003cbr\u003e-Progressive taxation (because white people can pull themselves up by the bootstraps, just like Elon Musk, and not like I Bet You Can Probably Guess Who)\u003c/p\u003e\u003cp\u003e\u003ca href=\"https://universeodon.com/tags/BlackMastodon\" class=\"mention hashtag\" rel=\"nofollow noopener noreferrer\" target=\"_blank\"\u003e#\u003cspan\u003eBlackMastodon\u003c/span\u003e\u003c/a\u003e \u003ca href=\"https://universeodon.com/tags/BlackFedi\" class=\"mention hashtag\" rel=\"nofollow noopener noreferrer\" target=\"_blank\"\u003e#\u003cspan\u003eBlackFedi\u003c/span\u003e\u003c/a\u003e \u003ca href=\"https://universeodon.com/tags/politics\" class=\"mention hashtag\" rel=\"nofollow noopener noreferrer\" target=\"_blank\"\u003e#\u003cspan\u003epolitics\u003c/span\u003e\u003c/a\u003e \u003ca href=\"https://universeodon.com/tags/racism\" class=\"mention hashtag\" rel=\"nofollow noopener noreferrer\" target=\"_blank\"\u003e#\u003cspan\u003eracism\u003c/span\u003e\u003c/a\u003e\u003c/p\u003e",
+    "filtered": [],
+    "reblog": null,
+    "account": {
+      "id": "109396881882558862",
+      "username": "KFuentesGeorge",
+      "acct": "KFuentesGeorge@universeodon.com",
+      "display_name": "Prof Kemi FG",
+      "locked": false,
+      "bot": false,
+      "discoverable": true,
+      "group": false,
+      "created_at": "2022-11-24T00:00:00.000Z",
+      "note": "\u003cp\u003eStill figuring out Mastodon. My work is on environmental justice and Pan-Africanism. My life is about jiu jitsu, art, skateboarding, and music. Recent chapter: \"The Comparative Politics of Environmental Justice\" (Oxford Handbook of Comparative Environmental Politics: Oxford U., 2021)\u003cbr\u003e \u003cbr\u003e\u003ca href=\"https://universeodon.com/tags/environmentaljustice\" class=\"mention hashtag\" rel=\"nofollow noopener noreferrer\" target=\"_blank\"\u003e#\u003cspan\u003eenvironmentaljustice\u003c/span\u003e\u003c/a\u003e \u003ca href=\"https://universeodon.com/tags/panafricanism\" class=\"mention hashtag\" rel=\"nofollow noopener noreferrer\" target=\"_blank\"\u003e#\u003cspan\u003epanafricanism\u003c/span\u003e\u003c/a\u003e \u003ca href=\"https://universeodon.com/tags/BlackMastodon\" class=\"mention hashtag\" rel=\"nofollow noopener noreferrer\" target=\"_blank\"\u003e#\u003cspan\u003eBlackMastodon\u003c/span\u003e\u003c/a\u003e\u003c/p\u003e",
+      "url": "https://universeodon.com/@KFuentesGeorge",
+      "avatar": "https://files.mastodon.social/cache/accounts/avatars/109/396/881/882/558/862/original/355fa40ba6debe16.jpeg",
+      "avatar_static": "https://files.mastodon.social/cache/accounts/avatars/109/396/881/882/558/862/original/355fa40ba6debe16.jpeg",
+      "header": "https://files.mastodon.social/cache/accounts/headers/109/396/881/882/558/862/original/62bb430f1f3d8ec3.jpeg",
+      "header_static": "https://files.mastodon.social/cache/accounts/headers/109/396/881/882/558/862/original/62bb430f1f3d8ec3.jpeg",
+      "followers_count": 1862,
+      "following_count": 937,
+      "statuses_count": 2051,
+      "last_status_at": "2023-02-26",
+      "emojis": [],
+      "fields": []
+    },
+    "media_attachments": [],
+    "mentions": [],
+    "tags": [
+      {
+        "name": "blackmastodon",
+        "url": "https://mastodon.social/tags/blackmastodon"
+      },
+      {
+        "name": "BlackFedi",
+        "url": "https://mastodon.social/tags/BlackFedi"
+      },
+      {
+        "name": "politics",
+        "url": "https://mastodon.social/tags/politics"
+      },
+      {
+        "name": "racism",
+        "url": "https://mastodon.social/tags/racism"
+      }
+    ],
+    "emojis": [],
+    "card": null,
+    "poll": null
+  },
+  {
+    "id": "109926169046220218",
+    "created_at": "2023-02-25T15:50:25.925Z",
+    "in_reply_to_id": null,
+    "in_reply_to_account_id": null,
+    "sensitive": false,
+    "spoiler_text": "",
+    "visibility": "public",
+    "language": "en",
+    "uri": "https://mastodon.social/users/edbott/statuses/109926169046220218",
+    "url": "https://mastodon.social/@edbott/109926169046220218",
+    "replies_count": 46,
+    "reblogs_count": 860,
+    "favourites_count": 859,
+    "edited_at": null,
+    "favourited": false,
+    "reblogged": false,
+    "muted": false,
+    "bookmarked": false,
+    "content": "\u003cp\u003eJust gonna leave this here.\u003c/p\u003e",
+    "filtered": [],
+    "reblog": null,
+    "application": {
+      "name": "Web",
+      "website": null
+    },
+    "account": {
+      "id": "109296729136865370",
+      "username": "edbott",
+      "acct": "edbott",
+      "display_name": "Ed Bott",
+      "locked": false,
+      "bot": false,
+      "discoverable": true,
+      "group": false,
+      "created_at": "2022-11-06T00:00:00.000Z",
+      "note": "\u003cp\u003eTech journalist. Author of 25+ books. After 17 years at ZDNET, once again an independent.\u003c/p\u003e\u003cp\u003eBott, not bot. He/him.\u003c/p\u003e\u003cp\u003eAvailable for writing/consulting work. DM for Signal info.\u003c/p\u003e",
+      "url": "https://mastodon.social/@edbott",
+      "avatar": "https://files.mastodon.social/accounts/avatars/109/296/729/136/865/370/original/23ffc15846bf8823.jpg",
+      "avatar_static": "https://files.mastodon.social/accounts/avatars/109/296/729/136/865/370/original/23ffc15846bf8823.jpg",
+      "header": "https://files.mastodon.social/accounts/headers/109/296/729/136/865/370/original/ae485e782926f7aa.jpg",
+      "header_static": "https://files.mastodon.social/accounts/headers/109/296/729/136/865/370/original/ae485e782926f7aa.jpg",
+      "followers_count": 6437,
+      "following_count": 608,
+      "statuses_count": 1104,
+      "last_status_at": "2023-02-25",
+      "noindex": false,
+      "emojis": [],
+      "roles": [],
+      "fields": [
+        {
+          "name": "Verified by",
+          "value": "\u003ca href=\"https://fedified.com\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\"\u003e\u003cspan class=\"invisible\"\u003ehttps://\u003c/span\u003e\u003cspan class=\"\"\u003efedified.com\u003c/span\u003e\u003cspan class=\"invisible\"\u003e\u003c/span\u003e\u003c/a\u003e",
+          "verified_at": "2022-11-09T19:36:24.923+00:00"
+        },
+        {
+          "name": "Personal site",
+          "value": "\u003ca href=\"https://www.edbott.com/about\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\"\u003e\u003cspan class=\"invisible\"\u003ehttps://www.\u003c/span\u003e\u003cspan class=\"\"\u003eedbott.com/about\u003c/span\u003e\u003cspan class=\"invisible\"\u003e\u003c/span\u003e\u003c/a\u003e",
+          "verified_at": "2023-01-08T15:43:03.871+00:00"
+        },
+        {
+          "name": "Twitter",
+          "value": "\u003ca href=\"https://twitter.com/edbott\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\"\u003e\u003cspan class=\"invisible\"\u003ehttps://\u003c/span\u003e\u003cspan class=\"\"\u003etwitter.com/edbott\u003c/span\u003e\u003cspan class=\"invisible\"\u003e\u003c/span\u003e\u003c/a\u003e",
+          "verified_at": null
+        },
+        {
+          "name": "Newsletter",
+          "value": "\u003ca href=\"https://edbott.substack.com\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\"\u003e\u003cspan class=\"invisible\"\u003ehttps://\u003c/span\u003e\u003cspan class=\"\"\u003eedbott.substack.com\u003c/span\u003e\u003cspan class=\"invisible\"\u003e\u003c/span\u003e\u003c/a\u003e",
+          "verified_at": null
+        }
+      ]
+    },
+    "media_attachments": [
+      {
+        "id": "109926136684314427",
+        "type": "image",
+        "url": "https://files.mastodon.social/media_attachments/files/109/926/136/684/314/427/original/15b4366ea5795ac7.png",
+        "preview_url": "https://files.mastodon.social/media_attachments/files/109/926/136/684/314/427/small/15b4366ea5795ac7.png",
+        "remote_url": null,
+        "preview_remote_url": null,
+        "text_url": null,
+        "meta": {
+          "original": {
+            "width": 828,
+            "height": 1042,
+            "size": "828x1042",
+            "aspect": 0.7946257197696737
+          },
+          "small": {
+            "width": 428,
+            "height": 538,
+            "size": "428x538",
+            "aspect": 0.7955390334572491
+          },
+          "focus": {
+            "x": 0.0,
+            "y": 0.0
+          }
+        },
+        "description": "Screenshot of a Donald Trump tweet promising to \"get rid of costly and unnecessary regulation\" with a screenshot of a Fortune magazine article below it about Trump rolling back train braking rules meant to keep oil tankers from exploding.",
+        "blurhash": "UwJRdXWBD%t700ofxuWBIUj[ofay%MayWBj["
+      }
+    ],
+    "mentions": [],
+    "tags": [],
+    "emojis": [],
+    "card": null,
+    "poll": null
+  },
+  {
+    "id": "109927579908088714",
+    "created_at": "2023-02-25T21:49:14.038Z",
+    "in_reply_to_id": null,
+    "in_reply_to_account_id": null,
+    "sensitive": false,
+    "spoiler_text": "",
+    "visibility": "public",
+    "language": "en",
+    "uri": "https://mastodon.social/users/charlotteclymer/statuses/109927579908088714",
+    "url": "https://mastodon.social/@charlotteclymer/109927579908088714",
+    "replies_count": 20,
+    "reblogs_count": 142,
+    "favourites_count": 432,
+    "edited_at": null,
+    "favourited": false,
+    "reblogged": false,
+    "muted": false,
+    "bookmarked": false,
+    "content": "\u003cp\u003eSo, I\u0026#39;m not kidding: Jordan Peterson is apparently upset that a paper towel brand is engaging in \u0026quot;wokeness\u0026quot; with their advertising.\u003c/p\u003e\u003cp\u003eI found this surprising because I was under the impression Peterson doesn\u0026#39;t need paper towels. He seems pretty self-absorbed.\u003c/p\u003e",
+    "filtered": [],
+    "reblog": null,
+    "application": {
+      "name": "Web",
+      "website": null
+    },
+    "account": {
+      "id": "109295809348219596",
+      "username": "charlotteclymer",
+      "acct": "charlotteclymer",
+      "display_name": "Charlotte Clymer",
+      "locked": false,
+      "bot": false,
+      "discoverable": true,
+      "group": false,
+      "created_at": "2022-11-06T00:00:00.000Z",
+      "note": "\u003cp\u003eWriter. Lesbian. Texan. Veteran. Hoya. She. | cmclymer@gmail.com | subscribe: \u003ca href=\"http://charlotteclymer.substack.com\" target=\"_blank\" rel=\"nofollow noopener noreferrer\"\u003e\u003cspan class=\"invisible\"\u003ehttp://\u003c/span\u003e\u003cspan class=\"\"\u003echarlotteclymer.substack.com\u003c/span\u003e\u003cspan class=\"invisible\"\u003e\u003c/span\u003e\u003c/a\u003e \u003ca href=\"https://mastodon.social/tags/BLM\" class=\"mention hashtag\" rel=\"tag\"\u003e#\u003cspan\u003eBLM\u003c/span\u003e\u003c/a\u003e\u003c/p\u003e",
+      "url": "https://mastodon.social/@charlotteclymer",
+      "avatar": "https://files.mastodon.social/accounts/avatars/109/295/809/348/219/596/original/a4a28b3733f1d7ae.png",
+      "avatar_static": "https://files.mastodon.social/accounts/avatars/109/295/809/348/219/596/original/a4a28b3733f1d7ae.png",
+      "header": "https://files.mastodon.social/accounts/headers/109/295/809/348/219/596/original/af6f7919b943962e.jpeg",
+      "header_static": "https://files.mastodon.social/accounts/headers/109/295/809/348/219/596/original/af6f7919b943962e.jpeg",
+      "followers_count": 32950,
+      "following_count": 22,
+      "statuses_count": 106,
+      "last_status_at": "2023-02-25",
+      "noindex": false,
+      "emojis": [],
+      "roles": [],
+      "fields": [
+        {
+          "name": "Twitter",
+          "value": "\u003ca href=\"https://twitter.com/cmclymer\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\"\u003e\u003cspan class=\"invisible\"\u003ehttps://\u003c/span\u003e\u003cspan class=\"\"\u003etwitter.com/cmclymer\u003c/span\u003e\u003cspan class=\"invisible\"\u003e\u003c/span\u003e\u003c/a\u003e",
+          "verified_at": null
+        },
+        {
+          "name": "Substack",
+          "value": "\u003ca href=\"https://charlotteclymer.substack.com\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\"\u003e\u003cspan class=\"invisible\"\u003ehttps://\u003c/span\u003e\u003cspan class=\"\"\u003echarlotteclymer.substack.com\u003c/span\u003e\u003cspan class=\"invisible\"\u003e\u003c/span\u003e\u003c/a\u003e",
+          "verified_at": null
+        },
+        {
+          "name": "Facebook",
+          "value": "\u003ca href=\"https://www.facebook.com/cmclymer\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\"\u003e\u003cspan class=\"invisible\"\u003ehttps://www.\u003c/span\u003e\u003cspan class=\"\"\u003efacebook.com/cmclymer\u003c/span\u003e\u003cspan class=\"invisible\"\u003e\u003c/span\u003e\u003c/a\u003e",
+          "verified_at": null
+        },
+        {
+          "name": "Email",
+          "value": "cmclymer@gmail.com",
+          "verified_at": null
+        }
+      ]
+    },
+    "media_attachments": [],
+    "mentions": [],
+    "tags": [],
+    "emojis": [],
+    "card": null,
+    "poll": null
+  },
+  {
+    "id": "109927407125524514",
+    "created_at": "2023-02-25T21:04:23.000Z",
+    "in_reply_to_id": null,
+    "in_reply_to_account_id": null,
+    "sensitive": false,
+    "spoiler_text": "",
+    "visibility": "public",
+    "language": "en",
+    "uri": "https://social.panic.com/users/cabel/statuses/109927403611407685",
+    "url": "https://social.panic.com/@cabel/109927403611407685",
+    "replies_count": 35,
+    "reblogs_count": 376,
+    "favourites_count": 192,
+    "edited_at": null,
+    "favourited": false,
+    "reblogged": false,
+    "muted": false,
+    "bookmarked": false,
+    "content": "\u003cp\u003e🌟 Near my house, there's an apartment building with a courtyard. Big deal, right? But if you walk up the steps a little bit, there's something about this courtyard that you might find really truly wonderful… \u003ca href=\"https://cabel.com/2023/02/25/the-courtyard/\" rel=\"nofollow noopener noreferrer\" target=\"_blank\"\u003e\u003cspan class=\"invisible\"\u003ehttps://\u003c/span\u003e\u003cspan class=\"ellipsis\"\u003ecabel.com/2023/02/25/the-court\u003c/span\u003e\u003cspan class=\"invisible\"\u003eyard/\u003c/span\u003e\u003c/a\u003e\u003c/p\u003e",
+    "filtered": [],
+    "reblog": null,
+    "account": {
+      "id": "109752996302741265",
+      "username": "cabel",
+      "acct": "cabel@panic.com",
+      "display_name": "Cabel Sasser",
+      "locked": false,
+      "bot": false,
+      "discoverable": true,
+      "group": false,
+      "created_at": "2023-01-24T00:00:00.000Z",
+      "note": "\u003cp\u003eI work at Panic • We make the Playdate • We published Untitled Goose Game, wow that game got such acclaim • Hey, also Firewatch • And soon there’s Nour • We make great apps, never stopped, like Transmit, Nova and Prompt\u003c/p\u003e",
+      "url": "https://social.panic.com/@cabel",
+      "avatar": "https://files.mastodon.social/cache/accounts/avatars/109/752/996/302/741/265/original/8b0b373af534b67f.jpg",
+      "avatar_static": "https://files.mastodon.social/cache/accounts/avatars/109/752/996/302/741/265/original/8b0b373af534b67f.jpg",
+      "header": "https://files.mastodon.social/cache/accounts/headers/109/752/996/302/741/265/original/92c145f4ceb50aa4.png",
+      "header_static": "https://files.mastodon.social/cache/accounts/headers/109/752/996/302/741/265/original/92c145f4ceb50aa4.png",
+      "followers_count": 8358,
+      "following_count": 125,
+      "statuses_count": 67,
+      "last_status_at": "2023-02-26",
+      "emojis": [],
+      "fields": [
+        {
+          "name": "My Blog",
+          "value": "\u003ca href=\"https://cabel.com/\" rel=\"nofollow noopener noreferrer\" target=\"_blank\"\u003e\u003cspan class=\"invisible\"\u003ehttps://\u003c/span\u003e\u003cspan class=\"\"\u003ecabel.com/\u003c/span\u003e\u003cspan class=\"invisible\"\u003e\u003c/span\u003e\u003c/a\u003e",
+          "verified_at": "2023-02-26T03:02:27.600+00:00"
+        },
+        {
+          "name": "Panic",
+          "value": "\u003ca href=\"https://panic.com/\" rel=\"nofollow noopener noreferrer\" target=\"_blank\"\u003e\u003cspan class=\"invisible\"\u003ehttps://\u003c/span\u003e\u003cspan class=\"\"\u003epanic.com/\u003c/span\u003e\u003cspan class=\"invisible\"\u003e\u003c/span\u003e\u003c/a\u003e",
+          "verified_at": null
+        },
+        {
+          "name": "Playdate",
+          "value": "\u003ca href=\"https://play.date/\" rel=\"nofollow noopener noreferrer\" target=\"_blank\"\u003e\u003cspan class=\"invisible\"\u003ehttps://\u003c/span\u003e\u003cspan class=\"\"\u003eplay.date/\u003c/span\u003e\u003cspan class=\"invisible\"\u003e\u003c/span\u003e\u003c/a\u003e",
+          "verified_at": null
+        }
+      ]
+    },
+    "media_attachments": [],
+    "mentions": [],
+    "tags": [],
+    "emojis": [],
+    "card": null,
+    "poll": null
+  },
+  {
+    "id": "109928084867540744",
+    "created_at": "2023-02-25T23:57:36.000Z",
+    "in_reply_to_id": null,
+    "in_reply_to_account_id": null,
+    "sensitive": false,
+    "spoiler_text": "",
+    "visibility": "public",
+    "language": "en",
+    "uri": "https://universeodon.com/users/DayWalkingRedhead/statuses/109928084729359593",
+    "url": "https://universeodon.com/@DayWalkingRedhead/109928084729359593",
+    "replies_count": 4,
+    "reblogs_count": 273,
+    "favourites_count": 41,
+    "edited_at": null,
+    "favourited": false,
+    "reblogged": false,
+    "muted": false,
+    "bookmarked": false,
+    "content": "\u003cp\u003e“We live in a world where trained cops can panic and act on impulse but untrained civilians must remain calm with a gun in their face.”\u003c/p\u003e",
+    "filtered": [],
+    "reblog": null,
+    "account": {
+      "id": "109321236580033937",
+      "username": "DayWalkingRedhead",
+      "acct": "DayWalkingRedhead@universeodon.com",
+      "display_name": "DayWalkingRedhead",
+      "locked": false,
+      "bot": false,
+      "discoverable": true,
+      "group": false,
+      "created_at": "2022-11-10T00:00:00.000Z",
+      "note": "\u003cp\u003eShe/Her Bi/Pan Queer Antifa Polyam Kinky Disabled Pagan Mom VaccinatedAF. \u2029\"There is no truer gauge of a man's character than the way in which he employs his strength, his power.\" Harry Dresden, Storm Front by Jim Butcher\u2028 \u2028\"Someone has to do something. I can. So I should.\"  Billy Borden, Fool Moon by Jim Butcher\u2028 \u2028\" I do not need the written code of a spiritual belief to act like a decent human being.\" Sanya, Changes by Jim Butcher\u003c/p\u003e",
+      "url": "https://universeodon.com/@DayWalkingRedhead",
+      "avatar": "https://files.mastodon.social/cache/accounts/avatars/109/321/236/580/033/937/original/2e54d241716ec658.png",
+      "avatar_static": "https://files.mastodon.social/cache/accounts/avatars/109/321/236/580/033/937/original/2e54d241716ec658.png",
+      "header": "https://files.mastodon.social/cache/accounts/headers/109/321/236/580/033/937/original/d634ea58f5b6551c.png",
+      "header_static": "https://files.mastodon.social/cache/accounts/headers/109/321/236/580/033/937/original/d634ea58f5b6551c.png",
+      "followers_count": 285,
+      "following_count": 282,
+      "statuses_count": 3814,
+      "last_status_at": "2023-02-26",
+      "emojis": [],
+      "fields": []
+    },
+    "media_attachments": [
+      {
+        "id": "109928084757679072",
+        "type": "image",
+        "url": "https://files.mastodon.social/cache/media_attachments/files/109/928/084/757/679/072/original/2666db5f8065d305.png",
+        "preview_url": "https://files.mastodon.social/cache/media_attachments/files/109/928/084/757/679/072/small/2666db5f8065d305.png",
+        "remote_url": "https://media.universeodon.com/media_attachments/files/109/928/071/992/687/110/original/70c16727627d4e05.png",
+        "preview_remote_url": null,
+        "text_url": null,
+        "meta": {
+          "original": {
+            "width": 640,
+            "height": 960,
+            "size": "640x960",
+            "aspect": 0.6666666666666666
+          },
+          "small": {
+            "width": 392,
+            "height": 588,
+            "size": "392x588",
+            "aspect": 0.6666666666666666
+          }
+        },
+        "description": "“We live in a world where trained cops can panic and act on impulse but untrained civilians must remain calm with a gun in their face.” A Black woman holds a hand written poster, on red poster stock, in black letters. There is a crowd of people behind her.",
+        "blurhash": "UPH,@^o}BotR%JV@ITad49MxZ$RO$gR,M{jZ"
+      }
+    ],
+    "mentions": [],
+    "tags": [],
+    "emojis": [],
+    "card": null,
+    "poll": null
+  },
+  {
+    "id": "109930134228625707",
+    "created_at": "2023-02-26T08:38:49.815Z",
+    "in_reply_to_id": null,
+    "in_reply_to_account_id": null,
+    "sensitive": false,
+    "spoiler_text": "",
+    "visibility": "public",
+    "language": "en",
+    "uri": "https://mastodon.social/users/dansup/statuses/109930134228625707",
+    "url": "https://mastodon.social/@dansup/109930134228625707",
+    "replies_count": 3,
+    "reblogs_count": 14,
+    "favourites_count": 54,
+    "edited_at": null,
+    "favourited": false,
+    "reblogged": false,
+    "muted": false,
+    "bookmarked": false,
+    "content": "\u003cp\u003eI know \u003ca href=\"https://mastodon.social/tags/caturday\" class=\"mention hashtag\" rel=\"tag\"\u003e#\u003cspan\u003ecaturday\u003c/span\u003e\u003c/a\u003e is over but what an iconic pose\u003c/p\u003e\u003cp\u003eI\u0026#39;ve always been more of a dog person, until this majestic beast came into my life\u003c/p\u003e\u003cp\u003eHe follows me around and cuddles with me, and mostly ignores my partner who raised him from a kitten. \u003c/p\u003e\u003cp\u003eIronically enough my dog follows my partner around and sleeps at his feet.\u003c/p\u003e\u003cp\u003eFunny how that works\u003c/p\u003e\u003cp\u003e\u003ca href=\"https://mastodon.social/tags/catsOfMastodon\" class=\"mention hashtag\" rel=\"tag\"\u003e#\u003cspan\u003ecatsOfMastodon\u003c/span\u003e\u003c/a\u003e \u003ca href=\"https://mastodon.social/tags/tuxedoCat\" class=\"mention hashtag\" rel=\"tag\"\u003e#\u003cspan\u003etuxedoCat\u003c/span\u003e\u003c/a\u003e \u003ca href=\"https://mastodon.social/tags/cat\" class=\"mention hashtag\" rel=\"tag\"\u003e#\u003cspan\u003ecat\u003c/span\u003e\u003c/a\u003e \u003ca href=\"https://mastodon.social/tags/iconicCatsofMastodon\" class=\"mention hashtag\" rel=\"tag\"\u003e#\u003cspan\u003eiconicCatsofMastodon\u003c/span\u003e\u003c/a\u003e\u003c/p\u003e",
+    "filtered": [],
+    "reblog": null,
+    "application": {
+      "name": "Web",
+      "website": null
+    },
+    "account": {
+      "id": "16041",
+      "username": "dansup",
+      "acct": "dansup",
+      "display_name": "Daniel Supernault",
+      "locked": false,
+      "bot": false,
+      "discoverable": true,
+      "group": false,
+      "created_at": "2016-11-27T00:00:00.000Z",
+      "note": "\u003cp\u003easpiring astronaut, community creator and determined dreamer. \u003c/p\u003e\u003cp\u003eBuilding \u003cspan class=\"h-card\"\u003e\u003ca href=\"https://mastodon.social/@pixelfed\" class=\"u-url mention\"\u003e@\u003cspan\u003epixelfed\u003c/span\u003e\u003c/a\u003e\u003c/span\u003e, an ethical and federated photo sharing platform.\u003c/p\u003e\u003cp\u003e\u003ca href=\"https://mastodon.social/tags/design\" class=\"mention hashtag\" rel=\"tag\"\u003e#\u003cspan\u003edesign\u003c/span\u003e\u003c/a\u003e \u003ca href=\"https://mastodon.social/tags/php\" class=\"mention hashtag\" rel=\"tag\"\u003e#\u003cspan\u003ephp\u003c/span\u003e\u003c/a\u003e \u003ca href=\"https://mastodon.social/tags/activityPub\" class=\"mention hashtag\" rel=\"tag\"\u003e#\u003cspan\u003eactivityPub\u003c/span\u003e\u003c/a\u003e \u003ca href=\"https://mastodon.social/tags/fedi22\" class=\"mention hashtag\" rel=\"tag\"\u003e#\u003cspan\u003efedi22\u003c/span\u003e\u003c/a\u003e \u003ca href=\"https://mastodon.social/tags/pixelfed\" class=\"mention hashtag\" rel=\"tag\"\u003e#\u003cspan\u003epixelfed\u003c/span\u003e\u003c/a\u003e\u003c/p\u003e",
+      "url": "https://mastodon.social/@dansup",
+      "avatar": "https://files.mastodon.social/accounts/avatars/000/016/041/original/edfbc58f93228043.jpg",
+      "avatar_static": "https://files.mastodon.social/accounts/avatars/000/016/041/original/edfbc58f93228043.jpg",
+      "header": "https://files.mastodon.social/accounts/headers/000/016/041/original/176ba2e67370b446.jpg",
+      "header_static": "https://files.mastodon.social/accounts/headers/000/016/041/original/176ba2e67370b446.jpg",
+      "followers_count": 12086,
+      "following_count": 50,
+      "statuses_count": 13997,
+      "last_status_at": "2023-02-26",
+      "noindex": false,
+      "emojis": [],
+      "roles": [],
+      "fields": [
+        {
+          "name": "pixelfed",
+          "value": "\u003ca href=\"https://pixelfed.social/dansup\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\"\u003e\u003cspan class=\"invisible\"\u003ehttps://\u003c/span\u003e\u003cspan class=\"\"\u003epixelfed.social/dansup\u003c/span\u003e\u003cspan class=\"invisible\"\u003e\u003c/span\u003e\u003c/a\u003e",
+          "verified_at": "2019-12-13T06:09:38.095+00:00"
+        },
+        {
+          "name": "github",
+          "value": "\u003ca href=\"https://github.com/dansup\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\"\u003e\u003cspan class=\"invisible\"\u003ehttps://\u003c/span\u003e\u003cspan class=\"\"\u003egithub.com/dansup\u003c/span\u003e\u003cspan class=\"invisible\"\u003e\u003c/span\u003e\u003c/a\u003e",
+          "verified_at": "2023-02-04T04:28:02.153+00:00"
+        },
+        {
+          "name": "patreon",
+          "value": "\u003ca href=\"https://patreon.com/dansup\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\"\u003e\u003cspan class=\"invisible\"\u003ehttps://\u003c/span\u003e\u003cspan class=\"\"\u003epatreon.com/dansup\u003c/span\u003e\u003cspan class=\"invisible\"\u003e\u003c/span\u003e\u003c/a\u003e",
+          "verified_at": null
+        },
+        {
+          "name": "website",
+          "value": "\u003ca href=\"https://dansup.com\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\"\u003e\u003cspan class=\"invisible\"\u003ehttps://\u003c/span\u003e\u003cspan class=\"\"\u003edansup.com\u003c/span\u003e\u003cspan class=\"invisible\"\u003e\u003c/span\u003e\u003c/a\u003e",
+          "verified_at": "2020-01-26T05:26:13.117+00:00"
+        }
+      ]
+    },
+    "media_attachments": [
+      {
+        "id": "109930107734619122",
+        "type": "image",
+        "url": "https://files.mastodon.social/media_attachments/files/109/930/107/734/619/122/original/31b5e46e9ad52536.jpeg",
+        "preview_url": "https://files.mastodon.social/media_attachments/files/109/930/107/734/619/122/small/31b5e46e9ad52536.jpeg",
+        "remote_url": null,
+        "preview_remote_url": null,
+        "text_url": null,
+        "meta": {
+          "original": {
+            "width": 1287,
+            "height": 1610,
+            "size": "1287x1610",
+            "aspect": 0.7993788819875777
+          },
+          "small": {
+            "width": 429,
+            "height": 537,
+            "size": "429x537",
+            "aspect": 0.7988826815642458
+          },
+          "focus": {
+            "x": 0.0,
+            "y": 0.0
+          }
+        },
+        "description": "Iconic pose of our cat named Tuk",
+        "blurhash": "UVJkMz8^?bjEAfRi-pNH^$%LRkoz%LxZt6of"
+      }
+    ],
+    "mentions": [],
+    "tags": [
+      {
+        "name": "caturday",
+        "url": "https://mastodon.social/tags/caturday"
+      },
+      {
+        "name": "catsofmastodon",
+        "url": "https://mastodon.social/tags/catsofmastodon"
+      },
+      {
+        "name": "tuxedocat",
+        "url": "https://mastodon.social/tags/tuxedocat"
+      },
+      {
+        "name": "cat",
+        "url": "https://mastodon.social/tags/cat"
+      },
+      {
+        "name": "iconiccatsofmastodon",
+        "url": "https://mastodon.social/tags/iconiccatsofmastodon"
+      }
+    ],
+    "emojis": [],
+    "card": null,
+    "poll": null
+  },
+  {
+    "id": "109927100333882833",
+    "created_at": "2023-02-25T19:47:16.246Z",
+    "in_reply_to_id": null,
+    "in_reply_to_account_id": null,
+    "sensitive": false,
+    "spoiler_text": "",
+    "visibility": "public",
+    "language": "en",
+    "uri": "https://mastodon.social/users/AmishSuperModel/statuses/109927100333882833",
+    "url": "https://mastodon.social/@AmishSuperModel/109927100333882833",
+    "replies_count": 12,
+    "reblogs_count": 199,
+    "favourites_count": 407,
+    "edited_at": null,
+    "favourited": false,
+    "reblogged": false,
+    "muted": false,
+    "bookmarked": false,
+    "content": "\u003cp\u003e\u0026quot;I\u0026#39;m here for the hookers and the booze!!!\u0026quot;\u003c/p\u003e\u003cp\u003e\u0026quot;Sir, this is a library.\u0026quot;\u003c/p\u003e\u003cp\u003e*whispers... \u0026quot;I\u0026#39;m here for the hookers and the booze.\u0026quot;\u003c/p\u003e",
+    "filtered": [],
+    "reblog": null,
+    "application": {
+      "name": "IceCubesApp",
+      "website": "https://github.com/Dimillian/IceCubesApp"
+    },
+    "account": {
+      "id": "109851922410758138",
+      "username": "AmishSuperModel",
+      "acct": "AmishSuperModel",
+      "display_name": "Amish Super Model",
+      "locked": false,
+      "bot": false,
+      "discoverable": true,
+      "group": false,
+      "created_at": "2023-02-12T00:00:00.000Z",
+      "note": "\u003cp\u003eRetired Amish Porn Star and current Amish Super Model gracing the runways from Milan to Minsk to Lancaster. Passionate Practical Progressive.\u003c/p\u003e",
+      "url": "https://mastodon.social/@AmishSuperModel",
+      "avatar": "https://files.mastodon.social/accounts/avatars/109/851/922/410/758/138/original/8fe53f5c5f0e42aa.jpeg",
+      "avatar_static": "https://files.mastodon.social/accounts/avatars/109/851/922/410/758/138/original/8fe53f5c5f0e42aa.jpeg",
+      "header": "https://files.mastodon.social/accounts/headers/109/851/922/410/758/138/original/09becc758d392b15.jpeg",
+      "header_static": "https://files.mastodon.social/accounts/headers/109/851/922/410/758/138/original/09becc758d392b15.jpeg",
+      "followers_count": 3410,
+      "following_count": 446,
+      "statuses_count": 323,
+      "last_status_at": "2023-02-25",
+      "noindex": false,
+      "emojis": [],
+      "roles": [],
+      "fields": []
+    },
+    "media_attachments": [],
+    "mentions": [],
+    "tags": [],
+    "emojis": [],
+    "card": null,
+    "poll": null
+  },
+  {
+    "id": "109928161158887556",
+    "created_at": "2023-02-26T00:17:03.155Z",
+    "in_reply_to_id": null,
+    "in_reply_to_account_id": null,
+    "sensitive": false,
+    "spoiler_text": "",
+    "visibility": "public",
+    "language": "en",
+    "uri": "https://mastodon.social/users/flexghost/statuses/109928161158887556",
+    "url": "https://mastodon.social/@flexghost/109928161158887556",
+    "replies_count": 12,
+    "reblogs_count": 135,
+    "favourites_count": 136,
+    "edited_at": null,
+    "favourited": false,
+    "reblogged": false,
+    "muted": false,
+    "bookmarked": false,
+    "content": "\u003cp\u003eTennessee gives trans youth 1 year to detransition. The state also banned drag performances\u003c/p\u003e\u003cp\u003eThese cry bullies love to talk about the constitution. KK\u003c/p\u003e\u003cp\u003eThe 14th Amendment\u003c/p\u003e\u003cp\u003eNo State shall make or enforce any law which shall abridge the privileges or immunities of citizens of the United States; nor shall any State deprive any person of life, liberty, or property, without due process of law; nor deny to any person within its jurisdiction the equal protection of the laws\u003c/p\u003e\u003cp\u003e\u003ca href=\"https://mastodon.social/tags/transrightsarehumanrights\" class=\"mention hashtag\" rel=\"tag\"\u003e#\u003cspan\u003etransrightsarehumanrights\u003c/span\u003e\u003c/a\u003e\u003c/p\u003e",
+    "filtered": [],
+    "reblog": null,
+    "application": {
+      "name": "Web",
+      "website": null
+    },
+    "account": {
+      "id": "108193163229606399",
+      "username": "flexghost",
+      "acct": "flexghost",
+      "display_name": "Flexghost.",
+      "locked": false,
+      "bot": false,
+      "discoverable": true,
+      "group": false,
+      "created_at": "2022-04-25T00:00:00.000Z",
+      "note": "\u003cp\u003eI\u0026#39;m here to kick ass and chew bubblegum and I\u0026#39;m all out of bubblegum\u003c/p\u003e",
+      "url": "https://mastodon.social/@flexghost",
+      "avatar": "https://files.mastodon.social/accounts/avatars/108/193/163/229/606/399/original/d73c625f5c92cd9d.jpeg",
+      "avatar_static": "https://files.mastodon.social/accounts/avatars/108/193/163/229/606/399/original/d73c625f5c92cd9d.jpeg",
+      "header": "https://files.mastodon.social/accounts/headers/108/193/163/229/606/399/original/a05d1f15fcdd71e5.jpg",
+      "header_static": "https://files.mastodon.social/accounts/headers/108/193/163/229/606/399/original/a05d1f15fcdd71e5.jpg",
+      "followers_count": 4737,
+      "following_count": 477,
+      "statuses_count": 6542,
+      "last_status_at": "2023-02-26",
+      "noindex": false,
+      "emojis": [],
+      "roles": [],
+      "fields": [
+        {
+          "name": "The rundown",
+          "value": "Progressive. Actually autistic. Woman in tech. Unapologetic.",
+          "verified_at": null
+        },
+        {
+          "name": "Posts",
+          "value": "Politics // Social Issues // NFL \u003ca href=\"https://mastodon.social/tags/MastodonSports\" class=\"mention hashtag\" rel=\"tag\"\u003e#\u003cspan\u003eMastodonSports\u003c/span\u003e\u003c/a\u003e",
+          "verified_at": null
+        },
+        {
+          "name": "To alcohol:",
+          "value": "the cause of and the solution to all of life\u0026#39;s problems",
+          "verified_at": null
+        },
+        {
+          "name": "Join us on our Discord",
+          "value": "\u003ca href=\"https://discord.gg/9dZXtSDyBY\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\"\u003e\u003cspan class=\"invisible\"\u003ehttps://\u003c/span\u003e\u003cspan class=\"\"\u003ediscord.gg/9dZXtSDyBY\u003c/span\u003e\u003cspan class=\"invisible\"\u003e\u003c/span\u003e\u003c/a\u003e",
+          "verified_at": null
+        }
+      ]
+    },
+    "media_attachments": [],
+    "mentions": [],
+    "tags": [
+      {
+        "name": "transrightsarehumanrights",
+        "url": "https://mastodon.social/tags/transrightsarehumanrights"
+      }
+    ],
+    "emojis": [],
+    "card": null,
+    "poll": null
+  },
+  {
+    "id": "109926415261424385",
+    "created_at": "2023-02-25T16:53:02.871Z",
+    "in_reply_to_id": null,
+    "in_reply_to_account_id": null,
+    "sensitive": false,
+    "spoiler_text": "",
+    "visibility": "public",
+    "language": "en",
+    "uri": "https://mastodon.social/users/rands/statuses/109926415261424385",
+    "url": "https://mastodon.social/@rands/109926415261424385",
+    "replies_count": 30,
+    "reblogs_count": 208,
+    "favourites_count": 719,
+    "edited_at": null,
+    "favourited": false,
+    "reblogged": false,
+    "muted": false,
+    "bookmarked": false,
+    "content": "\u003cp\u003eTwitter isn’t going to die, it’ll be around for a long time in some sad MySpace fashion, but Mastodon has 99% replaced Twitter for me. \u003c/p\u003e\u003cp\u003eMy people are here, we’re engaged and sending interesting bits and stupid memes, and it just works.\u003c/p\u003e",
+    "filtered": [],
+    "reblog": null,
+    "application": {
+      "name": "Ivory for iOS",
+      "website": "https://tapbots.com/"
+    },
+    "account": {
+      "id": "457739",
+      "username": "rands",
+      "acct": "rands",
+      "display_name": "rands",
+      "locked": false,
+      "bot": false,
+      "discoverable": true,
+      "group": false,
+      "created_at": "2018-08-17T00:00:00.000Z",
+      "note": "\u003cp\u003eWriter of leadership things. Keynote enthusiast. I don’t tweet about my current gig. The fourth edition of Managing Humans is out: amzn.to/3yR6Ttt\u003c/p\u003e",
+      "url": "https://mastodon.social/@rands",
+      "avatar": "https://files.mastodon.social/accounts/avatars/000/457/739/original/e737e15fbcb755e9.png",
+      "avatar_static": "https://files.mastodon.social/accounts/avatars/000/457/739/original/e737e15fbcb755e9.png",
+      "header": "https://files.mastodon.social/accounts/headers/000/457/739/original/694211d744606942.jpeg",
+      "header_static": "https://files.mastodon.social/accounts/headers/000/457/739/original/694211d744606942.jpeg",
+      "followers_count": 7300,
+      "following_count": 262,
+      "statuses_count": 389,
+      "last_status_at": "2023-02-26",
+      "noindex": false,
+      "emojis": [],
+      "roles": [],
+      "fields": [
+        {
+          "name": "Writing",
+          "value": "\u003ca href=\"http://randsinrepose.com\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\"\u003e\u003cspan class=\"invisible\"\u003ehttp://\u003c/span\u003e\u003cspan class=\"\"\u003erandsinrepose.com\u003c/span\u003e\u003cspan class=\"invisible\"\u003e\u003c/span\u003e\u003c/a\u003e",
+          "verified_at": null
+        },
+        {
+          "name": "Charity Merch",
+          "value": "\u003ca href=\"https://cottonbureau.com/people/michael-lopp\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\"\u003e\u003cspan class=\"invisible\"\u003ehttps://\u003c/span\u003e\u003cspan class=\"ellipsis\"\u003ecottonbureau.com/people/michae\u003c/span\u003e\u003cspan class=\"invisible\"\u003el-lopp\u003c/span\u003e\u003c/a\u003e",
+          "verified_at": null
+        }
+      ]
+    },
+    "media_attachments": [],
+    "mentions": [],
+    "tags": [],
+    "emojis": [],
+    "card": null,
+    "poll": null
+  },
+  {
+    "id": "109928487293282674",
+    "created_at": "2023-02-26T01:39:47.000Z",
+    "in_reply_to_id": null,
+    "in_reply_to_account_id": null,
+    "sensitive": false,
+    "spoiler_text": "",
+    "visibility": "public",
+    "language": "en",
+    "uri": "https://masto.ai/users/rbreich/statuses/109928486474192746",
+    "url": "https://masto.ai/@rbreich/109928486474192746",
+    "replies_count": 21,
+    "reblogs_count": 167,
+    "favourites_count": 33,
+    "edited_at": null,
+    "favourited": false,
+    "reblogged": false,
+    "muted": false,
+    "bookmarked": false,
+    "content": "\u003cp\u003eBecause corporations are monopolizing their markets, they don’t have to worry about competitors. \u003c/p\u003e\u003cp\u003eA few giant corporations can easily coordinate price hikes and enjoy bigger profits.\u003c/p\u003e\u003cp\u003eJust four firms control 85% of beef, 66% of pork, and 54% of poultry production.\u003c/p\u003e\u003cp\u003eHello?\u003c/p\u003e",
+    "filtered": [],
+    "reblog": null,
+    "account": {
+      "id": "109338501935306639",
+      "username": "rbreich",
+      "acct": "rbreich@masto.ai",
+      "display_name": "Robert Reich",
+      "locked": false,
+      "bot": false,
+      "discoverable": true,
+      "group": false,
+      "created_at": "2022-11-13T00:00:00.000Z",
+      "note": "\u003cp\u003eBerkeley professor, former Secretary of Labor. Co-founder of Inequality Media. Sign up for updates, analysis and drawings: \u003ca href=\"http://robertreich.substack.com\" rel=\"nofollow noopener noreferrer\" target=\"_blank\"\u003e\u003cspan class=\"invisible\"\u003ehttp://\u003c/span\u003e\u003cspan class=\"\"\u003erobertreich.substack.com\u003c/span\u003e\u003cspan class=\"invisible\"\u003e\u003c/span\u003e\u003c/a\u003e\u003c/p\u003e",
+      "url": "https://masto.ai/@rbreich",
+      "avatar": "https://files.mastodon.social/cache/accounts/avatars/109/338/501/935/306/639/original/23b02997ed28ca4f.jpg",
+      "avatar_static": "https://files.mastodon.social/cache/accounts/avatars/109/338/501/935/306/639/original/23b02997ed28ca4f.jpg",
+      "header": "https://files.mastodon.social/cache/accounts/headers/109/338/501/935/306/639/original/7eaa380605430cb0.jpeg",
+      "header_static": "https://files.mastodon.social/cache/accounts/headers/109/338/501/935/306/639/original/7eaa380605430cb0.jpeg",
+      "followers_count": 209594,
+      "following_count": 26,
+      "statuses_count": 953,
+      "last_status_at": "2023-02-26",
+      "emojis": [],
+      "fields": [
+        {
+          "name": "Substack",
+          "value": "robertreich.substack.com",
+          "verified_at": null
+        },
+        {
+          "name": "LinkTree",
+          "value": "linktr.ee/rbreich",
+          "verified_at": null
+        },
+        {
+          "name": "Website",
+          "value": "robertreich.org",
+          "verified_at": null
+        },
+        {
+          "name": "TikTok",
+          "value": "tiktok.com/@rbreich",
+          "verified_at": null
+        }
+      ]
+    },
+    "media_attachments": [],
+    "mentions": [],
+    "tags": [],
+    "emojis": [],
+    "card": null,
+    "poll": null
+  },
+  {
+    "id": "109928958127397719",
+    "created_at": "2023-02-26T03:39:37.000Z",
+    "in_reply_to_id": null,
+    "in_reply_to_account_id": null,
+    "sensitive": false,
+    "spoiler_text": "",
+    "visibility": "public",
+    "language": "en",
+    "uri": "https://todon.eu/users/RadicalGraffiti/statuses/109928957711938650",
+    "url": "https://todon.eu/@RadicalGraffiti/109928957711938650",
+    "replies_count": 4,
+    "reblogs_count": 113,
+    "favourites_count": 27,
+    "edited_at": null,
+    "favourited": false,
+    "reblogged": false,
+    "muted": false,
+    "bookmarked": false,
+    "content": "\u003cp\u003eAnti-capitalist sticker spotted in Northampton, UK\u003c/p\u003e",
+    "filtered": [],
+    "reblog": null,
+    "account": {
+      "id": "107199015589328187",
+      "username": "RadicalGraffiti",
+      "acct": "RadicalGraffiti@todon.eu",
+      "display_name": "Radical Graffiti",
+      "locked": false,
+      "bot": false,
+      "discoverable": true,
+      "group": false,
+      "created_at": "2021-10-29T00:00:00.000Z",
+      "note": "\u003cp\u003eJust sharing pics of anti-capitalist, anti-authoritarian and anti-colonial graffiti, stickers and street art seen around the world.\u003c/p\u003e\u003cp\u003e\u003ca href=\"https://linktr.ee/Radicalgraffiti\" rel=\"nofollow noopener noreferrer\" target=\"_blank\"\u003e\u003cspan class=\"invisible\"\u003ehttps://\u003c/span\u003e\u003cspan class=\"\"\u003elinktr.ee/Radicalgraffiti\u003c/span\u003e\u003cspan class=\"invisible\"\u003e\u003c/span\u003e\u003c/a\u003e\u003c/p\u003e",
+      "url": "https://todon.eu/@RadicalGraffiti",
+      "avatar": "https://files.mastodon.social/cache/accounts/avatars/107/199/015/589/328/187/original/6cb4f27d4a124c82.jpg",
+      "avatar_static": "https://files.mastodon.social/cache/accounts/avatars/107/199/015/589/328/187/original/6cb4f27d4a124c82.jpg",
+      "header": "https://files.mastodon.social/cache/accounts/headers/107/199/015/589/328/187/original/dcc3f733825302ee.jpg",
+      "header_static": "https://files.mastodon.social/cache/accounts/headers/107/199/015/589/328/187/original/dcc3f733825302ee.jpg",
+      "followers_count": 7110,
+      "following_count": 33,
+      "statuses_count": 1573,
+      "last_status_at": "2023-02-26",
+      "emojis": [],
+      "fields": []
+    },
+    "media_attachments": [
+      {
+        "id": "109928957929691140",
+        "type": "image",
+        "url": "https://files.mastodon.social/cache/media_attachments/files/109/928/957/929/691/140/original/e6ce59744da8cfb6.jpeg",
+        "preview_url": "https://files.mastodon.social/cache/media_attachments/files/109/928/957/929/691/140/small/e6ce59744da8cfb6.jpeg",
+        "remote_url": "https://todon.eu/system/media_attachments/files/109/928/957/706/656/591/original/64225e0ed3f0b064.jpeg",
+        "preview_remote_url": null,
+        "text_url": null,
+        "meta": {
+          "original": {
+            "width": 900,
+            "height": 1200,
+            "size": "900x1200",
+            "aspect": 0.75
+          },
+          "small": {
+            "width": 416,
+            "height": 554,
+            "size": "416x554",
+            "aspect": 0.7509025270758123
+          }
+        },
+        "description": "Sticker on a pole of an old windows error box with the words \"Suffer under capitalism\"\n\"join\" \"starve\"",
+        "blurhash": "UQGu:$.T~V~q%iozD%xtn{M{t7aKozozWZtR"
+      }
+    ],
+    "mentions": [],
+    "tags": [],
+    "emojis": [],
+    "card": null,
+    "poll": null
+  },
+  {
+    "id": "109926119116911081",
+    "created_at": "2023-02-25T15:37:38.000Z",
+    "in_reply_to_id": null,
+    "in_reply_to_account_id": null,
+    "sensitive": false,
+    "spoiler_text": "",
+    "visibility": "public",
+    "language": "en",
+    "uri": "https://ohai.social/users/MeanwhileinCanada/statuses/109926118743181175",
+    "url": "https://ohai.social/@MeanwhileinCanada/109926118743181175",
+    "replies_count": 39,
+    "reblogs_count": 734,
+    "favourites_count": 225,
+    "edited_at": null,
+    "favourited": false,
+    "reblogged": false,
+    "muted": false,
+    "bookmarked": false,
+    "content": "\u003cp\u003e\"Why yes, I am Canadian.  Why do you ask?\"\u003c/p\u003e\u003cp\u003e\u003ca href=\"https://ohai.social/tags/CatsofMastodon\" class=\"mention hashtag\" rel=\"nofollow noopener noreferrer\" target=\"_blank\"\u003e#\u003cspan\u003eCatsofMastodon\u003c/span\u003e\u003c/a\u003e \u003ca href=\"https://ohai.social/tags/MeanwhileInCanada\" class=\"mention hashtag\" rel=\"nofollow noopener noreferrer\" target=\"_blank\"\u003e#\u003cspan\u003eMeanwhileInCanada\u003c/span\u003e\u003c/a\u003e\u003c/p\u003e",
+    "filtered": [],
+    "reblog": null,
+    "account": {
+      "id": "109325516507450045",
+      "username": "MeanwhileinCanada",
+      "acct": "MeanwhileinCanada@ohai.social",
+      "display_name": "Meanwhile in Canada",
+      "locked": false,
+      "bot": false,
+      "discoverable": true,
+      "group": false,
+      "created_at": "2022-11-11T00:00:00.000Z",
+      "note": "\u003cp\u003eLooking at the lighter side of life in Canada and Canadian politics.\u003c/p\u003e",
+      "url": "https://ohai.social/@MeanwhileinCanada",
+      "avatar": "https://files.mastodon.social/cache/accounts/avatars/109/325/516/507/450/045/original/4ca558dcbbc93857.jpg",
+      "avatar_static": "https://files.mastodon.social/cache/accounts/avatars/109/325/516/507/450/045/original/4ca558dcbbc93857.jpg",
+      "header": "https://files.mastodon.social/cache/accounts/headers/109/325/516/507/450/045/original/0933b961fca75584.jpg",
+      "header_static": "https://files.mastodon.social/cache/accounts/headers/109/325/516/507/450/045/original/0933b961fca75584.jpg",
+      "followers_count": 16478,
+      "following_count": 0,
+      "statuses_count": 245,
+      "last_status_at": "2023-02-25",
+      "emojis": [],
+      "fields": []
+    },
+    "media_attachments": [
+      {
+        "id": "109926119075481102",
+        "type": "image",
+        "url": "https://files.mastodon.social/cache/media_attachments/files/109/926/119/075/481/102/original/d64beedb565d44c7.jpg",
+        "preview_url": "https://files.mastodon.social/cache/media_attachments/files/109/926/119/075/481/102/small/d64beedb565d44c7.jpg",
+        "remote_url": "https://files.ohai.social/media_attachments/files/109/926/108/871/659/179/original/efa96bcb40789445.jpg",
+        "preview_remote_url": null,
+        "text_url": null,
+        "meta": {
+          "focus": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "original": {
+            "width": 741,
+            "height": 534,
+            "size": "741x534",
+            "aspect": 1.3876404494382022
+          },
+          "small": {
+            "width": 565,
+            "height": 407,
+            "size": "565x407",
+            "aspect": 1.3882063882063882
+          }
+        },
+        "description": "cat sitting in front of a pillow with a deer image on it, making the cat look like it has antlers",
+        "blurhash": "UTJQ}^oL%0M|~qR-IUWY%fRiD*s.IVRjt6Rj"
+      }
+    ],
+    "mentions": [],
+    "tags": [
+      {
+        "name": "catsofmastodon",
+        "url": "https://mastodon.social/tags/catsofmastodon"
+      },
+      {
+        "name": "meanwhileincanada",
+        "url": "https://mastodon.social/tags/meanwhileincanada"
+      }
+    ],
+    "emojis": [],
+    "card": null,
+    "poll": null
+  },
+  {
+    "id": "109930113544741958",
+    "created_at": "2023-02-26T08:31:22.000Z",
+    "in_reply_to_id": null,
+    "in_reply_to_account_id": null,
+    "sensitive": false,
+    "spoiler_text": "",
+    "visibility": "public",
+    "language": "en",
+    "uri": "https://social.network.europa.eu/users/EU_Commission/statuses/109930104908004992",
+    "url": "https://social.network.europa.eu/@EU_Commission/109930104908004992",
+    "replies_count": 0,
+    "reblogs_count": 42,
+    "favourites_count": 12,
+    "edited_at": null,
+    "favourited": false,
+    "reblogged": false,
+    "muted": false,
+    "bookmarked": false,
+    "content": "\u003cp\u003eUkraine, we are with you.\u003c/p\u003e\u003cp\u003eWe have been with you in this existential fight from the beginning.\u003c/p\u003e\u003cp\u003eYou have become the centre of our continent.\u003c/p\u003e\u003cp\u003eThe place where our values are upheld. Where our freedom is defended. Where the future of Europe is written.\u003c/p\u003e\u003cp\u003eСлава Україні\u003c/p\u003e\u003cp\u003e\u003ca href=\"https://social.network.europa.eu/tags/StandWithUkraine\" class=\"mention hashtag\" rel=\"nofollow noopener noreferrer\" target=\"_blank\"\u003e#\u003cspan\u003eStandWithUkraine\u003c/span\u003e\u003c/a\u003e\u003c/p\u003e",
+    "filtered": [],
+    "reblog": null,
+    "account": {
+      "id": "108199025079250163",
+      "username": "EU_Commission",
+      "acct": "EU_Commission@social.network.europa.eu",
+      "display_name": "European Commission",
+      "locked": false,
+      "bot": false,
+      "discoverable": true,
+      "group": false,
+      "created_at": "2022-04-20T00:00:00.000Z",
+      "note": "\u003cp\u003eNews and information from the European Commission.\u003c/p\u003e\u003cp\u003ePart of an EU pilot project for supporting and using social media platforms based on open-source software.\u003c/p\u003e\u003cp\u003e🇪🇺 Official Mastodon account, as verified by: \u003cbr\u003e• The official EU domain in our server’s address: \u003ca href=\"https://europa.eu\" rel=\"nofollow noopener noreferrer\" target=\"_blank\"\u003e\u003cspan class=\"invisible\"\u003ehttps://\u003c/span\u003e\u003cspan class=\"\"\u003eeuropa.eu\u003c/span\u003e\u003cspan class=\"invisible\"\u003e\u003c/span\u003e\u003c/a\u003e\u003cbr\u003e• The European Union social media directory: \u003ca href=\"https://europa.eu/!cqPgxB\" rel=\"nofollow noopener noreferrer\" target=\"_blank\"\u003e\u003cspan class=\"invisible\"\u003ehttps://\u003c/span\u003e\u003cspan class=\"\"\u003eeuropa.eu/!cqPgxB\u003c/span\u003e\u003cspan class=\"invisible\"\u003e\u003c/span\u003e\u003c/a\u003e\u003c/p\u003e",
+      "url": "https://social.network.europa.eu/@EU_Commission",
+      "avatar": "https://files.mastodon.social/cache/accounts/avatars/108/199/025/079/250/163/original/be5754978a07f71a.jpeg",
+      "avatar_static": "https://files.mastodon.social/cache/accounts/avatars/108/199/025/079/250/163/original/be5754978a07f71a.jpeg",
+      "header": "https://files.mastodon.social/cache/accounts/headers/108/199/025/079/250/163/original/9f5c22e001a8afce.png",
+      "header_static": "https://files.mastodon.social/cache/accounts/headers/108/199/025/079/250/163/original/9f5c22e001a8afce.png",
+      "followers_count": 72198,
+      "following_count": 2,
+      "statuses_count": 1421,
+      "last_status_at": "2023-02-26",
+      "emojis": [],
+      "fields": [
+        {
+          "name": "Website",
+          "value": "\u003ca href=\"https://commission.europa.eu\" rel=\"nofollow noopener noreferrer\" target=\"_blank\"\u003e\u003cspan class=\"invisible\"\u003ehttps://\u003c/span\u003e\u003cspan class=\"\"\u003ecommission.europa.eu\u003c/span\u003e\u003cspan class=\"invisible\"\u003e\u003c/span\u003e\u003c/a\u003e",
+          "verified_at": null
+        },
+        {
+          "name": "Privacy",
+          "value": "\u003ca href=\"https://europa.eu/!MnfFmT\" rel=\"nofollow noopener noreferrer\" target=\"_blank\"\u003e\u003cspan class=\"invisible\"\u003ehttps://\u003c/span\u003e\u003cspan class=\"\"\u003eeuropa.eu/!MnfFmT\u003c/span\u003e\u003cspan class=\"invisible\"\u003e\u003c/span\u003e\u003c/a\u003e",
+          "verified_at": null
+        }
+      ]
+    },
+    "media_attachments": [
+      {
+        "id": "109930112870910400",
+        "type": "video",
+        "url": "https://files.mastodon.social/cache/media_attachments/files/109/930/112/870/910/400/original/36ce3210a820d599.mp4",
+        "preview_url": "https://files.mastodon.social/media_attachments/thumbnails/109/930/112/870/910/400/original/1e7fcb7b805ffc9d.png",
+        "remote_url": "https://social.network.europa.eu/system/media_attachments/files/109/930/097/269/487/126/original/b5949a138f009834.mp4",
+        "preview_remote_url": "https://social.network.europa.eu/system/media_attachments/thumbnails/109/930/097/269/487/126/original/539ac8c3ac3f16ae.png",
+        "text_url": null,
+        "meta": {
+          "focus": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "colors": {
+            "background": "#686f8f",
+            "foreground": "#f2f3f3",
+            "accent": "#cdcfdb"
+          },
+          "original": {
+            "width": 640,
+            "height": 640,
+            "frame_rate": "25/1",
+            "duration": 68.76,
+            "bitrate": 1175580
+          },
+          "small": {
+            "width": 480,
+            "height": 479,
+            "size": "480x479",
+            "aspect": 1.0020876826722338
+          }
+        },
+        "description": "A video with the message of European Commission President Ursula von der Leyen to mark one year since the beginning of Russia’s war of aggression. \n\nOn-screen, clips of defining moments in the war and Europe’s acts of solidarity and support.\n\nPresident von der Leyen’s message:\n\n“For one year, Ukraine has stunned the world.\n\nMany predicted that Kyiv would fall in a matter of days, but this did not account for the moral and physical courage of the Ukrainian people.\n\nYou have resisted the Russian invasion and pushed back against the aggressor against all odds. We are with you.\n\nWe have been with you in this existential fight from the beginning. We have massively stepped up our economic, humanitarian, and military support.\n\nBecause Ukraine has become the centre of our continent, the place where our values are upheld, where our freedom is defended, and where the future of Europe is written.\n\nUkrainians are ready to die for the European perspective.\n\nWe want them to live with us the European dream.\n\nСлава Україні!”",
+        "blurhash": "UHFPNzt9D$M_IVDi-:RP00Mx?aRij?Rj%LRj"
+      }
+    ],
+    "mentions": [],
+    "tags": [
+      {
+        "name": "StandWithUkraine",
+        "url": "https://mastodon.social/tags/StandWithUkraine"
+      }
+    ],
+    "emojis": [],
+    "card": null,
+    "poll": null
+  }
+]

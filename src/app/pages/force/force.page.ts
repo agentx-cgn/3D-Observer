@@ -10,6 +10,7 @@ import { INode, ILink, TNodeType, Coords } from '../../../../app/interfaces';
 
 import { ForceService } from './force.service';
 import * as THREE  from 'three';
+// import { ForceMeshes } from './force.meshes';
 
 // https://github.com/vasturiano/3d-force-graph#api-reference
 // https://docs.joinmastodon.org/methods/instance/
@@ -38,7 +39,7 @@ export class ForcePage implements AfterViewInit {
   };
 
   constructor(
-    private readonly svc: ForceService
+    private readonly svc: ForceService,
   ) {
     console.log('Force.constructor', (window as any).__THREE__);
     this.cfg = this.svc.cfg;
@@ -60,30 +61,46 @@ export class ForcePage implements AfterViewInit {
 
     this.svc.graph = this.graph(this.container.nativeElement)
 
+      .forceEngine('d3')
+      .numDimensions(3)
+
+      // https://github.com/vasturiano/d3-force-3d#simulation_alphaDecay
+      // determines how quickly the current alpha interpolates towards the desired target alpha;
+      .d3AlphaDecay(this.cfg.alphaDecay)
+
+      // https://github.com/vasturiano/d3-force-3d#simulation_alphaMin
+      // The simulation’s internal timer stops when the current alpha is less than the minimum alpha.
+      // The default alpha decay rate of ~0.0228 corresponds to 300 iterations.
+      .d3AlphaMin(0)
+
+      // https://github.com/vasturiano/d3-force-3d#simulation_velocityDecay
+      // after the application of any forces during a tick, each node’s velocity is multiplied by 1 - decay.
+      .d3VelocityDecay(0.4)
+
       .graphData(this.initData)
       .onBackgroundClick(this.onBackgroundClick.bind(this))
       .backgroundColor(this.cfg.background_color)
 
-      .enableNodeDrag(true)
-      .onNodeClick(this.onNodeClick.bind(this))
-      .nodeColor(this.svc.randomColor)
-      .nodeResolution(this.cfg.nodeResolution)
-      .nodeOpacity(this.cfg.nodeOpacity)
       .nodeLabel('id')
       .nodeVal('value')
+      .enableNodeDrag(true)
+      .onNodeClick(this.onNodeClick.bind(this))
       .onNodeHover((node: INode) => this.svc.hoverNode = node)
+      .nodeResolution(this.cfg.nodeResolution)
+      .nodeOpacity(this.cfg.nodeOpacity)
       .nodeThreeObject((node: INode) => (
-        this.svc.sphereGeometry(node)
+        this.svc.meshes.simpleSphere(node)
         // node.type === 'server' ? this.sphereGeometry(node) :
         // node.type === 'peers'  ? this.spriteText(node) :
         // node.type === 'rules'  ? this.spriteImage(node) :
         // false
       ))
+      // .nodeColor(this.svc.randomColor)
 
       .linkWidth('width')
       .linkVisibility( (link: ILink) => !!link.width )
-      .linkDirectionalParticles('value')
-      .linkDirectionalParticleSpeed( (d: ILink) => d.value * 0.001)
+      .linkDirectionalParticles((d: ILink) => d.value * 0.1)
+      .linkDirectionalParticleSpeed( (d: ILink) => d.value * 0.1)
 
       .onEngineStop(this.svc.onEngineStop.bind(this.svc))
       .onEngineTick(this.svc.onEngineTick.bind(this.svc))
@@ -91,7 +108,6 @@ export class ForcePage implements AfterViewInit {
 
     this.graph.d3Force('charge').strength(this.cfg.chargeStrength); // the smaller, the more stick balls together
     this.graph.d3Force('charge').distanceMin(this.cfg.chargeDistanceMin); // the smaller, the more stick balls together
-    this.graph.d3AlphaDecay(this.cfg.alphaDecay);
     this.graph.d3Force('link').distance((link: ILink) => link.value);
 
     this.initGraph();
@@ -102,7 +118,7 @@ export class ForcePage implements AfterViewInit {
   initGraph () {
 
     // add some nodes
-    const testServers = servers.slice(0, 30);
+    const testServers = servers.slice(0, 100);
 
     interval(100)
       .pipe(
@@ -121,24 +137,6 @@ export class ForcePage implements AfterViewInit {
     ;
 
   }
-
-  // zoomToNode (node: INode) {
-
-  //   // Aim at node from outside it
-  //   const distance = 100;
-  //   const distRatio = 1 + distance/Math.hypot(node.x, node.y, node.z);
-
-  //   const newPos = node.x || node.y || node.z
-  //     ? { x: node.x * distRatio, y: node.y * distRatio, z: node.z * distRatio }
-  //     : { x: 0, y: 0, z: distance }; // special case if node is in (0,0,0)
-
-  //   this.graph.cameraPosition(
-  //     newPos,                 // new position
-  //     node as Coords,         // lookAt ({ x, y, z })
-  //     this.cfg.zoom.duration  // ms transition duration
-  //   );
-
-  // }
 
   onClickInterface () {
     this.zInterface = 0;

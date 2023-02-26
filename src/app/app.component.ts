@@ -38,18 +38,12 @@ export class AppComponent {
       })
     ;
 
-    // this.force.camera$.subscribe( val => {
-    //   this.camera = JSON.stringify(val);
-    // })
-
-    // this.force.bounding$.subscribe( val => {
-    //   this.bounding = JSON.stringify(val);
-    // })
-
   }
 
   public onStart () {}
-  public onStop  () {}
+  public onZoom  () {
+    this.force.zoomToFit();
+  }
 
   public async onSave  () {
 
