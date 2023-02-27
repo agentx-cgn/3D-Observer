@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 import { environment } from '../environments/environment';
 import { BusService } from './core/bus.service';
-import { IConfig, IMessage, IApiResponse } from '../../app/interfaces';
+import { IConfig, IMessage, IApiResponse, IApiStatsResponse } from '../../app/interfaces';
 import { ForceService } from './pages/force/force.service';
 import { filter } from 'rxjs/operators';
 
@@ -41,6 +41,7 @@ export class AppComponent {
   }
 
   public onStart () {}
+  public onStop () {}
   public onZoom  () {
     this.force.zoomToFit();
   }
@@ -80,6 +81,10 @@ export class AppComponent {
   }
 
   private listen () {
+
+    this.bus.on('stats.get', (msg: IMessage<IApiStatsResponse>) => {
+      console.log('APPComp.stats.get', msg);
+    });
 
     this.bus.on('response', (msg: IMessage<IApiResponse>) => {
       console.log('APPComp.response', msg);

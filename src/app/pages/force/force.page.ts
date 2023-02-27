@@ -9,7 +9,8 @@ import servers from '../../../assets/json/servers.json';
 import { INode, ILink, TNodeType, Coords } from '../../../../app/interfaces';
 
 import { ForceService } from './force.service';
-import * as THREE  from 'three';
+// import * as THREE  from 'three';
+import { BusService } from '../../core/bus.service';
 // import { ForceMeshes } from './force.meshes';
 
 // https://github.com/vasturiano/3d-force-graph#api-reference
@@ -40,6 +41,7 @@ export class ForcePage implements AfterViewInit {
 
   constructor(
     private readonly svc: ForceService,
+    private readonly bus: BusService,
   ) {
     console.log('Force.constructor', (window as any).__THREE__);
     this.cfg = this.svc.cfg;
@@ -154,11 +156,25 @@ export class ForcePage implements AfterViewInit {
 
     this.svc.selectNode = node;
     node.type === 'server' && this.pokeNode(node);
-    this.svc.zoomToNode(node);
+    // this.svc.zoomToNode(node);
 
   }
 
-  pokeNode (parent: INode) {
+  pokeNode (node: INode) {
+
+    console.log('PageForce.pokeNode', node);
+
+    this.bus.emit({
+      topic:    'stats.get',
+      receiver: 'express',
+      payload: {
+        domain: node.id
+      }
+    });
+
+  }
+
+  pokeNode1 (parent: INode) {
 
     console.log('pokeNode', parent);
 

@@ -9,6 +9,8 @@ export type TPayload =
   IConfig |
   IApiRequest |
   IApiResponse |
+  IApiStatsResponse |
+  IApiStatsRequest |
   IGraphData
 ;
 
@@ -18,6 +20,7 @@ export type TTopic =
   'config' |
   'request' |
   'response' |
+  'stats.get' |
   'graphdata.set' |
   'graphdata.get' |
   'last'
@@ -39,6 +42,15 @@ export interface IMessage<T> {
 export interface IApiRequest {
   domain: string
   endpoint: string
+}
+
+export interface IApiStatsRequest {
+  domain: string
+}
+
+export interface IApiStatsResponse {
+  domain: string
+  data: any[]
 }
 
 export interface IApiResponse {
