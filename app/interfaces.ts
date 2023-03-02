@@ -10,7 +10,7 @@ export type TPayload =
   IApiRequest |
   IApiResponse |
   IApiStatsResponse |
-  IApiStatsRequest |
+  IObsStatsServers | IResStatsServer |
   IGraphData
 ;
 
@@ -21,6 +21,8 @@ export type TTopic =
   'request' |
   'response' |
   'stats.get' |
+  'observe.stats.servers' |
+  'stats.server' |
   'graphdata.set' |
   'graphdata.get' |
   'last'
@@ -44,8 +46,13 @@ export interface IApiRequest {
   endpoint: string
 }
 
-export interface IApiStatsRequest {
-  domain: string
+export interface IObsStatsServers {
+  domains: string[]
+}
+
+export interface IResStatsServer {
+  domain: string,
+  stats: any
 }
 
 export interface IApiStatsResponse {

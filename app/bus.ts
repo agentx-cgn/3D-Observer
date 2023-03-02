@@ -66,6 +66,15 @@ class Bus {
 
   }
 
+  // shorthand for .emit()
+  send (topic: TTopic, receiver: TReceiver, payload: TPayload) {
+    this.emit({
+      topic,
+      receiver,
+      payload
+    });
+  }
+
   emit (msg: IMessage<TPayload>, bridge=false) {
 
     DEBUG && console.log(`BUS.${this.source}.emit`, msg.topic, '=>', msg.receiver);

@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 import { environment } from '../environments/environment';
 import { BusService } from './core/bus.service';
-import { IConfig, IMessage, IApiResponse, IApiStatsResponse } from '../../app/interfaces';
+import { IConfig, IMessage, IApiResponse, IApiStatsResponse, IResStatsServer } from '../../app/interfaces';
 import { ForceService } from './pages/force/force.service';
 import { filter } from 'rxjs/operators';
 
@@ -17,11 +17,10 @@ import { filter } from 'rxjs/operators';
 export class AppComponent {
 
   public config: null | IConfig = null;
-  public camera = '';
-  public bounding = '';
+  // public camera   = '';
+  // public bounding = '';
 
-
-  constructor(
+  constructor (
     public force: ForceService,
     private bus: BusService,
     private translate: TranslateService,
@@ -58,7 +57,7 @@ export class AppComponent {
 
   }
 
-  public onLoad  () {
+  public onLoad () {
 
     this.bus.emit({
       receiver: 'express',
@@ -82,8 +81,8 @@ export class AppComponent {
 
   private listen () {
 
-    this.bus.on('stats.get', (msg: IMessage<IApiStatsResponse>) => {
-      console.log('APPComp.stats.get', msg);
+    this.bus.on('stats.server', (msg: IMessage<IResStatsServer>) => {
+      console.log('APPComp.stats.server', msg.payload.domain, msg.payload.stats);
     });
 
     this.bus.on('response', (msg: IMessage<IApiResponse>) => {
@@ -104,7 +103,7 @@ export class AppComponent {
 
           console.log('%cAPP.fetched', '{ color: darkgreen; font-weight: 800 }', JSON.stringify(json));
 
-          (await this.bus).emit({
+          this.bus.emit({
             topic: 'ack',
             receiver: 'electron',
             payload: 'ack.payload',

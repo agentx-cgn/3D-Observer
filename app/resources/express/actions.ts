@@ -1,18 +1,31 @@
 import Bus from "../../bus";
-import { IApiRequest, IApiStatsRequest, IConfig, IGraphData, IMessage } from "../../interfaces";
+import { IApiRequest, IConfig, IGraphData, IMessage, IObsStatsServers, IResStatsServer } from "../../interfaces";
 import axios, { AxiosResponse } from "axios";
-import { Database, OPEN_READWRITE, RunResult } from 'sqlite3';
+// import { Database, OPEN_READWRITE, RunResult } from 'sqlite3';
 import { PromisedDatabase } from './libs/promised-database'
-import { timeout } from "rxjs";
+// import { timeout } from "rxjs";
 
 // https://github.com/tguichaoua/promised-sqlite3/blob/master/src/PromisedDatabase.ts
 
 const Actions = function (cfg: IConfig): any {
 
   const
-    timeout = 5_000,
-    trim = (sql: string) => sql.replace(/[\r\n]+/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 60)
+    timeout    = 5_000,
+    trim       = (sql: string) => sql.replace(/[\r\n]+/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 60),
+    capitalize = (s: string)   => s && s[0].toUpperCase() + s.slice(1)
   ;
+
+  const endpoints = [
+    { label: 'activity',    endpoint: '/api/v1/instance/activity' },
+    { label: 'blocks',      endpoint: '/api/v1/instance/domain_blocks' },
+    { label: 'description', endpoint: '/api/v1/instance/extended_description' },
+    { label: 'peers',       endpoint: '/api/v1/instance/peers' },
+    { label: 'rules',       endpoint: '/api/v1/instance/rules' },
+    { label: 'links',       endpoint: '/api/v1/trends/links' },
+    { label: 'statuses',    endpoint: '/api/v1/trends/statuses' },
+    { label: 'tags',        endpoint: '/api/v1/trends/tags' },
+    { label: 'instance',    endpoint: '/api/v2/instance' },
+  ];
 
   let
     self: any,
@@ -29,10 +42,10 @@ const Actions = function (cfg: IConfig): any {
       DB = new PromisedDatabase()
       await DB.open(cfg.fileDBTarget)
 
-      bus.on('request',       self.onRequest)
-      bus.on('graphdata.set', self.onGraphdataSet)
-      bus.on('graphdata.get', self.onGraphdataGet)
-      bus.on('stats.get',     self.onStatsGet)
+      bus.on('request',               self.onRequest)
+      bus.on('graphdata.set',         self.onGraphdataSet)
+      bus.on('graphdata.get',         self.onGraphdataGet)
+      bus.on('observe.stats.servers',  self.onObserveStatsServers)
 
       return self;
 
@@ -124,44 +137,33 @@ const Actions = function (cfg: IConfig): any {
 
     },
 
-    async onStatsGet(msg: IMessage<IApiStatsRequest>) {
+    async onObserveStatsServers(msg: IMessage<IObsStatsServers>) {
+
+      msg.payload.domains.map(async domain => {
+        const stats = await self.getStatsServer(domain)
+        bus.emit({
+          topic:    'stats.server',
+          receiver:  msg.sender,
+          payload:   stats,
+        })
+
+      });
+
+    },
+
+    async getStatsServer(domain: string): Promise<IResStatsServer> {
 
       const controller = new AbortController();
-      const cancel     = setTimeout( () => controller.abort(), timeout );
-      // const mapData    = responses => responses.map( res => {
-      //   if (res.status === 200) {
-      //     return { status: res.status, headers: res.headers, url: res.config.url, body: res.data }
-      //   } else if (res.status === 404) {
-      //     return { status: res.status, statusText: res.statusText, url: res.config.url }
-      //   } else {
-      //     console.log('AXIOS.failed', res.status, res.statusText, res.config.url)
-      //   }
-      // })
+      const cancel     = setTimeout( controller.abort, timeout );
+      const promises   = endpoints.map( async ({ label, endpoint }) => {
 
-      const endpoints = [
-        '/api/v1/instance/activity',
-        '/api/v1/instance/domain_blocks',
-        '/api/v1/instance/extended_description',
-        '/api/v1/instance/peers',
-        '/api/v1/instance/rules',
-        '/api/v1/trends/links',
-        '/api/v1/trends/statuses',
-        '/api/v1/trends/tags',
-        '/api/v2/instance',
-      ];
-
-      const promises = endpoints.map( async endpoint => {
-
-        const url = `https://${msg.payload.domain}${endpoint}`
+        const url = `https://${domain}${endpoint}`
 
         return axios({ url, timeout, signal: controller.signal })
           .then( res => {
 
             if (res.status === 200) {
-              return { status: res.status, headers: res.headers, url: res.config.url, body: res.data }
-
-            } else if (res.status === 404) {
-              return { status: res.status, statusText: res.statusText, url: res.config.url }
+              return { label, status: res.status, headers: res.headers, url: res.config.url, body: res.data }
 
             } else {
               console.log('AXIOS.failed', res.status, res.statusText, res.config.url)
@@ -170,36 +172,75 @@ const Actions = function (cfg: IConfig): any {
 
           })
           .catch(err => {
+
             const { status, code, name, message } = err;
-            console.log('stats.get.catch', msg.payload.domain, endpoint, message);
-            return { status, code, name, message }
+
+            if (code === 'ERR_BAD_REQUEST') {
+              return { label, status: 404, code, name, message }
+
+            } else {
+              console.log('stats.get.catch', domain, endpoint, message);
+              return { label, status, code, name, message }
+
+            }
+
           })
         ;
 
-
-        // } catch (err) {
-        //   console.error('stats.get.catch', err)
-        //   return { status: err.status, statusText: err.statusText, url: err.config.url }
-        //   // return { error: JSON.parse(JSON.stringify(err)) }
-        // }
-
       })
 
-      const data = await Promise.all(promises)
-
-      //   // .then(mapData)
-      //   .catch(err => console.error('stats.get.catch', err))
-      //   .finally ( () => clearTimeout(cancel))
-      // ;
+      const stats = (await Promise.all(promises)).reduce( (accu, item) => {
+        const mapper = self['mapper' + capitalize(item.label)]
+        accu[item.label] = (item.status === 200) && mapper
+          ? mapper(item)
+          : item
+        return accu
+      }, {})
 
       clearTimeout(cancel)
 
-      bus.emit({
-        topic:     msg.topic,
-        receiver:  msg.sender,
-        payload: { domain: msg.payload.domain, data }
-      })
+      return { domain, stats };
 
+    },
+
+    mapperStatuses (item: any): any {
+      return item.body
+    },
+
+    mapperTags (item: any): any {
+      return item.body
+    },
+
+    mapperActivity (item: any): any {
+      return item.body
+    },
+
+    mapperPeers (item: any): any {
+      return item.body
+    },
+
+    mapperLinks (item: any): any {
+      return item.body
+    },
+
+    mapperDescription (item: any): any {
+      return item.body.content
+    },
+
+    mapperRules (item: any): any {
+      return item.body.map( (d: any) => d.text)
+    },
+
+    mapperInstance (item: any): any {
+      const b = item.body
+      return {
+        languages:      b.languages,
+        thumbnail:      b.thumbnail.url,
+        registrations:  b.registrations,
+        description:    b.description,
+        title:          b.title,
+        activeUser:     b.usage.users.active_month
+      }
     }
 
   };

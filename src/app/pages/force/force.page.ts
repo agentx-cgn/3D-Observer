@@ -165,10 +165,10 @@ export class ForcePage implements AfterViewInit {
     console.log('PageForce.pokeNode', node);
 
     this.bus.emit({
-      topic:    'stats.get',
+      topic:    'observe.stats.servers',
       receiver: 'express',
       payload: {
-        domain: node.id
+        domains: [ node.id ]
       }
     });
 

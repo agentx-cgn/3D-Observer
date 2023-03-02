@@ -1,5 +1,5 @@
 import { app, BrowserWindow, screen, Menu, MenuItem, MessageChannelMain } from 'electron'
-import { ChildProcess } from 'node:child_process'
+import { ChildProcess, ForkOptions } from 'node:child_process'
 import { fork } from 'child_process'
 import * as path from 'path'
 import * as fs from 'fs'
@@ -141,13 +141,15 @@ function launchExpress(): Promise<IConfig> {
 
   console.log()
 
-  const { signal } = childController;
+  // const { signal } = childController;
 
   return new Promise<IConfig>(function(resolve, reject) {
 
-    const child: ChildProcess = fork(config.fileExpress, ['child'], { signal });
+    const controller = new AbortController()
+    const { signal } = controller
+    const child: ChildProcess = fork(config.fileExpress, ['child'], { signal } as ForkOptions)
 
-    busExp = new Bus('electron', 'express', child);
+    busExp = new Bus('electron', 'express', child)
 
     // expect initial config w/ port back from express
     busExp.on('config', (msg: IMessage<IConfig>) => {
@@ -155,18 +157,32 @@ function launchExpress(): Promise<IConfig> {
     });
 
     // send initial config
-    busExp.emit({
-      topic:    'config',
-      receiver: 'express',
-      payload:   config
-    });
+    busExp.send('config', 'express', config)
 
     child.on('error', (err) => {
       console.log('ELC.child.onError', Object.keys(err));
       reject(err);
+    })
+
+    child.on('close', (code) => {
+      console.log('ELC.child.onClose', code)
     });
 
-    child.on('close', (code) => console.log('ELC.child.onClose', code));
+    child.on('beforeExit', code => {
+      console.log('ELC.child.onBeforeExit', code)
+      // Can make asynchronous calls
+      setTimeout(() => {
+        console.log(`Process will exit with code: ${code}`)
+        // child.exit(code)
+        // controller.abort();
+      }, 100)
+    })
+
+    child.on('exit', code => {
+      // Only synchronous calls
+      console.log('ELC.child.exit', code);
+    })
+
 
   });
 
