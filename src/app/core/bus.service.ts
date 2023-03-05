@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
-import { IMessage, TPayload, TTopic } from '../../../app/interfaces';
+import { IMessage, TPayload, TReceiver, TTopic } from '../../../app/interfaces';
 import Bus from '../../../app/bus';
 
 @Injectable({
@@ -44,10 +44,30 @@ export class BusService {
 
   }
 
+  // shortcut local emit
+  async fire (topic: TTopic, payload: TPayload) {
+    (await this.bus).emit({
+      topic,
+      receiver: 'browser',
+      payload
+    });
+  }
+
+  // shortcut gloabl emit
+  async send (topic: TTopic, receiver: TReceiver, payload: TPayload) {
+    (await this.bus).emit({
+      topic,
+      receiver,
+      payload
+    });
+  }
+
+  // generic emit
   async emit(msg: IMessage<TPayload>) {
     (await this.bus).emit(msg);
   }
 
+  // generic on
   async on(topic: TTopic, action: any): Promise<Subscription> {
     return (await this.bus).on(topic, action);
   }

@@ -1,9 +1,8 @@
-import Bus from "../../bus";
-import { IApiRequest, IConfig, IGraphData, IMessage, IObsStatsServers, IResStatsServer } from "../../interfaces";
 import axios, { AxiosResponse } from "axios";
-// import { Database, OPEN_READWRITE, RunResult } from 'sqlite3';
+
 import { PromisedDatabase } from './libs/promised-database'
-// import { timeout } from "rxjs";
+import { IApiRequest, IConfig, IGraphData, IMessage, IObsStatsServers, IResStatsServer } from "../../interfaces";
+import Bus from "../../bus";
 
 // https://github.com/tguichaoua/promised-sqlite3/blob/master/src/PromisedDatabase.ts
 
@@ -16,15 +15,15 @@ const Actions = function (cfg: IConfig): any {
   ;
 
   const endpoints = [
-    { label: 'activity',    endpoint: '/api/v1/instance/activity' },
-    { label: 'blocks',      endpoint: '/api/v1/instance/domain_blocks' },
-    { label: 'description', endpoint: '/api/v1/instance/extended_description' },
-    { label: 'peers',       endpoint: '/api/v1/instance/peers' },
-    { label: 'rules',       endpoint: '/api/v1/instance/rules' },
-    { label: 'links',       endpoint: '/api/v1/trends/links' },
-    { label: 'statuses',    endpoint: '/api/v1/trends/statuses' },
-    { label: 'tags',        endpoint: '/api/v1/trends/tags' },
-    { label: 'instance',    endpoint: '/api/v2/instance' },
+    { label: 'activity',              endpoint: '/api/v1/instance/activity' },
+    { label: 'blocks',                endpoint: '/api/v1/instance/domain_blocks' },
+    { label: 'descriptionHTML',       endpoint: '/api/v1/instance/extended_description' },
+    { label: 'peers',                 endpoint: '/api/v1/instance/peers' },
+    { label: 'rules',                 endpoint: '/api/v1/instance/rules' },
+    { label: 'links',                 endpoint: '/api/v1/trends/links' },
+    { label: 'statuses',              endpoint: '/api/v1/trends/statuses' },
+    { label: 'tags',                  endpoint: '/api/v1/trends/tags' },
+    { label: 'instance',              endpoint: '/api/v2/instance' },
   ];
 
   let
@@ -42,9 +41,9 @@ const Actions = function (cfg: IConfig): any {
       DB = new PromisedDatabase()
       await DB.open(cfg.fileDBTarget)
 
-      bus.on('request',               self.onRequest)
-      bus.on('graphdata.set',         self.onGraphdataSet)
-      bus.on('graphdata.get',         self.onGraphdataGet)
+      bus.on('request',                self.onRequest)
+      bus.on('graphdata.set',          self.onGraphdataSet)
+      bus.on('graphdata.get',          self.onGraphdataGet)
       bus.on('observe.stats.servers',  self.onObserveStatsServers)
 
       return self;
@@ -137,15 +136,13 @@ const Actions = function (cfg: IConfig): any {
 
     },
 
-    async onObserveStatsServers(msg: IMessage<IObsStatsServers>) {
+    onObserveStatsServers(msg: IMessage<IObsStatsServers>) {
 
       msg.payload.domains.map(async domain => {
+
         const stats = await self.getStatsServer(domain)
-        bus.emit({
-          topic:    'stats.server',
-          receiver:  msg.sender,
-          payload:   stats,
-        })
+
+        bus.send('stats.server', msg.sender, stats)
 
       });
 
@@ -176,7 +173,7 @@ const Actions = function (cfg: IConfig): any {
             const { status, code, name, message } = err;
 
             if (code === 'ERR_BAD_REQUEST') {
-              return { label, status: 404, code, name, message }
+              return { label, status: 404, code, name, message, url }
 
             } else {
               console.log('stats.get.catch', domain, endpoint, message);
@@ -189,49 +186,46 @@ const Actions = function (cfg: IConfig): any {
 
       })
 
-      const stats = (await Promise.all(promises)).reduce( (accu, item) => {
-        const mapper = self['mapper' + capitalize(item.label)]
-        accu[item.label] = (item.status === 200) && mapper
-          ? mapper(item)
-          : item
-        return accu
-      }, {})
+      const stats = self.mapperStats(domain, (await Promise.all(promises)))
 
       clearTimeout(cancel)
 
-      return { domain, stats };
+      return { domain, stats }
 
     },
 
-    mapperStatuses (item: any): any {
-      return item.body
+    // combines all requestst on server
+    mapperStats (domain: string, results: any[]): any {
+
+      return results.reduce( (accu, item) => {
+
+        const mapper = self['mapper' + capitalize(item.label)]
+
+        if (item.label === 'instance' && item.status === 200) {
+          accu = { ...accu, ...mapper(item) }
+
+        } else {
+          accu[item.label] = (item.status === 200) && mapper
+            ? mapper(item)
+            : item
+
+        }
+
+        return accu
+
+      }, { domain })
+
     },
 
-    mapperTags (item: any): any {
-      return item.body
-    },
-
-    mapperActivity (item: any): any {
-      return item.body
-    },
-
-    mapperPeers (item: any): any {
-      return item.body
-    },
-
-    mapperLinks (item: any): any {
-      return item.body
-    },
-
-    mapperDescription (item: any): any {
-      return item.body.content
-    },
-
-    mapperRules (item: any): any {
-      return item.body.map( (d: any) => d.text)
-    },
-
-    mapperInstance (item: any): any {
+    mapperDescriptionHTML: (item: any) => item.body.content,
+    mapperStatuses:    (item: any) => item.body,
+    mapperTags:        (item: any) => item.body,
+    mapperBlocks:      (item: any) => item.body,
+    mapperActivity:    (item: any) => item.body,
+    mapperPeers:       (item: any) => item.body,
+    mapperLinks:       (item: any) => item.body,
+    mapperRules:       (item: any) => item.body.map( (d: any) => d.text ),
+    mapperInstance:    (item: any) =>  {
       const b = item.body
       return {
         languages:      b.languages,

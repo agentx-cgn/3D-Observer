@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 import { environment } from '../environments/environment';
 import { BusService } from './core/bus.service';
-import { IConfig, IMessage, IApiResponse, IApiStatsResponse, IResStatsServer } from '../../app/interfaces';
+import { IConfig, IMessage, IApiResponse, IResStatsServer } from '../../app/interfaces';
 import { ForceService } from './pages/force/force.service';
 import { filter } from 'rxjs/operators';
 
@@ -17,8 +17,6 @@ import { filter } from 'rxjs/operators';
 export class AppComponent {
 
   public config: null | IConfig = null;
-  // public camera   = '';
-  // public bounding = '';
 
   constructor (
     public force: ForceService,
@@ -83,6 +81,7 @@ export class AppComponent {
 
     this.bus.on('stats.server', (msg: IMessage<IResStatsServer>) => {
       console.log('APPComp.stats.server', msg.payload.domain, msg.payload.stats);
+      this.bus.fire('content-tab-1', msg.payload.stats.description);
     });
 
     this.bus.on('response', (msg: IMessage<IApiResponse>) => {

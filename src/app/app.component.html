@@ -1,5 +1,5 @@
 
-<header>
+<header style="display:flex; flex-direction: row;">
   Header
   <button (click)="onStart()">Start</button>
   <button (click)="onStop()">Stop</button>
@@ -7,6 +7,12 @@
   <button (click)="onSave()">Save</button>
   <button (click)="onLoad()">Load</button>
   <button (click)="onZoom()">Zoom</button>
+  <div style="flex-grow: 1"></div>
+  <app-tabs>
+    <app-tab title="Tab 1" topic="content-tab-1"></app-tab>
+    <app-tab title="Tab 2" topic="content-tab-2"></app-tab>
+  </app-tabs>
+
 </header>
 
 <main>

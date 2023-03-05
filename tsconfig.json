@@ -24,11 +24,7 @@
       "dom"
     ],
     "paths": {
-      "@elc/*":        ["app/*"],
-      "@exp/*":        ["app/resources/express/*"],
-      "@bro/assets/*": ["src/assets/*"],
-      "@bro/core/*":   ["src/app/core/*"],
-      "@bro/pages/*":  ["src/app/pages/*"]
+
     }
   },
   "exclude": [

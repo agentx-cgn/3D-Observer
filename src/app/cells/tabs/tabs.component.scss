@@ -1,0 +1,15 @@
+ul {
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+
+  li {
+    padding: 0.5rem 1rem;
+    background-color: #888;
+    cursor: pointer;
+  }
+
+  li.active {
+    background-color: #666;
+  }
+}

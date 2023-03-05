@@ -25,6 +25,8 @@ export type TTopic =
   'stats.server' |
   'graphdata.set' |
   'graphdata.get' |
+  'content-tab-1' |
+  'content-tab-2' |
   'last'
 ;
 
