@@ -29,8 +29,6 @@ class App {
 
   constructor() {
 
-    // Prepare Express
-
     this.app    = express()
     this.router = express.Router()
 
@@ -38,6 +36,14 @@ class App {
     this.app.use(express.json())
     this.app.use(bodyParser.json())
     this.app.use(bodyParser.urlencoded({ extended: false }))
+
+    this.app.use(this.router.get('/', (req, res) => {
+      res.json({ express: `API works on ${config.api.ip}:${config.api.port}` })
+    }));
+
+    // exposed API
+    this.app.use('/api', apiRouter);
+
     this.app.use((err, req, res, next) => {
 
       const { start, httpStatus, message, previousError, stack } = err
@@ -61,7 +67,6 @@ class App {
 
     this.bus.on<IConfig>('config', (msg: IMessage<IConfig>) => {
 
-      // config  = Object.assign({}, msg.payload)
       config  = msg.payload
       actions = Actions(config).listen(this.bus)
 
@@ -122,13 +127,13 @@ class App {
       //   console.log('EXP.message', msg);
       // });
 
-      // most basic end point
-      this.app.use(this.router.get('/', (req, res) => {
-        res.json({ express: `API works on ${config.api.ip}:${config.api.port}` })
-      }));
+      // // most basic end point
+      // this.app.use(this.router.get('/', (req, res) => {
+      //   res.json({ express: `API works on ${config.api.ip}:${config.api.port}` })
+      // }));
 
-      // exposed API
-      this.app.use('/api', apiRouter);
+      // // exposed API
+      // this.app.use('/api', apiRouter);
 
       // start listening
       const server = this.app.listen(config.api.port, config.api.ip, () => {
@@ -158,12 +163,12 @@ class App {
 
   }
 
-  middleware () {
-    this.app.use(cors());
-    this.app.use(express.json())
-    this.app.use(bodyParser.json());
-    this.app.use(bodyParser.urlencoded({ extended: false }));
-  }
+  // middleware () {
+  //   this.app.use(cors());
+  //   this.app.use(express.json())
+  //   this.app.use(bodyParser.json());
+  //   this.app.use(bodyParser.urlencoded({ extended: false }));
+  // }
 
   errorHandlerMdw () {
 
