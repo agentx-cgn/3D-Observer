@@ -1,33 +1,19 @@
 
 import express from 'express'
-// import axios, { AxiosResponse } from 'axios'
 import cors from 'cors'
-import bodyParser from 'body-parser';
+import bodyParser from 'body-parser'
 import log from 'electron-log'
-// import fs from 'fs'
-// import path from 'path';
-// import sqlite3 from 'sqlite3';
-import dotenv from 'dotenv';
-import { AddressInfo } from 'node:net';
+import dotenv from 'dotenv'
+import { AddressInfo } from 'node:net'
 
-import { IConfig } from '../../interfaces';
-import Bus from '../../bus';
-import apiRouter from './api-router';
+import { IConfig, IMessage } from '../../interfaces'
+import Bus from '../../bus'
+import apiRouter from './api-router'
 import { Actions } from './actions'
 
 dotenv.config()
 Object.assign(console, log.functions)
 log.transports.file.level = 'silly'
-
-const preConfig = {
-  api: {
-    port: 0,
-    ip: '127.0.0.1',
-    protocol: 'http',
-    root: '',
-    family: ''
-  },
-}
 
 let
   config: null | IConfig = null,
@@ -45,18 +31,18 @@ class App {
 
     // Prepare Express
 
-    this.app    = express();
-    this.router = express.Router();
-    this.app.use(cors());
-    this.app.use(express.json())
-    this.app.use(bodyParser.json());
-    this.app.use(bodyParser.urlencoded({ extended: false }));
+    this.app    = express()
+    this.router = express.Router()
 
+    this.app.use(cors())
+    this.app.use(express.json())
+    this.app.use(bodyParser.json())
+    this.app.use(bodyParser.urlencoded({ extended: false }))
     this.app.use((err, req, res, next) => {
 
-      const { start, httpStatus, message, previousError, stack } = err;
+      const { start, httpStatus, message, previousError, stack } = err
 
-      console.warn('EX.error', httpStatus, message);
+      console.warn('EX.error', httpStatus, message)
 
       res.status(httpStatus || 406).json({
         status: false,
@@ -67,29 +53,26 @@ class App {
 
     });
 
+    //
+
     // Prepare Bus and wait for config
 
-    this.bus = new Bus('express', 'electron', process);
+    this.bus = new Bus('express', 'electron', process)
 
-    this.bus.on('config', (msg) => {
+    this.bus.on<IConfig>('config', (msg: IMessage<IConfig>) => {
 
-      config  = Object.assign({}, msg.payload, preConfig);
-      actions = Actions(config).listen(this.bus);
+      // config  = Object.assign({}, msg.payload)
+      config  = msg.payload
+      actions = Actions(config).listen(this.bus)
 
       this.activate().then( (adr: AddressInfo) => {
 
-        config.api.port   = adr.port;
-        config.api.ip     = adr.address;
-        config.api.family = adr.family;
+        config.api.port   = adr.port
+        config.api.ip     = adr.address
+        config.api.family = adr.family
+        config.api.root   = `${config.api.protocol}://${config.api.ip}:${config.api.port}/`
 
-        const api = config.api;
-        config.api.root = `${api.protocol}://${api.ip}:${api.port}/`;
-
-        this.bus.emit({
-          topic:    'config',
-          receiver: 'electron',
-          payload:   config
-        });
+        this.bus.send<IConfig>('config', 'electron', config)
 
       })
 
@@ -132,9 +115,7 @@ class App {
 
   activate () {
 
-    return new Promise<any>((resolve, reject) => {
-
-      const cfg = config;
+    return new Promise<any>( resolve => {
 
       // to debug lost messages
       // process.on('message', (msg) => {
@@ -143,25 +124,27 @@ class App {
 
       // most basic end point
       this.app.use(this.router.get('/', (req, res) => {
-        res.json({ express: `API works on ${cfg.api.ip}:${cfg.api.port}` });
+        res.json({ express: `API works on ${config.api.ip}:${config.api.port}` })
       }));
 
       // exposed API
       this.app.use('/api', apiRouter);
 
       // start listening
-      const server = this.app.listen(preConfig.api.port, preConfig.api.ip, () => {
-        const adr = (server.address() as AddressInfo);
-        console.log(`EX.listening on`, adr.address, adr.port);
+      const server = this.app.listen(config.api.port, config.api.ip, () => {
+        const adr = (server.address() as AddressInfo)
+        console.log(`EX.listening on`, adr.address, adr.port)
         resolve(adr);
       });
 
       // log routes to console
       let route: any, routes = [];
       this.app._router.stack.forEach(function(middleware){
-        if(middleware.route){ // routes registered directly on the app
+        if(middleware.route){
+          // routes registered directly on the app
           routes.push(middleware.route);
-        } else if(middleware.name === 'router'){ // router middleware
+        } else if(middleware.name === 'router'){
+          // router middleware
           middleware.handle.stack.forEach(function(handler: any){
             route = handler.route;
             route && routes.push(route);

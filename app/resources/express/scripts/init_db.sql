@@ -8,7 +8,6 @@ CREATE TABLE blobs (
     UNIQUE("key")
 );
 
-
 CREATE TABLE domains (
     prim_key INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT
   , domain TEXT NOT NULL

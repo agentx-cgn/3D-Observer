@@ -114,7 +114,7 @@ export interface IConfig {
   existsFileDBTarget: boolean
   existsFileDBSource: boolean
 
-  api?: {
+  api: {
     root: string;
     port: number;
     ip: string;

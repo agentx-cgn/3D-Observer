@@ -67,7 +67,7 @@ class Bus {
   }
 
   // shorthand for .emit()
-  send (topic: TTopic, receiver: TReceiver, payload: TPayload) {
+  send<T extends TPayload>(topic: TTopic, receiver: TReceiver, payload: T) {
     this.emit({
       topic,
       receiver,
@@ -75,7 +75,7 @@ class Bus {
     });
   }
 
-  emit (msg: IMessage<TPayload>, bridge=false) {
+  emit<T extends TPayload>(msg: IMessage<T>, bridge=false) {
 
     DEBUG && console.log(`BUS.${this.source}.emit`, msg.topic, '=>', msg.receiver);
 
@@ -118,7 +118,7 @@ class Bus {
 
   }
 
-  on(msgFilter: TTopic | TMsgFilter, action: any): Subscription {
+  on<T extends TPayload>(msgFilter: TTopic | TMsgFilter, action: (msg: IMessage<T>) => void): Subscription {
 
     const tapper = (msg: any) => {
       DEBUG && console.log('BUS.tap', this.source, msg.topic, msg.sender, '=>', msg.receiver);

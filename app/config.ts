@@ -47,6 +47,13 @@ const config: IConfig = {
   // /Users/noiv/Library/Logs/3D-Observer/main.log
   // fileLog: log.transports.file.resolvePathFn = () => path.join(APP_DATA, 'logs/main.log');
 
+  api: {
+    port: 0,
+    ip: '127.0.0.1',
+    protocol: 'http',
+    root: '',
+    family: ''
+  },
 
   pathApp,
   pathData:      path.join(__dirname, 'resources', 'express', 'server', 'data', 'init-servers.json'),

@@ -8,7 +8,6 @@ import { IConfig, IMessage, IApiResponse, IResStatsServer } from '../../app/inte
 import { ForceService } from './pages/force/force.service';
 import { filter } from 'rxjs/operators';
 
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -37,8 +36,8 @@ export class AppComponent {
 
   }
 
-  public onStart () {}
-  public onStop () {}
+  // public onStart () {}
+  // public onStop () {}
   public onZoom  () {
     this.force.zoomToFit();
   }

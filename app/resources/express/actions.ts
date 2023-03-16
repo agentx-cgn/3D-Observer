@@ -41,10 +41,10 @@ const Actions = function (cfg: IConfig): any {
       DB = new PromisedDatabase()
       await DB.open(cfg.fileDBTarget)
 
-      bus.on('request',                self.onRequest)
+      bus.on<IApiRequest>('request',                self.onRequest)
       bus.on('graphdata.set',          self.onGraphdataSet)
-      bus.on('graphdata.get',          self.onGraphdataGet)
-      bus.on('observe.stats.servers',  self.onObserveStatsServers)
+      bus.on<IGraphData>('graphdata.get',          self.onGraphdataGet)
+      bus.on<IObsStatsServers>('observe.stats.servers',  self.onObserveStatsServers)
 
       return self;
 
@@ -61,7 +61,7 @@ const Actions = function (cfg: IConfig): any {
 
         if (row) {
           console.log('ACT.db.get', msg.topic, sql)
-          bus.emit({
+          bus.emit<IGraphData>({
             topic:    msg.topic,
             receiver: msg.sender,
             payload:  JSON.parse(row.value)
@@ -109,14 +109,8 @@ const Actions = function (cfg: IConfig): any {
         .then( (res) => {
 
           if ( res.status === 200 ) {
-
             const payload = { status: res.status, headers: res.headers, body: res.data, ...msg.payload }
-
-            bus.emit({
-              topic:    'response',
-              receiver:  msg.sender,
-              payload,
-            })
+            bus.send('response', msg.sender, payload)
 
           } else {
             console.log('AXIOS.failed', res.status, res.statusText, url)
@@ -139,11 +133,8 @@ const Actions = function (cfg: IConfig): any {
     onObserveStatsServers(msg: IMessage<IObsStatsServers>) {
 
       msg.payload.domains.map(async domain => {
-
         const stats = await self.getStatsServer(domain)
-
-        bus.send('stats.server', msg.sender, stats)
-
+        bus.send<IResStatsServer>('stats.server', msg.sender, stats)
       });
 
     },

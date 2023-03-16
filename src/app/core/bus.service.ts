@@ -28,7 +28,7 @@ export class BusService {
 
           // init bus on first message
           const bus = new Bus('browser', 'electron', port);
-          this.created$.next(true)
+          this.created$.next(true);
           resolve(bus);
 
         } else {
@@ -45,8 +45,8 @@ export class BusService {
   }
 
   // shortcut local emit
-  async fire (topic: TTopic, payload: TPayload) {
-    (await this.bus).emit({
+  async fire<T extends TPayload>(topic: TTopic, payload: T) {
+    (await this.bus).emit<T>({
       topic,
       receiver: 'browser',
       payload
@@ -54,8 +54,8 @@ export class BusService {
   }
 
   // shortcut gloabl emit
-  async send (topic: TTopic, receiver: TReceiver, payload: TPayload) {
-    (await this.bus).emit({
+  async send<T extends TPayload>(topic: TTopic, receiver: TReceiver, payload: T) {
+    (await this.bus).emit<T>({
       topic,
       receiver,
       payload
@@ -63,8 +63,8 @@ export class BusService {
   }
 
   // generic emit
-  async emit(msg: IMessage<TPayload>) {
-    (await this.bus).emit(msg);
+  async emit<T extends TPayload>(msg: IMessage<T>) {
+    (await this.bus).emit<T>(msg);
   }
 
   // generic on
