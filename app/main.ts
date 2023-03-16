@@ -3,6 +3,7 @@ import { ChildProcess, ForkOptions } from 'node:child_process'
 import { fork } from 'child_process'
 import * as path from 'path'
 import * as fs from 'fs'
+import * as log from 'electron-log'
 
 import { IConfig, IMessage, TPayload } from './interfaces'
 import Bus from './bus'
@@ -11,7 +12,6 @@ import config from './config'
 // https://github.com/mslipper/electron-child-process-playground/tree/master/src
 
 // LOGGING
-const log  = require('electron-log')
 Object.assign(console, log.functions)
 log.transports.file.level = 'silly'
 
@@ -22,7 +22,6 @@ let
   childController = new AbortController()
 ;
 
-// https://www.appsloveworld.com/bestanswer/sqlite/53/cannot-find-sqlite-file-in-production-mode-electron-angular
 
 console.log('#')
 console.log('#')
@@ -30,6 +29,31 @@ console.log('#')
 console.log('#')
 console.log('#')
 console.log('## # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # ')
+
+process.stdin.resume();//so the program will not close instantly
+
+function exitHandler(options, exitCode) {
+  console.log('Main.ExitHandler', options, exitCode);
+  if (options.cleanup) console.log('clean');
+  if (exitCode || exitCode === 0) console.log(exitCode);
+  if (options.exit) process.exit();
+}
+
+//do something when app is closing
+process.on('exit', exitHandler.bind(null,{cleanup:true}));
+
+//catches ctrl+c event
+process.on('SIGINT', exitHandler.bind(null, {exit:true}));
+
+// catches "kill pid" (for example: nodemon restart)
+process.on('SIGUSR1', exitHandler.bind(null, {exit:true}));
+process.on('SIGUSR2', exitHandler.bind(null, {exit:true}));
+
+//catches uncaught exceptions
+process.on('uncaughtException', exitHandler.bind(null, {exit:true}));
+
+
+
 console.log('ELC.starting...', config);
 
 // SETUP: copy DB, if not exists in user path
@@ -44,7 +68,7 @@ if (config.existsFileDBSource && !config.existsFileDBTarget) {
 // waiting for app.ready
 const promise = launchApp()
 
-// now waiting for config w/ port from express
+  // now waiting for config w/ port from express
   .then( ([event, launchInfo]) => {
     return launchExpress();
   })
@@ -61,7 +85,7 @@ const promise = launchApp()
       // setApplicationMenu();
     }
 
-    return launchBrowser();
+    return launchBrowser()
 
   })
 
@@ -78,7 +102,12 @@ const promise = launchApp()
 
   })
 
-  // TODO proper catch
+  .catch( err => {
+
+    console.log('ELC.catch', err)
+    process.exitCode = 1
+
+  })
 
 ;
 
@@ -190,33 +219,26 @@ function launchExpress(): Promise<IConfig> {
 
 function setApplicationMenu() {
 
-  // if (process.platform !== 'darwin') {
-  //   return;
-  // }
+  if (process.platform !== 'darwin') return
 
   // hide Help menu
   const menu = Menu.getApplicationMenu();
   let viewMenu: MenuItem | undefined;
 
   menu?.items.forEach(item => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+
     if (item.role === 'help') {
       item.visible = false;
     }
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    if (item.role === 'viewmenu') {
+    if (item.role === 'viewMenu') {
       viewMenu = item;
     }
   });
 
   // hide Reload and Force Reload menu items
   viewMenu?.submenu?.items.forEach(item => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    if (item.role === 'reload' || item.role === 'forcereload') {
+    if (item.role === 'reload' || item.role === 'forceReload') {
       item.visible = false;
       item.enabled = false;
     }
@@ -232,9 +254,9 @@ function launchBrowser(): Promise<IMessage<TPayload>> {
 
   return new Promise( (resolve, reject) => {
 
-    const { workAreaSize, rotation, scaleFactor } = screen.getPrimaryDisplay();
+    const { workAreaSize, rotation, scaleFactor } = screen.getPrimaryDisplay()
 
-    config.screen = { workAreaSize, rotation, scaleFactor };
+    config.screen = { workAreaSize, rotation, scaleFactor }
 
     // Create the browser window.
     win = new BrowserWindow({
@@ -249,8 +271,8 @@ function launchBrowser(): Promise<IMessage<TPayload>> {
         allowRunningInsecureContent: true,
         contextIsolation: false,  // false if you want to run e2e test with Spectron
         preload: path.join(__dirname, config.filePreload),
-      },
-    });
+      }
+    })
 
     win.webContents.on('did-finish-load', () => {
       console.log('ELC.webContents', 'did-finish-load');
@@ -260,16 +282,11 @@ function launchBrowser(): Promise<IMessage<TPayload>> {
           resolve(ack);
         })
       ;
-      // resolve(createBrowserChannel());
-    });
-
-    // win.webContents.on('dom-ready', () => {
-    //   console.log('ELC.webContents', 'dom-ready');
-    // });
+    })
 
     win.webContents.on('ipc-message', (data) => {
       console.log('ELC.webContents', 'ipc-message', data);
-    });
+    })
 
     // Show DevTools, still always
     config.isDev && win.webContents.openDevTools();
@@ -277,7 +294,7 @@ function launchBrowser(): Promise<IMessage<TPayload>> {
     win.webContents.on('devtools-opened', () => {
       win.focus();
       setImmediate(() => win.focus());
-    });
+    })
 
     // Emitted when the window is closed.
     win.on('closed', () => {
@@ -287,11 +304,11 @@ function launchBrowser(): Promise<IMessage<TPayload>> {
       // when you should delete the corresponding element.
       win = null;
 
-    });
+    })
 
-    loadIndexHtml(win);
+    loadIndexHtml(win)
 
-  });
+  })
 
 }
 

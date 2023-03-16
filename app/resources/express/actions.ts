@@ -74,7 +74,7 @@ const Actions = function (cfg: IConfig): any {
 
 
       } catch (err) {
-        console.error('ACT.db.get.error', msg.topic, trim(sql));
+        console.error('ACT.db.get.error', msg.topic, trim(sql), err);
 
       }
 
@@ -91,8 +91,8 @@ const Actions = function (cfg: IConfig): any {
         await DB.run(sql)
         console.log('ACT.db.success', msg.topic, trim(sql))
 
-      } catch (e) {
-        console.error('ACT.db.run', msg.topic, trim(sql))
+      } catch (err) {
+        console.error('ACT.db.run', msg.topic, trim(sql), err)
 
       }
 

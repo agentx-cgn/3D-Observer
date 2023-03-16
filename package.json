@@ -48,8 +48,8 @@
     "rxjs": "7.8.0",
     "three": "0.149.0",
     "three-spritetext": "1.7.1",
-    "tslib": "^2.5.0",
-    "zone.js": "~0.11.8"
+    "tslib": "2.5.0",
+    "zone.js": "0.11.8"
   },
   "devDependencies": {
     "@angular-builders/custom-webpack": "14.0.1",
