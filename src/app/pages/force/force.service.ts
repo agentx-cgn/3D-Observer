@@ -97,14 +97,18 @@ export class ForceService {
 
   }
 
+  public clear () {
+    this.import({ nodes: [], links: [] });
+  }
+
   public import (payload) {
 
     const { nodes, links } = payload;
     this.selectNode = undefined;
     this.graph.graphData({ nodes, links });
 
-
   }
+
   public export () {
 
     const { nodes, links } = this.graph.graphData();

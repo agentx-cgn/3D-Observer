@@ -23,7 +23,7 @@ export class AppComponent {
     private translate: TranslateService,
   ) {
 
-    console.log('App.Env', JSON.stringify(environment));
+    console.log('APP.Env', JSON.stringify(environment));
 
     this.translate.setDefaultLang('en');
 
@@ -38,6 +38,11 @@ export class AppComponent {
 
   // public onStart () {}
   // public onStop () {}
+
+  public onClear () {
+    this.force.clear();
+  }
+
   public onZoom  () {
     this.force.zoomToFit();
   }
@@ -92,7 +97,7 @@ export class AppComponent {
 
       this.config = Object.assign({}, msg.payload);
 
-      console.log('App.config', this.config);
+      console.log('APP.config', this.config);
 
       // try out api...
       fetch(this.config.api.root)

@@ -122,7 +122,7 @@ export class ForcePage implements AfterViewInit {
     // add some nodes
     const testServers = servers.slice(0, 100);
 
-    interval(100)
+    interval(5)
       .pipe(
         take(testServers.length),
         map(i => testServers.sort()[i])
