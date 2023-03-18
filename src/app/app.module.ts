@@ -14,6 +14,8 @@ import { TabComponent } from './cells/tab/tab.component';
 
 // AoT requires an exported function for factories
 const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader =>  new TranslateHttpLoader(http, './assets/i18n/', '.json');
+import { NgxJsonViewerModule } from 'ngx-json-viewer';
+
 
 @NgModule({
   declarations: [AppComponent, TabsComponent, TabComponent],
@@ -28,7 +30,8 @@ const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader =>  new Transl
         useFactory: httpLoaderFactory,
         deps: [HttpClient]
       }
-    })
+    }),
+    NgxJsonViewerModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

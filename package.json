@@ -45,6 +45,7 @@
     "@angular/platform-browser-dynamic": "14.2.6",
     "@angular/router": "14.2.6",
     "3d-force-graph": "1.71.1",
+    "ngx-json-viewer": "3.2.1",
     "rxjs": "7.8.0",
     "three": "0.149.0",
     "three-spritetext": "1.7.1",

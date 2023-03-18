@@ -6,7 +6,7 @@ import { IMessage, TTopic } from '../../../../app/interfaces';
   selector: 'app-tab',
   template: `
     <div [hidden]="!active" class="pane">
-      {{ content | json }}
+      <ngx-json-viewer [json]="content" [expanded]="false"></ngx-json-viewer>
     </div>
   `
   ,

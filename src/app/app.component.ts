@@ -85,7 +85,7 @@ export class AppComponent {
 
     this.bus.on('stats.server', (msg: IMessage<IResStatsServer>) => {
       console.log('APPComp.stats.server', msg.payload.domain, msg.payload.stats);
-      this.bus.fire('content-tab-1', msg.payload.stats.description);
+      this.bus.fire('content-tab-1', msg.payload.stats);
     });
 
     this.bus.on('response', (msg: IMessage<IApiResponse>) => {
