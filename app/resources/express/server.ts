@@ -65,12 +65,12 @@ class App {
 
     this.bus = new Bus('express', 'electron', process)
 
-    this.bus.on<IConfig>('config', (msg: IMessage<IConfig>) => {
+    this.bus.on<IConfig>('config', msg => {
 
       config  = msg.payload
       actions = Actions(config).listen(this.bus)
 
-      this.activate().then( (adr: AddressInfo) => {
+      this.activate().then( adr => {
 
         config.api.port   = adr.port
         config.api.ip     = adr.address
@@ -118,9 +118,9 @@ class App {
 
   // }
 
-  activate () {
+  activate (): Promise<AddressInfo> {
 
-    return new Promise<any>( resolve => {
+    return new Promise<AddressInfo>( resolve => {
 
       // to debug lost messages
       // process.on('message', (msg) => {

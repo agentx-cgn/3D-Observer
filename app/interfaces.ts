@@ -43,11 +43,6 @@ export interface IMessage<T> {
   payload: T;
 }
 
-export interface IApiRequest {
-  domain: string
-  endpoint: string
-}
-
 export interface IObsStatsServers {
   domains: string[]
 }
@@ -62,8 +57,13 @@ export interface IApiStatsResponse {
   data: any[]
 }
 
+export interface IApiRequest {
+  domain: string
+  endpoint: string
+}
+
 export interface IApiResponse {
-  server: string
+  domain: string
   endpoint: string
   status?: number
   headers?: Record<string, string>

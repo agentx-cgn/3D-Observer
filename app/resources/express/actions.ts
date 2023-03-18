@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 
 import { PromisedDatabase } from './libs/promised-database'
-import { IApiRequest, IConfig, IGraphData, IMessage, IObsStatsServers, IResStatsServer } from "../../interfaces";
+import { IApiRequest, IApiResponse, IConfig, IGraphData, IMessage, IObsStatsServers, IResStatsServer } from "../../interfaces";
 import Bus from "../../bus";
 
 // https://github.com/tguichaoua/promised-sqlite3/blob/master/src/PromisedDatabase.ts
@@ -41,10 +41,10 @@ const Actions = function (cfg: IConfig): any {
       DB = new PromisedDatabase()
       await DB.open(cfg.fileDBTarget)
 
-      bus.on<IApiRequest>('request',                self.onRequest)
-      bus.on('graphdata.set',          self.onGraphdataSet)
-      bus.on<IGraphData>('graphdata.get',          self.onGraphdataGet)
+      bus.on<IApiRequest>('request',                     self.onRequest)
+      bus.on<IGraphData>('graphdata.get',                self.onGraphdataGet)
       bus.on<IObsStatsServers>('observe.stats.servers',  self.onObserveStatsServers)
+      bus.on('graphdata.set',          self.onGraphdataSet)
 
       return self;
 
@@ -105,12 +105,16 @@ const Actions = function (cfg: IConfig): any {
 
       console.log('ACT.request', msg.topic, url);
 
-      return axios.get<Promise<AxiosResponse<any, any>>>(url) //('https://berlin.social/api/v1/instance/peers')
+      return axios.get<Promise<AxiosResponse>>(url) //('https://berlin.social/api/v1/instance/peers')
         .then( (res) => {
 
           if ( res.status === 200 ) {
-            const payload = { status: res.status, headers: res.headers, body: res.data, ...msg.payload }
-            bus.send('response', msg.sender, payload)
+            bus.send<IApiResponse>('response', msg.sender, {
+              status:  res.status,
+              headers: res.headers as Record<string, string>,
+              body:    res.data,
+              ...msg.payload
+            })
 
           } else {
             console.log('AXIOS.failed', res.status, res.statusText, url)

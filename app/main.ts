@@ -158,8 +158,8 @@ function launchApp () {
         }
       });
 
-    } catch (err) {
-      reject(err)
+    // } catch (err) {
+    //   reject(err)
     }
 
   });
@@ -275,6 +275,7 @@ function launchBrowser(): Promise<IMessage<TPayload>> {
     })
 
     win.webContents.on('did-finish-load', () => {
+      // TODO: Here reload server/workers, too
       console.log('ELC.webContents', 'did-finish-load');
       createBrowserChannel(win)
         .then(ack => {
@@ -331,11 +332,7 @@ function createBrowserChannel(win: BrowserWindow): Promise<IMessage<TPayload>> {
 
     // It's OK to send a message on the channel before the other end has
     // registered a listener. Messages will be queued until a listener is registered.
-    busWin.emit({
-      topic:    'config',
-      receiver: 'browser',
-      payload:   config,
-    });
+    busWin.send<IConfig>('config', 'browser', config);
 
     // init handshake
     win.webContents.postMessage('main-world-port', null, [port1]);

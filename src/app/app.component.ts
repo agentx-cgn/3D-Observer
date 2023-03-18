@@ -28,10 +28,8 @@ export class AppComponent {
     this.translate.setDefaultLang('en');
 
     this.bus.created$
-      .pipe(filter( v => v))
-      .subscribe( () => {
-        this.listen();
-      })
+      .pipe(filter(Boolean))
+      .subscribe( this.listen )
     ;
 
   }
@@ -48,52 +46,36 @@ export class AppComponent {
   }
 
   public async onSave  () {
-
     const { nodes, links } = this.force.export();
-
-    this.bus.emit({
-      receiver: 'express',
-      topic:    'graphdata.set',
-      payload: { nodes, links }
-    });
-
+    this.bus.send('graphdata.set', 'express', { nodes, links });
   }
 
   public onLoad () {
-
-    this.bus.emit({
-      receiver: 'express',
-      topic:    'graphdata.get',
-      payload:   null
-    });
+    this.bus.send('graphdata.get', 'express', null);
   }
 
-  public onRequest  () {
+  public onRequest () {
 
-    this.bus.emit({
-      receiver: 'express',
-      topic: 'request',
-      payload: {
-        server: 'mastodon.online',
-        endpoint: '/v1/api/peers'
-      }
+    this.bus.send('request', 'express', {
+      domain:   'mastodon.online',
+      endpoint: '/v1/api/peers'
     });
 
   }
 
   private listen () {
 
-    this.bus.on('stats.server', (msg: IMessage<IResStatsServer>) => {
+    this.bus.on<IResStatsServer>('stats.server', msg => {
       console.log('APPComp.stats.server', msg.payload.domain, msg.payload.stats);
       this.bus.fire('content-tab-1', msg.payload.stats);
     });
 
-    this.bus.on('response', (msg: IMessage<IApiResponse>) => {
+    this.bus.on<IApiResponse>('response', msg => {
       console.log('APPComp.response', msg);
     });
 
     // config with api info, should be already in pipeline
-    this.bus.on('config', (msg: IMessage<IConfig>) => {
+    this.bus.on<IConfig>('config', msg => {
 
       this.config = Object.assign({}, msg.payload);
 
@@ -106,11 +88,7 @@ export class AppComponent {
 
           console.log('%cAPP.fetched', '{ color: darkgreen; font-weight: 800 }', JSON.stringify(json));
 
-          this.bus.emit({
-            topic: 'ack',
-            receiver: 'electron',
-            payload: 'ack.payload',
-          });
+          this.bus.send('ack', 'electron', 'ack.payload');
 
         })
         .catch(err => {

@@ -11,12 +11,12 @@ class Bus {
 
   static connect(bus1: Bus, bus2: Bus): void {
 
-    bus1.on( (msg: IMessage<TPayload>) => msg.receiver === bus2.target, (msg: IMessage<TPayload>) => {
+    bus1.on<TPayload>( (msg: IMessage<TPayload>) => msg.receiver === bus2.target, (msg: IMessage<TPayload>) => {
       DEBUG && console.log('BUS.forwarding', msg.sender, '=>', msg.receiver);
       bus2.emit(msg, true);
     });
 
-    bus2.on( (msg: IMessage<TPayload>) => msg.receiver === bus1.target, (msg: IMessage<TPayload>) => {
+    bus2.on<TPayload>( (msg: IMessage<TPayload>) => msg.receiver === bus1.target, (msg: IMessage<TPayload>) => {
       DEBUG && console.log('BUS.forwarding', msg.sender, '=>', msg.receiver);
       bus1.emit(msg, true);
     });
@@ -29,7 +29,6 @@ class Bus {
   public target: TReceiver;
 
   private messages$ = new Subject<IMessage<TPayload>>();
-
   private connector: NodeJS.Process | EventEmitter | MessagePort | any;
 
   constructor (source: TSender, target: TReceiver, connector) {
@@ -120,7 +119,7 @@ class Bus {
 
   on<T extends TPayload>(msgFilter: TTopic | TMsgFilter, action: (msg: IMessage<T>) => void): Subscription {
 
-    const tapper = (msg: any) => {
+    const tapper = (msg: IMessage<T>) => {
       DEBUG && console.log('BUS.tap', this.source, msg.topic, msg.sender, '=>', msg.receiver);
     }
 

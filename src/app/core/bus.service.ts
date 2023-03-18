@@ -16,7 +16,7 @@ export class BusService {
 
     this.bus = new Promise( (resolve, reject) => {
 
-      window.onmessage = (event) => {
+      window.onmessage = (event: any) => {
 
         // event.source === window means the message is coming from the preload
         // script, as opposed to from an <iframe> or other source.
@@ -39,8 +39,6 @@ export class BusService {
       };
 
     });
-
-
 
   }
 
@@ -68,7 +66,7 @@ export class BusService {
   }
 
   // generic on
-  async on(topic: TTopic, action: any): Promise<Subscription> {
+  async on<T extends TPayload>(topic: TTopic, action: (msg: IMessage<T>) => void): Promise<Subscription> {
     return (await this.bus).on(topic, action);
   }
 
