@@ -53,7 +53,8 @@ export interface IMReqServerStats extends IMsg {
 export interface IMResServerStats extends IMsg {
   topic: 'res:server:stats'
   payload: {
-    stats: any[]
+    domain: string
+    stats: any
   }
 }
 

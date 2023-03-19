@@ -131,11 +131,15 @@ const Actions = function (cfg: IConfig): any {
 
     // },
 
+    // sends for each requested domain single payloads
     onRequestServersStats(msg: IMReqServerStats) {
 
       msg.payload.domains.map(async domain => {
-        const stats = await self.getStatsServer(domain)
-        bus.send<IMResServerStats>('res:server:stats', msg.sender, stats)
+        const payload = {
+          domain,
+          stats: await self.getStatsServer(domain)
+        }
+        bus.send<IMResServerStats>('res:server:stats', msg.sender, payload)
       });
 
     },
