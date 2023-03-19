@@ -6,7 +6,7 @@ import ForceGraph3D from '3d-force-graph';
 import SpriteText from 'three-spritetext';
 import * as THREE  from 'three';
 
-import { Coords, IGraphData, ILink, IMessage, INode } from '../../../../app/interfaces';
+import { Coords, IGraphData, ILink, IMessage, IMGraphData, INode } from '../../../../app/interfaces';
 import { helper as H } from '../../core/helper.service';
 import { BusService } from '../../core/bus.service';
 import { ForceMeshes } from './force.meshes';
@@ -152,7 +152,7 @@ export class ForceService {
 
   private listen () {
 
-    this.bus.on('graphdata.get', (msg: IMessage<IGraphData>) => {
+    this.bus.on<IMGraphData>('get:graphdata', (msg: IMGraphData) => {
       const { links, nodes } = msg.payload;
       this.graph.graphData({ nodes, links });
     });

@@ -71,8 +71,8 @@ export interface IMAck extends IMsg {
   payload: null
 }
 
-export interface IMSetTab1 extends IMsg {
-  topic: 'set:tab:1'
+export interface IMSetTab extends IMsg {
+  topic: 'set:tab:1' | 'set:tab:2'
   payload: any
 }
 
@@ -83,7 +83,7 @@ export type TMessage =
   | IMConfig
   | IMGraphData
   | IMAck
-  | IMSetTab1
+  | IMSetTab
 
 
 

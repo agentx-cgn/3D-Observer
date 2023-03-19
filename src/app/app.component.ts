@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 import { environment } from '../environments/environment';
 import { BusService } from './core/bus.service';
-import { IConfig, IMessage, IApiResponse, IResStatsServer, IMResServerStats, IMConfig, IMGraphData, IMSetTab1 } from '../../app/interfaces';
+import { IConfig, IMResServerStats, IMConfig, IMGraphData, IMSetTab } from '../../app/interfaces';
 import { ForceService } from './pages/force/force.service';
 import { filter } from 'rxjs/operators';
 
@@ -68,7 +68,7 @@ export class AppComponent {
     // this.bus.on<IResStatsServer>('stats.server', msg => {
     this.bus.on<IMResServerStats>('res:server:stats', msg => {
       console.log('APPComp.stats.server', msg.payload.stats);
-      this.bus.fire<IMSetTab1>('set:tab:1', msg.payload.stats);
+      this.bus.fire<IMSetTab>('set:tab:1', msg.payload.stats);
     });
 
     // this.bus.on<IApiResponse>('response', msg => {

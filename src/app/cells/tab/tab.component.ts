@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { BusService } from '../../core/bus.service';
-import { IMessage, TTopic } from '../../../../app/interfaces';
+import { IMessage, IMSetTab, TMessage, TTopic } from '../../../../app/interfaces';
 
 @Component({
   selector: 'app-tab',
@@ -15,7 +15,7 @@ import { IMessage, TTopic } from '../../../../app/interfaces';
 export class TabComponent implements OnInit {
 
   @Input() title: string;
-  @Input() topic: TTopic;
+  @Input() topic: 'set:tab:1' | 'set:tab:2';
   @Input() active = false;
 
   public content: any;
@@ -26,9 +26,9 @@ export class TabComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.bus.on(this.topic, (msg: IMessage<any>) => {
+    this.bus.on<IMSetTab>(this.topic, (msg: IMSetTab) => {
 
-      console.log('Tab.on', this.title, msg)
+      console.log('Tab.on', this.title, msg);
 
       this.content = msg.payload;
       // this.
