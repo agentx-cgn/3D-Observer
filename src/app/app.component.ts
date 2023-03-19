@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 import { environment } from '../environments/environment';
 import { BusService } from './core/bus.service';
-import { IConfig, IMessage, IApiResponse, IResStatsServer } from '../../app/interfaces';
+import { IConfig, IMessage, IApiResponse, IResStatsServer, IMResServerStats, IMConfig, IMGraphData, IMSetTab1 } from '../../app/interfaces';
 import { ForceService } from './pages/force/force.service';
 import { filter } from 'rxjs/operators';
 
@@ -47,35 +47,36 @@ export class AppComponent {
 
   public async onSave  () {
     const { nodes, links } = this.force.export();
-    this.bus.send('graphdata.set', 'express', { nodes, links });
+    this.bus.send<IMGraphData>('set:graphdata', 'express', { nodes, links });
   }
 
   public onLoad () {
-    this.bus.send('graphdata.get', 'express', null);
+    this.bus.send<IMGraphData>('get:graphdata', 'express', null);
   }
 
-  public onRequest () {
+  // public onRequest () {
 
-    this.bus.send('request', 'express', {
-      domain:   'mastodon.online',
-      endpoint: '/v1/api/peers'
-    });
+  //   this.bus.send('request', 'express', {
+  //     domain:   'mastodon.online',
+  //     endpoint: '/v1/api/peers'
+  //   });
 
-  }
+  // }
 
   private listen () {
 
-    this.bus.on<IResStatsServer>('stats.server', msg => {
-      console.log('APPComp.stats.server', msg.payload.domain, msg.payload.stats);
-      this.bus.fire('content-tab-1', msg.payload.stats);
+    // this.bus.on<IResStatsServer>('stats.server', msg => {
+    this.bus.on<IMResServerStats>('res:server:stats', msg => {
+      console.log('APPComp.stats.server', msg.payload.stats);
+      this.bus.fire<IMSetTab1>('set:tab:1', msg.payload.stats);
     });
 
-    this.bus.on<IApiResponse>('response', msg => {
-      console.log('APPComp.response', msg);
-    });
+    // this.bus.on<IApiResponse>('response', msg => {
+    //   console.log('APPComp.response', msg);
+    // });
 
     // config with api info, should be already in pipeline
-    this.bus.on<IConfig>('config', msg => {
+    this.bus.on<IMConfig>('config', msg => {
 
       this.config = Object.assign({}, msg.payload);
 

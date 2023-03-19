@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
-import { IMessage, TPayload, TReceiver, TTopic } from '../../../app/interfaces';
+import { TMessage, TReceiver } from '../../../app/interfaces';
 import Bus from '../../../app/bus';
 
 @Injectable({
@@ -43,31 +43,35 @@ export class BusService {
   }
 
   // shortcut local emit
-  async fire<T extends TPayload>(topic: TTopic, payload: T) {
+  async fire<T extends TMessage>(topic: T['topic'], payload: T['payload']) {
     (await this.bus).emit<T>({
       topic,
       receiver: 'browser',
       payload
-    });
+    } as T);
   }
 
-  // shortcut gloabl emit
-  async send<T extends TPayload>(topic: TTopic, receiver: TReceiver, payload: T) {
+  // shortcut global emit
+  async send<T extends TMessage>(topic: T['topic'], receiver: TReceiver, payload: T['payload']) {
     (await this.bus).emit<T>({
       topic,
       receiver,
       payload
-    });
+    } as T);
   }
 
   // generic emit
-  async emit<T extends TPayload>(msg: IMessage<T>) {
+  async emit<T extends TMessage>(msg: T) {
     (await this.bus).emit<T>(msg);
   }
 
   // generic on
-  async on<T extends TPayload>(topic: TTopic, action: (msg: IMessage<T>) => void): Promise<Subscription> {
-    return (await this.bus).on(topic, action);
+  // async on1<T extends TPayload>(topic: TTopic, action: (msg: IMessage<T>) => void): Promise<Subscription> {
+  //   return (await this.bus).on(topic, action);
+  // }
+
+  async on<T extends TMessage>(topic: T['topic'], action: (msg: T) => void): Promise<Subscription> {
+    return (await this.bus).on<T>(topic, action);
   }
 
 }

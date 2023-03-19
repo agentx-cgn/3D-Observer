@@ -5,7 +5,7 @@ import * as path from 'path'
 import * as fs from 'fs'
 import * as log from 'electron-log'
 
-import { IConfig, IMessage, TPayload } from './interfaces'
+import { IConfig, IMAck, IMConfig, IMessage, TMessage, TPayload } from './interfaces'
 import Bus from './bus'
 import config from './config'
 
@@ -181,12 +181,12 @@ function launchExpress(): Promise<IConfig> {
     busExp = new Bus('electron', 'express', child)
 
     // expect initial config w/ port back from express
-    busExp.on('config', (msg: IMessage<IConfig>) => {
+    busExp.on<IMConfig>('config', (msg: TMessage) => {
       resolve(msg.payload);
     });
 
     // send initial config
-    busExp.send('config', 'express', config)
+    busExp.send<IMConfig>('config', 'express', config)
 
     child.on('error', (err) => {
       console.log('ELC.child.onError', Object.keys(err));
@@ -250,7 +250,7 @@ function setApplicationMenu() {
 }
 
 
-function launchBrowser(): Promise<IMessage<TPayload>> {
+function launchBrowser(): Promise<TMessage> {
 
   return new Promise( (resolve, reject) => {
 
@@ -313,9 +313,9 @@ function launchBrowser(): Promise<IMessage<TPayload>> {
 
 }
 
-function createBrowserChannel(win: BrowserWindow): Promise<IMessage<TPayload>> {
+function createBrowserChannel(win: BrowserWindow): Promise<TMessage> {
 
-  return new Promise<IMessage<TPayload>>((resolve) => {
+  return new Promise<TMessage>((resolve) => {
 
     // We'll be sending one end of this channel to the main world of the context-isolated page.
     const { port1, port2 } = new MessageChannelMain()
@@ -325,14 +325,14 @@ function createBrowserChannel(win: BrowserWindow): Promise<IMessage<TPayload>> {
 
     // We can also receive messages from the main world of the renderer.
     // wait for browser bus ready
-    busWin.on('ack', (msg: IMessage<TPayload>) => {
+    busWin.on<IMAck>('ack', (msg: TMessage) => {
       console.log('ELC.createBrowserChannel.ack', msg);
       resolve(msg);
     });
 
     // It's OK to send a message on the channel before the other end has
     // registered a listener. Messages will be queued until a listener is registered.
-    busWin.send<IConfig>('config', 'browser', config);
+    busWin.send<IMConfig>('config', 'browser', config);
 
     // init handshake
     win.webContents.postMessage('main-world-port', null, [port1]);

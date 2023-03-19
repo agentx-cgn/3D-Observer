@@ -6,7 +6,7 @@ import { map, take } from 'rxjs/operators';
 import ForceGraph3D from '3d-force-graph';
 
 import servers from '../../../assets/json/servers.json';
-import { INode, ILink, TNodeType, Coords } from '../../../../app/interfaces';
+import { INode, ILink, TNodeType, Coords, IMReqServerStats } from '../../../../app/interfaces';
 
 import { ForceService } from './force.service';
 // import * as THREE  from 'three';
@@ -161,17 +161,7 @@ export class ForcePage implements AfterViewInit {
   }
 
   pokeNode (node: INode) {
-
-    console.log('PageForce.pokeNode', node);
-
-    this.bus.emit({
-      topic:    'observe.stats.servers',
-      receiver: 'express',
-      payload: {
-        domains: [ node.id ]
-      }
-    });
-
+    this.bus.send<IMReqServerStats>('req:server:stats', 'express', { domains: [node.id] } );
   }
 
   pokeNode1 (parent: INode) {

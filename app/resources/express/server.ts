@@ -6,7 +6,7 @@ import log from 'electron-log'
 import dotenv from 'dotenv'
 import { AddressInfo } from 'node:net'
 
-import { IConfig, IMessage } from '../../interfaces'
+import { IConfig, IMConfig, IMessage } from '../../interfaces'
 import Bus from '../../bus'
 import apiRouter from './api-router'
 import { Actions } from './actions'
@@ -65,7 +65,7 @@ class App {
 
     this.bus = new Bus('express', 'electron', process)
 
-    this.bus.on<IConfig>('config', msg => {
+    this.bus.on<IMConfig>('config', msg => {
 
       config  = msg.payload
       actions = Actions(config).listen(this.bus)
@@ -77,7 +77,7 @@ class App {
         config.api.family = adr.family
         config.api.root   = `${config.api.protocol}://${config.api.ip}:${config.api.port}/`
 
-        this.bus.send<IConfig>('config', 'electron', config)
+        this.bus.send<IMConfig>('config', 'electron', config)
 
       })
 

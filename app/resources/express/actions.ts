@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 
 import { PromisedDatabase } from './libs/promised-database'
-import { IApiRequest, IApiResponse, IConfig, IGraphData, IMessage, IObsStatsServers, IResStatsServer } from "../../interfaces";
+import { IApiRequest, IApiResponse, IConfig, IGraphData, IMessage, IMGraphData, IMReqServerStats, IMResServerStats, IObsStatsServers, IResStatsServer } from "../../interfaces";
 import Bus from "../../bus";
 
 // https://github.com/tguichaoua/promised-sqlite3/blob/master/src/PromisedDatabase.ts
@@ -41,17 +41,18 @@ const Actions = function (cfg: IConfig): any {
       DB = new PromisedDatabase()
       await DB.open(cfg.fileDBTarget)
 
-      bus.on<IApiRequest>('request',                     self.onRequest)
-      bus.on<IGraphData>('graphdata.get',                self.onGraphdataGet)
-      bus.on<IObsStatsServers>('observe.stats.servers',  self.onObserveStatsServers)
-      bus.on('graphdata.set',          self.onGraphdataSet)
+      // bus.on<IApiRequest>('request',                     self.onRequest)
+      bus.on<IMReqServerStats>('req:server:stats',  self.onRequestServersStats)
+
+      bus.on<IMGraphData>('set:graphdata', self.onGraphdataSet)
+      bus.on<IMGraphData>('get:graphdata', self.onGraphdataGet)
 
       return self;
 
     },
 
     // requests data from given endpoint
-    async onGraphdataGet(msg: IMessage<IGraphData>) {
+    async onGraphdataGet(msg: IMGraphData) {
 
       const sql = `SELECT value FROM blobs WHERE key = 'graphdata' LIMIT 1;`
 
@@ -61,11 +62,7 @@ const Actions = function (cfg: IConfig): any {
 
         if (row) {
           console.log('ACT.db.get', msg.topic, sql)
-          bus.emit<IGraphData>({
-            topic:    msg.topic,
-            receiver: msg.sender,
-            payload:  JSON.parse(row.value)
-          })
+          bus.send<IMGraphData>(msg.topic, msg.sender, JSON.parse(row.value))
 
         } else {
           console.warn('ACT.db.get.nodata', msg.topic, trim(sql), row);
@@ -99,46 +96,46 @@ const Actions = function (cfg: IConfig): any {
     },
 
     // requests json from given endpoint and sends reponse
-    async onRequest(msg: IMessage<IApiRequest>) {
+    // async onRequest(msg: IMessage<IApiRequest>) {
 
-      const url = `https://${msg.payload.domain}${msg.payload.endpoint}`
+    //   const url = `https://${msg.payload.domain}${msg.payload.endpoint}`
 
-      console.log('ACT.request', msg.topic, url);
+    //   console.log('ACT.request', msg.topic, url);
 
-      return axios.get<Promise<AxiosResponse>>(url) //('https://berlin.social/api/v1/instance/peers')
-        .then( (res) => {
+    //   return axios.get<Promise<AxiosResponse>>(url) //('https://berlin.social/api/v1/instance/peers')
+    //     .then( (res) => {
 
-          if ( res.status === 200 ) {
-            bus.send<IApiResponse>('response', msg.sender, {
-              status:  res.status,
-              headers: res.headers as Record<string, string>,
-              body:    res.data,
-              ...msg.payload
-            })
+    //       if ( res.status === 200 ) {
+    //         bus.send<IApiResponse>('response', msg.sender, {
+    //           status:  res.status,
+    //           headers: res.headers as Record<string, string>,
+    //           body:    res.data,
+    //           ...msg.payload
+    //         })
 
-          } else {
-            console.log('AXIOS.failed', res.status, res.statusText, url)
+    //       } else {
+    //         console.log('AXIOS.failed', res.status, res.statusText, url)
 
-          }
+    //       }
 
-        })
+    //     })
 
-        .catch(function (error) {
-          // handle error
-          console.log('AXIOS', error, url);
-          return { error };
-        })
+    //     .catch(function (error) {
+    //       // handle error
+    //       console.log('AXIOS', error, url);
+    //       return { error };
+    //     })
 
-        .finally(function () { })
-      ;
+    //     .finally(function () { })
+    //   ;
 
-    },
+    // },
 
-    onObserveStatsServers(msg: IMessage<IObsStatsServers>) {
+    onRequestServersStats(msg: IMessage<IObsStatsServers>) {
 
       msg.payload.domains.map(async domain => {
         const stats = await self.getStatsServer(domain)
-        bus.send<IResStatsServer>('stats.server', msg.sender, stats)
+        bus.send<IMResServerStats>('res:server:stats', msg.sender, stats)
       });
 
     },

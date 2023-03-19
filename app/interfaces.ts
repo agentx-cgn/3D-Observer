@@ -30,11 +30,64 @@ export type TTopic =
   'last'
 ;
 
-export type TSender  = 'electron' | 'express' | 'browser';
-
-export type TMsgFilter = ( msg: IMessage<TPayload> ) => boolean;
-
+export type TSender   = 'electron' | 'express' | 'browser';
 export type TReceiver = TSender;
+// export type TMsgFilter1 = ( msg: IMessage<TPayload> ) => boolean;
+export type TMsgFilter = ( msg: TMessage ) => boolean;
+
+
+export type TMessenger = 'electron' | 'express' | 'browser';
+interface IMsg {
+  sender?: TSender;
+  receiver: TReceiver;
+}
+
+export interface IMReqServerStats extends IMsg {
+  topic: 'req:server:stats'
+  payload: {
+    domains: string[]
+  }
+}
+
+export interface IMResServerStats extends IMsg {
+  topic: 'res:server:stats'
+  payload: {
+    stats: any[]
+  }
+}
+
+export interface IMConfig extends IMsg {
+  topic: 'config'
+  payload: IConfig
+}
+
+export interface IMGraphData extends IMsg {
+  topic: 'set:graphdata' | 'get:graphdata'
+  payload: IGraphData | null
+}
+
+export interface IMAck extends IMsg {
+  topic: 'ack'
+  payload: null
+}
+
+export interface IMSetTab1 extends IMsg {
+  topic: 'set:tab:1'
+  payload: any
+}
+
+
+export type TMessage =
+    IMReqServerStats
+  | IMResServerStats
+  | IMConfig
+  | IMGraphData
+  | IMAck
+  | IMSetTab1
+
+
+
+
 
 export interface IMessage<T> {
   topic: TTopic;

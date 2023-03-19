@@ -3,7 +3,7 @@ import { filter, tap } from 'rxjs/operators';
 
 import EventEmitter from 'node:events';
 
-import { IMessage, TMsgFilter, TPayload, TReceiver, TSender, TTopic } from './interfaces';
+import { IMessage, TMsgFilter, TMessage, TPayload, TReceiver, TSender, TTopic, TMessenger } from './interfaces';
 
 const DEBUG = false;
 
@@ -11,14 +11,14 @@ class Bus {
 
   static connect(bus1: Bus, bus2: Bus): void {
 
-    bus1.on<TPayload>( (msg: IMessage<TPayload>) => msg.receiver === bus2.target, (msg: IMessage<TPayload>) => {
+    bus1.on<TMessage>( (msg: TMessage) => msg.receiver === bus2.target, (msg: TMessage) => {
       DEBUG && console.log('BUS.forwarding', msg.sender, '=>', msg.receiver);
-      bus2.emit(msg, true);
+      bus2.emit<TMessage>(msg, true);
     });
 
-    bus2.on<TPayload>( (msg: IMessage<TPayload>) => msg.receiver === bus1.target, (msg: IMessage<TPayload>) => {
+    bus2.on<TMessage>( (msg: TMessage) => msg.receiver === bus1.target, (msg: TMessage) => {
       DEBUG && console.log('BUS.forwarding', msg.sender, '=>', msg.receiver);
-      bus1.emit(msg, true);
+      bus1.emit<TMessage>(msg, true);
     });
 
     DEBUG && console.log('BUS.connected', bus1.target, '<=>', bus2.target);
@@ -28,7 +28,7 @@ class Bus {
   public source: TSender;
   public target: TReceiver;
 
-  private messages$ = new Subject<IMessage<TPayload>>();
+  private messages$ = new Subject<TMessage>();
   private connector: NodeJS.Process | EventEmitter | MessagePort | any;
 
   constructor (source: TSender, target: TReceiver, connector) {
@@ -66,15 +66,15 @@ class Bus {
   }
 
   // shorthand for .emit()
-  send<T extends TPayload>(topic: TTopic, receiver: TReceiver, payload: T) {
-    this.emit({
+  send<T extends TMessage>(topic: T['topic'], receiver: TMessenger, payload: T['payload']) {
+    this.emit<T>({
       topic,
       receiver,
       payload
-    });
+    } as T);
   }
 
-  emit<T extends TPayload>(msg: IMessage<T>, bridge=false) {
+  emit<T extends TMessage>(msg: T, bridge=false) {
 
     DEBUG && console.log(`BUS.${this.source}.emit`, msg.topic, '=>', msg.receiver);
 
@@ -117,9 +117,9 @@ class Bus {
 
   }
 
-  on<T extends TPayload>(msgFilter: TTopic | TMsgFilter, action: (msg: IMessage<T>) => void): Subscription {
+  on<T extends TMessage>(msgFilter: T['topic'] | TMsgFilter, action: (msg: T) => void): Subscription {
 
-    const tapper = (msg: IMessage<T>) => {
+    const tapper = (msg: T) => {
       DEBUG && console.log('BUS.tap', this.source, msg.topic, msg.sender, '=>', msg.receiver);
     }
 
@@ -135,7 +135,7 @@ class Bus {
     } else {
       return this.messages$
         .pipe(
-          filter( (msg: IMessage<TPayload>) => msg.topic === msgFilter ),
+          filter( (msg: T) => msg.topic === msgFilter ),
           tap( tapper )
         )
         .subscribe( action )
