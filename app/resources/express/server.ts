@@ -6,7 +6,7 @@ import log from 'electron-log'
 import dotenv from 'dotenv'
 import { AddressInfo } from 'node:net'
 
-import { IConfig, IMConfig, IMessage } from '../../interfaces'
+import { IConfig, IMConfig } from '../../interfaces'
 import Bus from '../../bus'
 import apiRouter from './api-router'
 import { Actions } from './actions'

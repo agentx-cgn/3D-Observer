@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/member-ordering */
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 import ForceGraph3D from '3d-force-graph';
-import SpriteText from 'three-spritetext';
+// import SpriteText from 'three-spritetext';
 import * as THREE  from 'three';
 
-import { Coords, IGraphData, ILink, IMessage, IMGraphData, INode } from '../../../../app/interfaces';
-import { helper as H } from '../../core/helper.service';
+import { Coords, ILink, IMGraphData, INode } from '../../../../app/interfaces';
+// import { helper as H } from '../../core/helper.service';
 import { BusService } from '../../core/bus.service';
 import { ForceMeshes } from './force.meshes';
 

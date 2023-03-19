@@ -3,7 +3,7 @@ import { filter, tap } from 'rxjs/operators';
 
 import EventEmitter from 'node:events';
 
-import { IMessage, TMsgFilter, TMessage, TPayload, TReceiver, TSender, TTopic, TMessenger } from './interfaces';
+import { TMsgFilter, TMessage, TMessenger } from './interfaces';
 
 const DEBUG = false;
 
@@ -25,13 +25,13 @@ class Bus {
 
   }
 
-  public source: TSender;
-  public target: TReceiver;
+  public source: TMessenger;
+  public target: TMessenger;
 
   private messages$ = new Subject<TMessage>();
   private connector: NodeJS.Process | EventEmitter | MessagePort | any;
 
-  constructor (source: TSender, target: TReceiver, connector) {
+  constructor (source: TMessenger, target: TMessenger, connector) {
 
     DEBUG && console.log(`BUS.${source}.constructor`, '=>', target);
 

@@ -5,7 +5,7 @@ import * as path from 'path'
 import * as fs from 'fs'
 import * as log from 'electron-log'
 
-import { IConfig, IMAck, IMConfig, IMessage, TMessage, TPayload } from './interfaces'
+import { IConfig, IMAck, IMConfig, TMessage } from './interfaces'
 import Bus from './bus'
 import config from './config'
 

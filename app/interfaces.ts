@@ -1,45 +1,46 @@
 
 import * as THREE  from 'three';
 
-export type TPayload =
-  string |
-  null |
-  // number |
-  // boolean |
-  IConfig |
-  IApiRequest |
-  IApiResponse |
-  IApiStatsResponse |
-  IObsStatsServers | IResStatsServer |
-  IGraphData
-;
+// export type TPayload =
+//   string |
+//   null |
+//   // number |
+//   // boolean |
+//   IConfig |
+//   IApiRequest |
+//   IApiResponse |
+//   IApiStatsResponse |
+//   IObsStatsServers | IResStatsServer |
+//   IGraphData
+// ;
 
-export type TTopic =
-  'ping' |
-  'ack' |
-  'config' |
-  'request' |
-  'response' |
-  'stats.get' |
-  'observe.stats.servers' |
-  'stats.server' |
-  'graphdata.set' |
-  'graphdata.get' |
-  'content-tab-1' |
-  'content-tab-2' |
-  'last'
-;
+// export type TTopic =
+//   'ping' |
+//   'ack' |
+//   'config' |
+//   'request' |
+//   'response' |
+//   'stats.get' |
+//   'observe.stats.servers' |
+//   'stats.server' |
+//   'graphdata.set' |
+//   'graphdata.get' |
+//   'content-tab-1' |
+//   'content-tab-2' |
+//   'last'
+// ;
 
-export type TSender   = 'electron' | 'express' | 'browser';
-export type TReceiver = TSender;
+// export type TSender   = 'electron' | 'express' | 'browser';
+// export type TReceiver = TSender;
 // export type TMsgFilter1 = ( msg: IMessage<TPayload> ) => boolean;
 export type TMsgFilter = ( msg: TMessage ) => boolean;
 
 
 export type TMessenger = 'electron' | 'express' | 'browser';
+
 interface IMsg {
-  sender?: TSender;
-  receiver: TReceiver;
+  sender?: TMessenger;
+  receiver: TMessenger;
 }
 
 export interface IMReqServerStats extends IMsg {
@@ -89,40 +90,40 @@ export type TMessage =
 
 
 
-export interface IMessage<T> {
-  topic: TTopic;
-  sender?: TSender;
-  receiver: TReceiver;
-  payload: T;
-}
+// export interface IMessage<T> {
+//   topic: TTopic;
+//   sender?: TSender;
+//   receiver: TReceiver;
+//   payload: T;
+// }
 
-export interface IObsStatsServers {
-  domains: string[]
-}
+// export interface IObsStatsServers {
+//   domains: string[]
+// }
 
-export interface IResStatsServer {
-  domain: string,
-  stats: any
-}
+// export interface IResStatsServer {
+//   domain: string,
+//   stats: any
+// }
 
-export interface IApiStatsResponse {
-  domain: string
-  data: any[]
-}
+// export interface IApiStatsResponse {
+//   domain: string
+//   data: any[]
+// }
 
-export interface IApiRequest {
-  domain: string
-  endpoint: string
-}
+// export interface IApiRequest {
+//   domain: string
+//   endpoint: string
+// }
 
-export interface IApiResponse {
-  domain: string
-  endpoint: string
-  status?: number
-  headers?: Record<string, string>
-  body?: any
-  error?: any
-}
+// export interface IApiResponse {
+//   domain: string
+//   endpoint: string
+//   status?: number
+//   headers?: Record<string, string>
+//   body?: any
+//   error?: any
+// }
 
 export interface IGraphData {
   nodes: INode[]

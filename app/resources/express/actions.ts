@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 
 import { PromisedDatabase } from './libs/promised-database'
-import { IApiRequest, IApiResponse, IConfig, IGraphData, IMessage, IMGraphData, IMReqServerStats, IMResServerStats, IObsStatsServers, IResStatsServer } from "../../interfaces";
+import { IConfig, IGraphData, IMGraphData, IMReqServerStats, IMResServerStats } from "../../interfaces";
 import Bus from "../../bus";
 
 // https://github.com/tguichaoua/promised-sqlite3/blob/master/src/PromisedDatabase.ts
@@ -77,7 +77,7 @@ const Actions = function (cfg: IConfig): any {
 
     },
 
-    async onGraphdataSet(msg: IMessage<IGraphData>) {
+    async onGraphdataSet(msg: IMGraphData) {
 
       const sql = `
         REPLACE INTO blobs (key, value)
@@ -131,7 +131,7 @@ const Actions = function (cfg: IConfig): any {
 
     // },
 
-    onRequestServersStats(msg: IMessage<IObsStatsServers>) {
+    onRequestServersStats(msg: IMReqServerStats) {
 
       msg.payload.domains.map(async domain => {
         const stats = await self.getStatsServer(domain)
@@ -140,7 +140,7 @@ const Actions = function (cfg: IConfig): any {
 
     },
 
-    async getStatsServer(domain: string): Promise<IResStatsServer> {
+    async getStatsServer(domain: string): Promise<any> {
 
       const controller = new AbortController();
       const cancel     = setTimeout( controller.abort, timeout );
@@ -182,7 +182,7 @@ const Actions = function (cfg: IConfig): any {
 
       clearTimeout(cancel)
 
-      return { domain, stats }
+      return stats;
 
     },
 

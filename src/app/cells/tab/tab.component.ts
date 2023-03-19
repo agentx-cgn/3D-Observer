@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { BusService } from '../../core/bus.service';
-import { IMessage, IMSetTab, TMessage, TTopic } from '../../../../app/interfaces';
+import { IMSetTab } from '../../../../app/interfaces';
 
 @Component({
   selector: 'app-tab',

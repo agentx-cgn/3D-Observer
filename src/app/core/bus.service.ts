@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
-import { TMessage, TReceiver } from '../../../app/interfaces';
+import { TMessage, TMessenger } from '../../../app/interfaces';
 import Bus from '../../../app/bus';
 
 @Injectable({
@@ -52,7 +52,7 @@ export class BusService {
   }
 
   // shortcut global emit
-  async send<T extends TMessage>(topic: T['topic'], receiver: TReceiver, payload: T['payload']) {
+  async send<T extends TMessage>(topic: T['topic'], receiver: TMessenger, payload: T['payload']) {
     (await this.bus).emit<T>({
       topic,
       receiver,
