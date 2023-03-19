@@ -29,7 +29,7 @@ export class AppComponent {
 
     this.bus.created$
       .pipe(filter(Boolean))
-      .subscribe( this.listen )
+      .subscribe( this.listen.bind(this) )
     ;
 
   }
