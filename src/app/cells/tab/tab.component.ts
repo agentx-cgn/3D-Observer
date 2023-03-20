@@ -8,8 +8,7 @@ import { IMSetTab } from '../../../../app/interfaces';
     <div [hidden]="!active" class="pane">
       <ngx-json-viewer [json]="content" [expanded]="false"></ngx-json-viewer>
     </div>
-  `
-  ,
+  `,
   styleUrls: ['./tab.component.scss']
 })
 export class TabComponent implements OnInit {
@@ -26,7 +25,7 @@ export class TabComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.bus.on<IMSetTab>(this.topic, (msg: IMSetTab) => {
+    this.bus.on<IMSetTab>(this.topic, msg => {
 
       console.log('Tab.on', this.title, msg);
 

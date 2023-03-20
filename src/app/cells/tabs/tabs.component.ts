@@ -7,13 +7,13 @@ import { ContentChildren, QueryList } from '@angular/core';
 @Component({
   selector: 'app-tabs',
   template: `
-  <ul class="nav nav-tabs">
-    <li *ngFor=" let tab of tabs" (click)="selectTab(tab)" [class.active]="tab.active">
-      <span>{{ tab.title }}</span>
-    </li>
-  </ul>
-  <ng-content></ng-content>
-`,
+    <ul class="nav nav-tabs">
+      <li *ngFor=" let tab of tabs" (click)="selectTab(tab)" [class.active]="tab.active">
+        <span>{{ tab.title }}</span>
+      </li>
+    </ul>
+    <ng-content></ng-content>
+  `,
   styleUrls: ['./tabs.component.scss']
 })
 export class TabsComponent implements OnInit, AfterContentInit {
